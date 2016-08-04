@@ -19,10 +19,9 @@ const app = express()
 
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack')
-  const clientConfig = require('./webpack.client.config')
-  const serverConfig = require('./webpack.server.config')
+  const clientConfig = require('./build/webpack.client.config')
 
-  clientConfig.entry = ['webpack-hot-middleware/client', clientConfig.entry]
+  clientConfig.entry.app = ['webpack-hot-middleware/client', clientConfig.entry.app]
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
@@ -40,6 +39,7 @@ if (process.env.NODE_ENV !== 'production') {
 
   // watch and update server renderer
   const MFS = require('memory-fs')
+  const serverConfig = require('./build/webpack.server.config')
   const serverCompiler = webpack(serverConfig)
   const mfs = new MFS()
   serverCompiler.outputFileSystem = mfs
@@ -89,7 +89,11 @@ app.get('*', (req, res) => {
   })
 
   renderStream.on('end', () => {
-    res.end(`<script src="/dist/client-bundle.js"></script></body></html>`)
+    res.end(`
+      <script src="/dist/client-vendor-bundle.js"></script>
+      <script src="/dist/client-bundle.js"></script>
+      </body></html>`
+    )
     console.log(`whole request: ${Date.now() - s}ms`)
   })
 

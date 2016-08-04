@@ -7,8 +7,8 @@
     "dev": "node server",
     "start": "NODE_ENV=production node server",
     "build": "npm run build:client && npm run build:server",
-    "build:client": "NODE_ENV=production webpack --config webpack.client.config.js --progress --hide-modules",
-    "build:server": "NODE_ENV=production webpack --config webpack.server.config.js  --progress --hide-modules"
+    "build:client": "NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
+    "build:server": "NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
   },
   "dependencies": {
     "es6-promise": "^3.2.1",
@@ -33,7 +33,6 @@
     "vue-loader": "^9.2.2",
     "webpack": "^2.1.0-beta.20",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.12.2",
-    "webpack-merge": "^0.14.1"
+    "webpack-hot-middleware": "^2.12.2"
   }
 }

@@ -1,14 +1,14 @@
 const webpack = require('webpack')
-const merge = require('webpack-merge')
-const webpackConfig = require('./webpack.client.config')
+const base = require('./webpack.base.config')
 
-module.exports = merge(webpackConfig, {
+module.exports = Object.assign({}, base, {
   target: 'node',
+  devtool: null,
   entry: './src/server-entry.js',
-  output: {
+  output: Object.assign({}, base.output, {
     filename: 'server-bundle.js',
     libraryTarget: 'commonjs2'
-  },
+  }),
   externals: {
     firebase: true,
     'lru-cache': true
