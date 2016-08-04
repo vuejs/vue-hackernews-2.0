@@ -4,3 +4,9 @@
     <p>hihihi</p>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'news'
+}
+</script>

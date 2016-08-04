@@ -95,6 +95,7 @@ app.get('*', (req, res) => {
   })
 })
 
-app.listen(3000, () => {
-  console.log('ready at localhost:3000')
+const port = process.env.PORT || 8080
+app.listen(port, () => {
+  console.log(`server started at localhost:${port}`)
 })
