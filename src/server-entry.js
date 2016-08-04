@@ -1,3 +1,6 @@
-import { app } from './app'
+import { app, router } from './app'
 
-export default app
+export default context => {
+  router.setInitialLocation(context.url)
+  return app
+}

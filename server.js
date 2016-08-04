@@ -65,7 +65,13 @@ app.get('*', (req, res) => {
   const renderStream = renderer.renderToStream(context)
   let firstChunk = true
 
-  res.write('<!DOCTYPE html><body>')
+  res.write(`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>vue-hackernews-2.0</title>
+  </head>
+  <body>`)
 
   renderStream.on('data', chunk => {
     if (firstChunk) {
@@ -81,7 +87,7 @@ app.get('*', (req, res) => {
   })
 
   renderStream.on('end', () => {
-    res.end(`<script src="/dist/client-bundle.js"></script></body>`)
+    res.end(`<script src="/dist/client-bundle.js"></script></body></html>`)
   })
 
   renderStream.on('error', err => {
