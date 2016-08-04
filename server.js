@@ -61,6 +61,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(favicon(path.resolve(__dirname, 'src/assets/logo.png')))
 
 app.get('*', (req, res) => {
+  var s = Date.now()
   const context = { url: req.url }
   const renderStream = renderer.renderToStream(context)
   let firstChunk = true
@@ -88,6 +89,7 @@ app.get('*', (req, res) => {
 
   renderStream.on('end', () => {
     res.end(`<script src="/dist/client-bundle.js"></script></body></html>`)
+    console.log('whole request: ' + (Date.now() - s))
   })
 
   renderStream.on('error', err => {

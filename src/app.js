@@ -1,20 +1,12 @@
 import Vue from 'vue'
-import Router from 'vue-router'
 import App from './App.vue'
-import News from './views/News.vue'
-import About from './views/About.vue'
+import router from './router'
+import store from './store'
 
-Vue.use(Router)
-
-export const router = new Router({
-  mode: 'history',
-  routes: [
-    { path: '/', component: News },
-    { path: '/about', component: About }
-  ]
-})
+export { router, store }
 
 export const app = new Vue({
   router,
+  store,
   render: h => h(App)
 })
