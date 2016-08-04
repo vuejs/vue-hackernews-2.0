@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <ul>
-      <li><router-link to="/">News</router-link></li>
+      <li><router-link to="/news/1">page 1</router-link></li>
+      <li><router-link to="/news/2">page 2</router-link></li>
       <li><router-link to="/about">About</router-link></li>
     </ul>
     <transition name="view" mode="out-in">

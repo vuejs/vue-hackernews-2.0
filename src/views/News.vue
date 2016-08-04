@@ -1,11 +1,13 @@
 <template>
   <div>
     <h2>News</h2>
-    <ul>
-      <li v-for="item in news" :key="item.id">
-        {{ item.title }}
-      </li>
-    </ul>
+    <transition :name="transition">
+      <ul class="news-list" :key="$route.params.page">
+        <li v-for="item in news" :key="item.id">
+          {{ item.title }}
+        </li>
+      </ul>
+    </transition>
   </div>
 </template>
 
@@ -18,9 +20,22 @@ const fetchData = store => {
 
 export default {
   name: 'news',
+  data () {
+    return {
+      transition: 'slide-left'
+    }
+  },
   prefetch: fetchData,
   mounted () {
     fetchData(this.$store)
+  },
+  watch: {
+    '$route' (to, from) {
+      this.$store.dispatch(`FETCH_NEWS`)
+      this.transition = to.params.page > from.params.page
+        ? 'slide-left'
+        : 'slide-right'
+    }
   },
   computed: {
     news () {
@@ -29,3 +44,20 @@ export default {
   }
 }
 </script>
+
+<style>
+.news-list {
+  position: absolute;
+  transition: all .5s cubic-bezier(.55,0,.1,1);
+}
+.slide-left-enter, .slide-right-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(30px, 0);
+  transform: translate(30px, 0);
+}
+.slide-left-leave-active, .slide-right-enter {
+  opacity: 0;
+  -webkit-transform: translate(-30px, 0);
+  transform: translate(-30px, 0);
+}
+</style>

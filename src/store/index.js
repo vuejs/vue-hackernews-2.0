@@ -23,7 +23,7 @@ const store = new Vuex.Store({
       })
     },
     FETCH_NEWS: ({ commit, state }) => {
-      const ids = getDisplayedIds(state).filter(id => !state.items.id)
+      const ids = getDisplayedIds(state).filter(id => !state.items[id])
       return fetchItems(ids).then(items => {
         commit('RECEIVE_ITEMS', { items })
       })
@@ -56,7 +56,7 @@ if (inBrowser) {
 }
 
 function getDisplayedIds (state) {
-  const page = state.route.params.page || 1
+  const page = Number(state.route.params.page) || 1
   const { storiesPerPage, topStoryIds } = state
   const start = (page - 1) * storiesPerPage
   const end = page * storiesPerPage
