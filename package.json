@@ -23,6 +23,7 @@
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-preset-es2015-webpack": "^6.0.0",
+    "babel-preset-stage-2": "^6.11.0",
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.4",
     "vue-loader": "^9.2.2",

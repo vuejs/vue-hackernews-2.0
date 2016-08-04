@@ -3,10 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-export { router, store }
-
-export const app = new Vue({
+const app = new Vue({
   router,
   store,
-  render: h => h(App)
+  ...App
 })
+
+export { app, router, store }

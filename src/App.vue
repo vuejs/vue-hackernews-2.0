@@ -15,7 +15,6 @@
 
 <script>
 export default {
-  name: 'app',
   data () {
     return {
       msg: 'Hello Vue 2.0!'
