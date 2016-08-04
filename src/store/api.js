@@ -1,6 +1,28 @@
 import Firebase from 'firebase'
+import LRU from 'lru-cache'
 
-const api = new Firebase('https://hacker-news.firebaseio.com/v0')
+const inBrowser = typeof window !== 'undefined'
+
+// When using bundleRenderer, the server-side application code runs in a new
+// context for each request. To allow caching across multiple requests, we need
+// to attach the cache to the process which is shared across all requests.
+const cache = inBrowser
+  ? null
+  : (process.__API_CACHE__ || (process.__API_CACHE__ = LRU({ max: 1000 })))
+
+// create a single api instance for all server-side requests
+// and cache the latest top Ids on it.
+const api = inBrowser
+  ? new Firebase('https://hacker-news.firebaseio.com/v0')
+  : (process.__API__ || (process.__API__ = createServerSideAPI()))
+
+function createServerSideAPI () {
+  const api = new Firebase('https://hacker-news.firebaseio.com/v0')
+  api.child(`topstories`).on('value', snapshot => {
+    api.__topIds__ = snapshot.val()
+  })
+  return api
+}
 
 function fetch (child) {
   return new Promise((resolve, reject) => {
@@ -11,17 +33,28 @@ function fetch (child) {
 }
 
 export function fetchTopIds () {
-  return fetch(`topstories`)
+  return api.__topIds__
+    ? Promise.resolve(api.__topIds__)
+    : fetch(`topstories`)
 }
 
 export function watchTopIds (cb) {
   api.child(`topstories`).on('value', snapshot => {
-    cb(snapshot.val())
+    const ids = snapshot.val()
+    api.__topIds__ = ids
+    cb(ids)
   })
 }
 
-export function fetchItem (id) {
-  return fetch(`item/${id}`)
+export function fetchItem (id, forceRefresh) {
+  if (!forceRefresh && cache && cache.has(id)) {
+    return Promise.resolve(cache.get(id))
+  } else {
+    return fetch(`item/${id}`).then(item => {
+      cache && cache.set(id, item)
+      return item
+    })
+  }
 }
 
 export function fetchItems (ids) {

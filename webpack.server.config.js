@@ -10,14 +10,13 @@ module.exports = merge(webpackConfig, {
     libraryTarget: 'commonjs2'
   },
   externals: {
-    firebase: true
+    firebase: true,
+    'lru-cache': true
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-        VUE_ENV: '"server"'
-      }
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.VUE_ENV': '"server"'
     })
   ]
 })

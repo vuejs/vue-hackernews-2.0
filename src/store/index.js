@@ -49,6 +49,7 @@ const store = new Vuex.Store({
   }
 })
 
+// watch for realtime top IDs updates on the client
 if (inBrowser) {
   watchTopIds(ids => {
     store.commit('RECEIVE_TOP_IDS', { ids })

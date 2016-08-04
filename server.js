@@ -89,7 +89,7 @@ app.get('*', (req, res) => {
 
   renderStream.on('end', () => {
     res.end(`<script src="/dist/client-bundle.js"></script></body></html>`)
-    console.log('whole request: ' + (Date.now() - s))
+    console.log(`whole request: ${Date.now() - s}ms`)
   })
 
   renderStream.on('error', err => {

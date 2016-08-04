@@ -20,14 +20,16 @@ const fetchData = store => {
 
 export default {
   name: 'news',
+  prefetch: fetchData,
   data () {
     return {
       transition: 'slide-left'
     }
   },
-  prefetch: fetchData,
-  mounted () {
-    fetchData(this.$store)
+  created () {
+    if (typeof window !== 'undefined') {
+      fetchData(this.$store)
+    }
   },
   watch: {
     '$route' (to, from) {
