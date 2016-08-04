@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <p>Store state:</p>
-    <pre>{{ JSON.stringify($store.state, null, 2) }}</pre>
     <ul>
       <li><router-link to="/">News</router-link></li>
       <li><router-link to="/about">About</router-link></li>
@@ -13,16 +9,6 @@
     </transition>
   </div>
 </template>
-
-<script>
-export default {
-  data () {
-    return {
-      msg: 'Hello Vue 2.0!'
-    }
-  }
-}
-</script>
 
 <style>
 body {

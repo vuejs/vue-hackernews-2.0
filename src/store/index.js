@@ -1,37 +1,66 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { fetchItems } from './api'
+import { watchTopIds, fetchTopIds, fetchItems } from './api'
 
 Vue.use(Vuex)
 
-// pre-fetched state injected by SSR
-const serverState = typeof window !== 'undefined' && window.__INITIAL_STATE__
+const inBrowser = typeof window !== 'undefined'
 
-// default state
-const defaultState = {
+// if in browser, use pre-fetched state injected by SSR
+const state = (inBrowser && window.__INITIAL_STATE__) || {
   storiesPerPage: 30,
   topStoryIds: [],
   items: {}
 }
 
-export default new Vuex.Store({
-  state: serverState || defaultState,
-  mutations: {
-    RECEIVE_ITEMS: (state, { items }) => {
-      for (const id in items) {
-        Vue.set(state.items, id, items[id])
-      }
-    }
-  },
+const store = new Vuex.Store({
+  state,
+
   actions: {
-    FETCH_NEWS_BY_PAGE: ({ commit, state }, { page }) => {
-      const { storiesPerPage, topStoryIds } = state
-      const start = (page - 1) * storiesPerPage
-      const end = page * storiesPerPage
-      const ids = topStoryIds.slice(start, end)
+    FETCH_TOP_IDS: ({ commit }) => {
+      return fetchTopIds().then(ids => {
+        commit('RECEIVE_TOP_IDS', { ids })
+      })
+    },
+    FETCH_NEWS: ({ commit, state }) => {
+      const ids = getDisplayedIds(state).filter(id => !state.items.id)
       return fetchItems(ids).then(items => {
         commit('RECEIVE_ITEMS', { items })
       })
     }
+  },
+
+  mutations: {
+    RECEIVE_TOP_IDS: (state, { ids }) => {
+      state.topStoryIds = ids
+    },
+    RECEIVE_ITEMS: (state, { items }) => {
+      items.forEach(item => {
+        Vue.set(state.items, item.id, item)
+      })
+    }
+  },
+
+  getters: {
+    news: state => {
+      const ids = getDisplayedIds(state)
+      return ids.map(id => state.items[id]).filter(_ => _)
+    }
   }
 })
+
+if (inBrowser) {
+  watchTopIds(ids => {
+    store.commit('RECEIVE_TOP_IDS', { ids })
+  })
+}
+
+function getDisplayedIds (state) {
+  const page = state.route.params.page || 1
+  const { storiesPerPage, topStoryIds } = state
+  const start = (page - 1) * storiesPerPage
+  const end = page * storiesPerPage
+  return topStoryIds.slice(start, end)
+}
+
+export default store

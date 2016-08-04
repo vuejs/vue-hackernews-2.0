@@ -9,6 +9,9 @@ module.exports = merge(webpackConfig, {
     filename: 'server-bundle.js',
     libraryTarget: 'commonjs2'
   },
+  externals: {
+    firebase: true
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
