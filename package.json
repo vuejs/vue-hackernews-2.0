@@ -11,7 +11,9 @@
     "build:server": "NODE_ENV=production webpack --config webpack.server.config.js  --progress --hide-modules"
   },
   "dependencies": {
+    "es6-promise": "^3.2.1",
     "express": "^4.14.0",
+    "lru-cache": "^4.0.1",
     "serialize-javascript": "^1.3.0",
     "serve-favicon": "^2.3.0",
     "vue": "^2.0.0-beta.6",

@@ -2,7 +2,8 @@
   <div id="app">
     <img src="./assets/logo.png">
     <h1>{{ msg }}</h1>
-    <p>Current URL is: {{ $store.state.url }} (from the store)</p>
+    <p>Store state:</p>
+    <pre>{{ JSON.stringify($store.state, null, 2) }}</pre>
     <ul>
       <li><router-link to="/">News</router-link></li>
       <li><router-link to="/about">About</router-link></li>
