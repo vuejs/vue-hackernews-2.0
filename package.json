@@ -1,0 +1,33 @@
+{
+  "name": "vue-hackernews-2.0",
+  "description": "A Vue.js project",
+  "author": "Evan You <yyx990803@gmail.com>",
+  "private": true,
+  "scripts": {
+    "start": "node server",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "NODE_ENV=production webpack --config webpack.client.config.js --progress --hide-modules",
+    "build:server": "NODE_ENV=production webpack --config webpack.server.config.js  --progress --hide-modules"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "serialize-javascript": "^1.3.0",
+    "serve-favicon": "^2.3.0",
+    "vue": "^2.0.0-beta.6",
+    "vue-router": "^2.0.0-beta.4",
+    "vue-server-renderer": "^2.0.0-beta.6",
+    "vuex": "^2.0.0-rc.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-es2015-webpack": "^6.0.0",
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.8.4",
+    "vue-loader": "^9.2.2",
+    "webpack": "^2.1.0-beta.20",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.12.2",
+    "webpack-merge": "^0.14.1"
+  }
+}
