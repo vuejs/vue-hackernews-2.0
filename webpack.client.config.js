@@ -38,6 +38,7 @@ module.exports = {
     noInfo: true
   },
   plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     })
@@ -45,11 +46,23 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production' && process.env.VUE_ENV !== 'server') {
-  // module.exports.plugins = module.exports.plugins.concat([
-  //   new webpack.optimize.UglifyJsPlugin({
-  //     compress: {
-  //       warnings: false
-  //     }
-  //   })
-  // ])
+  const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+  module.exports.vue = {
+    loaders: {
+      css: ExtractTextPlugin.extract({
+        loader: "css-loader",
+        fallbackLoader: "vue-style-loader"
+      })
+    }
+  }
+
+  module.exports.plugins = module.exports.plugins.concat([
+    new ExtractTextPlugin('styles.css'),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
+  ])
 }

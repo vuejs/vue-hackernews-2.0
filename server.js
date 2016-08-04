@@ -29,7 +29,6 @@ if (process.env.NODE_ENV !== 'production') {
   )
 
   const clientCompiler = webpack(clientConfig)
-
   app.use(require('webpack-dev-middleware')(clientCompiler, {
     publicPath: clientConfig.output.publicPath,
     stats: {
@@ -37,7 +36,6 @@ if (process.env.NODE_ENV !== 'production') {
       chunks: false
     }
   }))
-
   app.use(require('webpack-hot-middleware')(clientCompiler))
 
   // watch and update server renderer
@@ -71,6 +69,9 @@ app.get('*', (req, res) => {
   <head>
     <meta charset="utf-8">
     <title>vue-hackernews-2.0</title>
+    ${process.env.NODE_ENV === 'production'
+      ? `<link rel="stylesheet" href="/dist/styles.css">`
+      : ``}
   </head>
   <body>`)
 

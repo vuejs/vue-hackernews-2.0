@@ -3,15 +3,16 @@
     <h2>News</h2>
     <transition :name="transition">
       <ul class="news-list" :key="$route.params.page">
-        <li v-for="item in news" :key="item.id">
-          {{ item.title }}
-        </li>
+        <news-item v-for="item in news" :key="item.id" :item="item">
+        </news-item>
       </ul>
     </transition>
   </div>
 </template>
 
 <script>
+import NewsItem from '../components/NewsItem.vue'
+
 const fetchData = store => {
   return store
     .dispatch(`FETCH_TOP_IDS`)
@@ -21,9 +22,17 @@ const fetchData = store => {
 export default {
   name: 'news',
   prefetch: fetchData,
+  components: {
+    NewsItem
+  },
   data () {
     return {
       transition: 'slide-left'
+    }
+  },
+  computed: {
+    news () {
+      return this.$store.getters.news
     }
   },
   created () {
@@ -37,11 +46,6 @@ export default {
       this.transition = to.params.page > from.params.page
         ? 'slide-left'
         : 'slide-right'
-    }
-  },
-  computed: {
-    news () {
-      return this.$store.getters.news
     }
   }
 }

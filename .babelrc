@@ -1,3 +1,4 @@
 {
-  "presets": ["es2015-webpack", "stage-2"]
+  "presets": ["es2015-webpack", "stage-2"],
+  "ignore": ["node_modules/*"]
 }

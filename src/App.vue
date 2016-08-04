@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <div class="header">
+      <img class="logo" src="./assets/logo.png">
+    </div>
     <ul>
       <li><router-link to="/news/1">page 1</router-link></li>
       <li><router-link to="/news/2">page 2</router-link></li>
@@ -13,7 +16,10 @@
 
 <style>
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: Roboto, Helvetica, sans-serif;
+}
+.logo {
+  width: 30px;
 }
 .view {
   transition: all .35s ease;

@@ -28,6 +28,7 @@
     "babel-preset-es2015-webpack": "^6.0.0",
     "babel-preset-stage-2": "^6.11.0",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^2.0.0-beta.3",
     "file-loader": "^0.8.4",
     "vue-loader": "^9.2.2",
     "webpack": "^2.1.0-beta.20",
