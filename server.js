@@ -10,9 +10,7 @@ const createBundleRenderer = require('vue-server-renderer').createBundleRenderer
 let renderer
 function createRenderer (fs) {
   const bundlePath = path.resolve(__dirname, 'dist/server-bundle.js')
-  return createBundleRenderer(fs.readFileSync(bundlePath, 'utf-8'), {
-    cache: require('lru-cache')({ max: 1000 })
-  })
+  return createBundleRenderer(fs.readFileSync(bundlePath, 'utf-8'))
 }
 
 const app = express()

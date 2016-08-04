@@ -7,20 +7,36 @@ const inBrowser = typeof window !== 'undefined'
 // context for each request. To allow caching across multiple requests, we need
 // to attach the cache to the process which is shared across all requests.
 const cache = inBrowser
-  ? null
-  : (process.__API_CACHE__ || (process.__API_CACHE__ = LRU({ max: 1000 })))
+  ? createCache()
+  : (process.__API_CACHE__ || (process.__API_CACHE__ = createCache()))
+
+function createCache () {
+  return LRU({
+    max: 1000,
+    maxAge: 1000 * 60 * 15 // 15 min cache
+  })
+}
 
 // create a single api instance for all server-side requests
-// and cache the latest top Ids on it.
 const api = inBrowser
   ? new Firebase('https://hacker-news.firebaseio.com/v0')
   : (process.__API__ || (process.__API__ = createServerSideAPI()))
 
 function createServerSideAPI () {
   const api = new Firebase('https://hacker-news.firebaseio.com/v0')
+
+  // cache the latest top stories' ids
   api.child(`topstories`).on('value', snapshot => {
     api.__topIds__ = snapshot.val()
   })
+
+  // warm the cache every 15 min, since the front page changes quite often
+  warmCache()
+  function warmCache () {
+    fetchItems((api.__topIds__ || []).slice(0, 30))
+    setTimeout(warmCache, 1000 * 60 * 15)
+  }
+
   return api
 }
 
@@ -47,11 +63,11 @@ export function watchTopIds (cb) {
 }
 
 export function fetchItem (id, forceRefresh) {
-  if (!forceRefresh && cache && cache.has(id)) {
+  if (!forceRefresh && cache.has(id)) {
     return Promise.resolve(cache.get(id))
   } else {
     return fetch(`item/${id}`).then(item => {
-      cache && cache.set(id, item)
+      cache.set(id, item)
       return item
     })
   }

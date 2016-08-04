@@ -23,7 +23,7 @@ const store = new Vuex.Store({
       })
     },
     FETCH_NEWS: ({ commit, state }) => {
-      const ids = getDisplayedIds(state).filter(id => !state.items[id])
+      const ids = getDisplayedIds(state)
       return fetchItems(ids).then(items => {
         commit('RECEIVE_ITEMS', { items })
       })
