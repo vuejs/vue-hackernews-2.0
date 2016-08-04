@@ -19,7 +19,6 @@ const app = express()
 
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack')
-  const MFS = require('memory-fs')
   const clientConfig = require('./webpack.client.config')
   const serverConfig = require('./webpack.server.config')
 
@@ -42,6 +41,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('webpack-hot-middleware')(clientCompiler))
 
   // watch and update server renderer
+  const MFS = require('memory-fs')
   const serverCompiler = webpack(serverConfig)
   const mfs = new MFS()
   serverCompiler.outputFileSystem = mfs
@@ -53,7 +53,8 @@ if (process.env.NODE_ENV !== 'production') {
     renderer = createRenderer(mfs)
   })
 } else {
-  app.use(express.static(path.resolve(__dirname, 'dist')))
+  app.use('/dist', express.static(path.resolve(__dirname, 'dist')))
+  // create server renderer from real fs
   renderer = createRenderer(fs)
 }
 
