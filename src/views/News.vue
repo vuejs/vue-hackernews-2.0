@@ -26,7 +26,7 @@
 import Spinner from '../components/Spinner.vue'
 import NewsItem from '../components/NewsItem.vue'
 
-const fetchData = store => {
+const fetchInitialData = store => {
   return store
     .dispatch(`FETCH_TOP_IDS`)
     .then(() => store.dispatch(`FETCH_NEWS`))
@@ -34,7 +34,7 @@ const fetchData = store => {
 
 export default {
   name: 'news',
-  prefetch: fetchData,
+  prefetch: fetchInitialData,
   components: {
     Spinner,
     NewsItem
@@ -60,7 +60,7 @@ export default {
     }
   },
   mounted () {
-    fetchData(this.$store)
+    fetchInitialData(this.$store)
     if (this.page > this.maxPage) {
       this.$router.push('/')
     }
