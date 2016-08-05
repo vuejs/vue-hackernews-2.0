@@ -1,38 +1,17 @@
 <template>
   <div id="app">
     <div class="header">
-      <img class="logo" src="./assets/logo.png">
-      <ul>
-        <li>
-          <router-link v-if="page > 1" :to="'/news/' + (page - 1)">prev</router-link>
-          <a v-else class="disabled">prev</a>
-        </li>
-        <li>
-          <router-link v-if="hasMore" :to="'/news/' + (page + 1)">more...</router-link>
-          <a v-else class="disabled">more...</a>
-        </li>
-        <li><router-link to="/about">About</router-link></li>
-      </ul>
+      <a href="http://vuejs.org" target="_blank">
+        <img class="logo" src="./assets/logo.png">
+      </a>
+      <router-link to="/">News</router-link>
+      <router-link to="/about">About</router-link>
     </div>
     <transition name="view" mode="out-in">
       <router-view class="view"></router-view>
     </transition>
   </div>
 </template>
-
-<script>
-export default {
-  computed: {
-    page () {
-      return Number(this.$route.params.page)
-    },
-    hasMore () {
-      const { storiesPerPage, topStoryIds } = this.$store.state
-      return this.page < Math.ceil(topStoryIds.length / storiesPerPage)
-    }
-  }
-}
-</script>
 
 <style>
 body {

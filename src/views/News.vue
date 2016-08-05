@@ -1,6 +1,16 @@
 <template>
   <div>
     <h2>News</h2>
+    <ul>
+      <li>
+        <router-link v-if="page > 1" :to="'/news/' + (page - 1)">prev</router-link>
+        <a v-else class="disabled">prev</a>
+      </li>
+      <li>
+        <router-link v-if="hasMore" :to="'/news/' + (page + 1)">more...</router-link>
+        <a v-else class="disabled">more...</a>
+      </li>
+    </ul>
     <transition :name="transition">
       <div class="news-list" :key="$route.params.page">
         <transition-group tag="ul" name="item">
@@ -35,6 +45,13 @@ export default {
   computed: {
     news () {
       return this.$store.getters.news
+    },
+    page () {
+      return Number(this.$route.params.page)
+    },
+    hasMore () {
+      const { storiesPerPage, topStoryIds } = this.$store.state
+      return this.page < Math.ceil(topStoryIds.length / storiesPerPage)
     }
   },
   created () {
