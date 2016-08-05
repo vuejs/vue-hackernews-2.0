@@ -12,9 +12,9 @@
       </li>
     </ul>
     <transition :name="transition">
-      <div class="news-list" v-if="!loading" :key="$route.params.page">
+      <div class="news-list" :key="displayPage">
         <transition-group tag="ul" name="item">
-          <news-item v-for="item in news" :key="item.id" :item="item">
+          <news-item v-for="item in displayItems" :key="item.id" :item="item">
           </news-item>
         </transition-group>
       </div>
@@ -41,13 +41,13 @@ export default {
   },
   data () {
     return {
+      loading: false,
+      displayPage: this.$route.params.page,
+      displayItems: this.$store.getters.news,
       transition: 'slide-left'
     }
   },
   computed: {
-    news () {
-      return this.$store.getters.news
-    },
     page () {
       return Number(this.$route.params.page)
     },
@@ -57,9 +57,6 @@ export default {
     },
     hasMore () {
       return this.page < this.maxPage
-    },
-    loading () {
-      return this.news.length < this.$store.state.storiesPerPage
     }
   },
   mounted () {
@@ -70,10 +67,15 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.$store.dispatch(`FETCH_NEWS`)
-      this.transition = Number(to.params.page) > Number(from.params.page)
-        ? 'slide-left'
-        : 'slide-right'
+      this.loading = true
+      this.$store.dispatch(`FETCH_NEWS`).then(() => {
+        const toPage = Number(to.params.page)
+        const fromPage = Number(from.params.page)
+        this.transition = toPage > fromPage ? 'slide-left' : 'slide-right'
+        this.displayPage = toPage
+        this.displayItems = this.$store.getters.news.slice()
+        this.loading = false
+      })
     }
   }
 }

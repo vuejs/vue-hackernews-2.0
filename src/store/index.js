@@ -53,6 +53,7 @@ const store = new Vuex.Store({
 if (inBrowser) {
   watchTopIds(ids => {
     store.commit('RECEIVE_TOP_IDS', { ids })
+    store.dispatch('FETCH_NEWS')
   })
 }
 

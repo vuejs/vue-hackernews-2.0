@@ -67,6 +67,7 @@ app.get('*', (req, res) => {
   <head>
     <meta charset="utf-8">
     <title>vue-hackernews-2.0</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     ${process.env.NODE_ENV === 'production'
       ? `<link rel="stylesheet" href="/dist/styles.css">`
       : ``}
