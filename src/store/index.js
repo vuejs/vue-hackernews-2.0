@@ -8,7 +8,7 @@ const inBrowser = typeof window !== 'undefined'
 
 // if in browser, use pre-fetched state injected by SSR
 const state = (inBrowser && window.__INITIAL_STATE__) || {
-  storiesPerPage: 30,
+  storiesPerPage: 20,
   topStoryIds: [],
   items: {}
 }
