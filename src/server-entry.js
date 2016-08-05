@@ -1,9 +1,10 @@
 import { app, router, store } from './app'
 
 export default context => {
-  // When using vue-router, it will automatically pick up the url from the
-  // context. We just need to resolve the store state.
-  var s = Date.now()
+  // set router's location
+  router.push(context.url)
+  // call prefetch hooks on components matched by the route
+  const s = Date.now()
   return Promise.all(router.getMatchedComponents().map(component => {
     if (component.prefetch) {
       return component.prefetch(store)
