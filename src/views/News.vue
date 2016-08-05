@@ -2,10 +2,12 @@
   <div>
     <h2>News</h2>
     <transition :name="transition">
-      <ul class="news-list" :key="$route.params.page">
-        <news-item v-for="item in news" :key="item.id" :item="item">
-        </news-item>
-      </ul>
+      <div class="news-list" :key="$route.params.page">
+        <transition-group tag="ul" name="item">
+          <news-item v-for="item in news" :key="item.id" :item="item">
+          </news-item>
+        </transition-group>
+      </div>
     </transition>
   </div>
 </template>
@@ -65,5 +67,17 @@ export default {
   opacity: 0;
   -webkit-transform: translate(-30px, 0);
   transform: translate(-30px, 0);
+}
+.item-move, .item-enter-active, .item-leave-active {
+  transition: all .5s cubic-bezier(.55,0,.1,1);
+}
+.item-enter {
+  opacity: 0;
+  transform: translate(30px, 0);
+}
+.item-leave-active {
+  position: absolute;
+  opacity: 0;
+  transform: translate(30px, 0);
 }
 </style>
