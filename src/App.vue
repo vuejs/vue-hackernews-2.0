@@ -13,23 +13,22 @@
   </div>
 </template>
 
-<style>
-body {
-  font-family: Roboto, Helvetica, sans-serif;
-}
-.logo {
-  width: 30px;
-}
-.view {
-  transition: all .35s ease;
-}
-.view-enter, .view-leave-active {
-  opacity: 0;
-}
-a {
-  color: #4fc08d;
-}
-a.disabled {
-  color: #999;
-}
+<style lang="stylus">
+body
+  font-family Roboto, Helvetica, sans-serif
+
+.logo
+  width 30px
+
+.view
+  transition all .35s ease
+
+.view-enter, .view-leave-active
+  opacity 0
+
+a
+  color #4fc08d
+
+a.disabled
+  color #999
 </style>
