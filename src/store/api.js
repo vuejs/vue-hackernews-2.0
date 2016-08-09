@@ -79,11 +79,14 @@ export function watchList (type, cb) {
     if (first) {
       first = false
     } else {
+      console.log(`update for ${type}`)
       cb(snapshot.val())
     }
   }
+  console.log(`watching ${type}...`)
   ref.on('value', handler)
   return () => {
+    console.log(`stop watching ${type}`)
     ref.off('value', handler)
   }
 }

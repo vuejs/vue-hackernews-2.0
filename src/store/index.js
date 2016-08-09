@@ -22,6 +22,7 @@ const store = new Vuex.Store({
   },
 
   actions: {
+    // ensure data for rendering given list type
     FETCH_DATA_FOR_TYPE: ({ commit, dispatch, state, getters }, { type }) => {
       commit('SET_ACTIVE_TYPE', { type })
       return fetchIdsByType(type)
@@ -29,7 +30,9 @@ const store = new Vuex.Store({
         .then(() => dispatch('FETCH_ACTIVE_ITEMS'))
     },
 
+    // ensure all active items are fetched
     FETCH_ACTIVE_ITEMS: ({ commit, state, getters }) => {
+      // only fetch items that we don't already have.
       const ids = getters.activeIds.filter(id => !state.items[id])
       if (ids.length) {
         return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
@@ -58,6 +61,8 @@ const store = new Vuex.Store({
   },
 
   getters: {
+    // ids of the items that should be currently displayed based on
+    // current list type and current pagination
     activeIds (state) {
       const { activeType, itemsPerPage, lists } = state
       const page = Number(state.route.params.page) || 1
@@ -70,6 +75,8 @@ const store = new Vuex.Store({
       }
     },
 
+    // items that should be currently displayed.
+    // this Array may not be fully fetched.
     activeItems (state, getters) {
       return getters.activeIds.map(id => state.items[id]).filter(_ => _)
     }
