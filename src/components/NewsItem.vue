@@ -8,3 +8,8 @@ export default {
   props: ['item']
 }
 </script>
+
+<style lang="stylus">
+.news-item
+  background-color #fff
+</style>

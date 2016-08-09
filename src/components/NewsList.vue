@@ -41,11 +41,14 @@ export default {
   },
 
   data () {
+    const isInitialRender = !this.$root._isMounted
     return {
       loading: false,
       transition: 'slide-left',
-      displayedPage: Number(this.$store.state.route.params.page) || 1,
-      displayedItems: this.$store.getters.activeItems
+      // if this is the initial render, directly render with the store state
+      // otherwise this is a page switch, start with blank and wait for data load
+      displayedPage: isInitialRender ? Number(this.$store.state.route.params.page) || 1 : -1,
+      displayedItems: isInitialRender ? this.$store.getters.activeItems : []
     }
   },
 
@@ -63,7 +66,9 @@ export default {
   },
 
   mounted () {
-    this.loadItems(this.page, -1)
+    if (this.$root._isMounted) {
+      this.loadItems(this.page)
+    }
   },
 
   watch: {
@@ -73,7 +78,7 @@ export default {
   },
 
   methods: {
-    loadItems (to, from) {
+    loadItems (to = this.page, from = -1) {
       this.loading = true
       this.$store.dispatch('FETCH_DATA_FOR_TYPE', {
         type: this.type

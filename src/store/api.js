@@ -33,7 +33,7 @@ function createServerSideAPI () {
     })
   })
 
-  // warm the cache every 15 min, since the front page changes quite often
+  // warm the front page cache every 15 min
   warmCache()
   function warmCache () {
     fetchItems((api.__ids__.top || []).slice(0, 30))
@@ -55,14 +55,6 @@ export function fetchIdsByType (type) {
   return api.__ids__ && api.__ids__[type]
     ? Promise.resolve(api.__ids__[type])
     : fetch(`${type}stories`)
-}
-
-export function watchTopIds (cb) {
-  api.child(`topstories`).on('value', snapshot => {
-    const ids = snapshot.val()
-    api.__ids__ && (api.__ids__.top = ids)
-    cb(ids)
-  })
 }
 
 export function fetchItem (id, forceRefresh) {
