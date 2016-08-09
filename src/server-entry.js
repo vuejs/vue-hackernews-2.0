@@ -8,8 +8,8 @@ export default context => {
   // call prefetch hooks on components matched by the route
   const s = isDev && Date.now()
   return Promise.all(router.getMatchedComponents().map(component => {
-    if (component.prefetch) {
-      return component.prefetch(store)
+    if (component.preFetch) {
+      return component.preFetch(store)
     }
   })).then(() => {
     isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)

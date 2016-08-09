@@ -27,7 +27,6 @@
 <script>
 import Spinner from './Spinner.vue'
 import NewsItem from './NewsItem.vue'
-import { fetchInitialData } from '../store'
 
 export default {
   name: 'NewsList',
@@ -76,7 +75,9 @@ export default {
   methods: {
     loadItems (to, from) {
       this.loading = true
-      fetchInitialData(this.type).then(() => {
+      this.$store.dispatch('FETCH_DATA_FOR_TYPE', {
+        type: this.type
+      }).then(() => {
         if (this.page < 0 || this.page > this.maxPage) {
           this.$router.replace(`/${this.type}/1`)
           return

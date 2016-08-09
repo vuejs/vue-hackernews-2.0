@@ -36,7 +36,7 @@ function createServerSideAPI () {
   // warm the cache every 15 min, since the front page changes quite often
   warmCache()
   function warmCache () {
-    fetchItems((api.__topIds__ || []).slice(0, 30))
+    fetchItems((api.__ids__.top || []).slice(0, 30))
     setTimeout(warmCache, 1000 * 60 * 15)
   }
 
@@ -60,7 +60,7 @@ export function fetchIdsByType (type) {
 export function watchTopIds (cb) {
   api.child(`topstories`).on('value', snapshot => {
     const ids = snapshot.val()
-    api.__topIds__ = ids
+    api.__ids__ && (api.__ids__.top = ids)
     cb(ids)
   })
 }

@@ -22,16 +22,12 @@ const store = new Vuex.Store({
   },
 
   actions: {
-    FETCH_ACTIVE_IDS: ({ commit, state }) => {
-      const type = state.activeType
-      return fetchIdsByType(type).then(ids => {
-        commit('SET_IDS', { type, ids })
-      })
-    },
-    FETCH_ACTIVE_ITEMS: ({ commit, state, getters }) => {
-      return fetchItems(getters.activeIds).then(items => {
-        commit('SET_ITEMS', { items })
-      })
+    FETCH_DATA_FOR_TYPE: ({ commit, dispatch, state, getters }, { type }) => {
+      commit('SET_ACTIVE_TYPE', { type })
+      return fetchIdsByType(type)
+        .then(ids => commit('SET_LIST', { type, ids }))
+        .then(() => fetchItems(getters.activeIds.filter(id => !state.items[id])))
+        .then(items => commit('SET_ITEMS', { items }))
     }
   },
 
@@ -39,12 +35,16 @@ const store = new Vuex.Store({
     SET_ACTIVE_TYPE: (state, { type }) => {
       state.activeType = type
     },
-    SET_IDS: (state, { type, ids }) => {
+
+    SET_LIST: (state, { type, ids }) => {
       state.lists[type] = ids
     },
+
     SET_ITEMS: (state, { items }) => {
       items.forEach(item => {
-        Vue.set(state.items, item.id, item)
+        if (item) {
+          Vue.set(state.items, item.id, item)
+        }
       })
     }
   },
@@ -61,25 +61,11 @@ const store = new Vuex.Store({
         return []
       }
     },
+
     activeItems (state, getters) {
       return getters.activeIds.map(id => state.items[id]).filter(_ => _)
     }
   }
 })
-
-// watch for realtime top IDs updates on the client
-if (typeof window !== 'undefined') {
-  watchTopIds(ids => {
-    store.commit('SET_IDS', { type: 'top', ids })
-    store.dispatch('FETCH_ACTIVE_ITEMS')
-  })
-}
-
-export function fetchInitialData (type) {
-  store.commit('SET_ACTIVE_TYPE', { type })
-  return store
-    .dispatch('FETCH_ACTIVE_IDS')
-    .then(() => store.dispatch('FETCH_ACTIVE_ITEMS'))
-}
 
 export default store
