@@ -26,8 +26,16 @@ const store = new Vuex.Store({
       commit('SET_ACTIVE_TYPE', { type })
       return fetchIdsByType(type)
         .then(ids => commit('SET_LIST', { type, ids }))
-        .then(() => fetchItems(getters.activeIds.filter(id => !state.items[id])))
-        .then(items => commit('SET_ITEMS', { items }))
+        .then(() => dispatch('FETCH_ACTIVE_ITEMS'))
+    },
+
+    FETCH_ACTIVE_ITEMS: ({ commit, state, getters }) => {
+      const ids = getters.activeIds.filter(id => !state.items[id])
+      if (ids.length) {
+        return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
+      } else {
+        return Promise.resolve()
+      }
     }
   },
 
