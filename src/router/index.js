@@ -3,14 +3,18 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-import News from '../views/News.vue'
+import { createStoriesView } from '../views/CreateStoriesView'
 import About from '../views/About.vue'
 
 export default new Router({
   mode: 'history',
   routes: [
-    { path: '/news/:page(\\d+)', component: News },
+    { path: '/top/:page(\\d+)?', component: createStoriesView('top') },
+    { path: '/new/:page(\\d+)?', component: createStoriesView('new') },
+    { path: '/show/:page(\\d+)?', component: createStoriesView('show') },
+    { path: '/ask/:page(\\d+)?', component: createStoriesView('ask') },
+    { path: '/job/:page(\\d+)?', component: createStoriesView('job') },
     { path: '/about', component: About },
-    { path: '*', redirect: '/news/1' }
+    { path: '*', redirect: '/top/1' }
   ]
 })

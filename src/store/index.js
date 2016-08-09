@@ -1,33 +1,48 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { watchTopIds, fetchTopIds, fetchItems } from './api'
+import { watchTopIds, fetchIdsByType, fetchItems } from './api'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    activeType: null,
     itemsPerPage: 20,
-    activeItemIds: [],
-    items: {}
+    // the current items being displayed
+    activeItemIds: [/* number */],
+    // fetched items by id. This also serves as a cache to some extent
+    items: {/* [id: number]: Item */},
+    // the id lists for each type of stories
+    // will be periodically updated in realtime
+    itemIdsByType: {
+      top: [],
+      new: [],
+      show: [],
+      ask: [],
+      job: []
+    }
   },
 
   actions: {
-    FETCH_IDS: ({ commit }) => {
-      return fetchTopIds().then(ids => {
-        commit('SET_ACTIVE_IDS', { ids })
+    FETCH_ACTIVE_IDS: ({ commit, state }) => {
+      const type = state.activeType
+      return fetchIdsByType(type).then(ids => {
+        commit('SET_IDS', { type, ids })
       })
     },
-    FETCH_DISPLAYED_ITEMS: ({ commit, state }) => {
-      const ids = getDisplayedIds(state)
-      return fetchItems(ids).then(items => {
+    FETCH_ACTIVE_ITEMS: ({ commit, state, getters }) => {
+      return fetchItems(getters.activeIds).then(items => {
         commit('SET_ITEMS', { items })
       })
     }
   },
 
   mutations: {
-    SET_ACTIVE_IDS: (state, { ids }) => {
-      state.activeItemIds = ids
+    SET_ACTIVE_TYPE: (state, { type }) => {
+      state.activeType = type
+    },
+    SET_IDS: (state, { type, ids }) => {
+      state.itemIdsByType[type] = ids
     },
     SET_ITEMS: (state, { items }) => {
       items.forEach(item => {
@@ -37,9 +52,19 @@ const store = new Vuex.Store({
   },
 
   getters: {
-    displayedItems: state => {
-      const ids = getDisplayedIds(state)
-      return ids.map(id => state.items[id]).filter(_ => _)
+    activeIds (state) {
+      const { activeType, itemsPerPage, itemIdsByType } = state
+      const page = Number(state.route.params.page) || 1
+      if (activeType) {
+        const start = (page - 1) * itemsPerPage
+        const end = page * itemsPerPage
+        return itemIdsByType[activeType].slice(start, end)
+      } else {
+        return []
+      }
+    },
+    activeItems (state, getters) {
+      return getters.activeIds.map(id => state.items[id]).filter(_ => _)
     }
   }
 })
@@ -47,17 +72,16 @@ const store = new Vuex.Store({
 // watch for realtime top IDs updates on the client
 if (typeof window !== 'undefined') {
   watchTopIds(ids => {
-    store.commit('SET_ACTIVE_IDS', { ids })
-    store.dispatch('FETCH_DISPLAYED_ITEMS')
+    store.commit('SET_IDS', { type: 'top', ids })
+    store.dispatch('FETCH_ACTIVE_ITEMS')
   })
 }
 
-function getDisplayedIds (state) {
-  const page = Number(state.route.params.page) || 1
-  const { itemsPerPage, activeItemIds } = state
-  const start = (page - 1) * itemsPerPage
-  const end = page * itemsPerPage
-  return activeItemIds.slice(start, end)
+export function fetchInitialData (type) {
+  store.commit('SET_ACTIVE_TYPE', { type })
+  return store
+    .dispatch('FETCH_ACTIVE_IDS')
+    .then(() => store.dispatch('FETCH_ACTIVE_ITEMS'))
 }
 
 export default store

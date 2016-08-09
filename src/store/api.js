@@ -25,9 +25,12 @@ const api = inBrowser
 function createServerSideAPI () {
   const api = new Firebase('https://hacker-news.firebaseio.com/v0')
 
-  // cache the latest top stories' ids
-  api.child(`topstories`).on('value', snapshot => {
-    api.__topIds__ = snapshot.val()
+  // cache the latest story ids
+  api.__ids__ = {}
+  ;['top', 'new', 'show', 'ask', 'job'].forEach(type => {
+    api.child(`${type}stories`).on('value', snapshot => {
+      api.__ids__[type] = snapshot.val()
+    })
   })
 
   // warm the cache every 15 min, since the front page changes quite often
@@ -48,10 +51,10 @@ function fetch (child) {
   })
 }
 
-export function fetchTopIds () {
-  return api.__topIds__
-    ? Promise.resolve(api.__topIds__)
-    : fetch(`topstories`)
+export function fetchIdsByType (type) {
+  return api.__ids__ && api.__ids__[type]
+    ? Promise.resolve(api.__ids__[type])
+    : fetch(`${type}stories`)
 }
 
 export function watchTopIds (cb) {
@@ -63,7 +66,7 @@ export function watchTopIds (cb) {
 }
 
 export function fetchItem (id, forceRefresh) {
-  if (!forceRefresh && cache.has(id)) {
+  if (!forceRefresh && cache.get(id)) {
     return Promise.resolve(cache.get(id))
   } else {
     return fetch(`item/${id}`).then(item => {

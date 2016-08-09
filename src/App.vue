@@ -4,7 +4,11 @@
       <a href="http://vuejs.org" target="_blank">
         <img class="logo" src="./assets/logo.png">
       </a>
-      <router-link to="/">News</router-link>
+      <router-link to="/top">Top</router-link>
+      <router-link to="/new">New</router-link>
+      <router-link to="/show">Show</router-link>
+      <router-link to="/ask">Ask</router-link>
+      <router-link to="/job">Jobs</router-link>
       <router-link to="/about">About</router-link>
     </div>
     <transition name="view" mode="out-in">
@@ -27,8 +31,10 @@ body
   opacity 0
 
 a
-  color #4fc08d
-
-a.disabled
-  color #999
+  color #333
+  transition color .15s ease
+  &.router-link-active
+    color #4fc08d
+  &.disabled
+    color #999
 </style>
