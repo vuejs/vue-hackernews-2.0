@@ -1,7 +1,9 @@
 process.env.VUE_ENV = 'server'
+const isProd = process.env.NODE_ENV === 'production'
 
 const fs = require('fs')
 const path = require('path')
+const resolve = file => path.resolve(__dirname, file)
 const express = require('express')
 const favicon = require('serve-favicon')
 const serialize = require('serialize-javascript')
@@ -11,11 +13,10 @@ const app = express()
 
 // parse index.html template
 const html = (() => {
-  const template = fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf-8')
+  const template = fs.readFileSync(resolve('./index.html'), 'utf-8')
   const i = template.indexOf('{{ APP }}')
-  const style = process.env.NODE_ENV === 'production'
-    ? '<link rel="stylesheet" href="/dist/styles.css">'
-    : ''
+  // styles are injected dynamically via vue-style-loader in development
+  const style = isProd ? '<link rel="stylesheet" href="/dist/styles.css">' : ''
   return {
     head: template.slice(0, i).replace('{{ STYLE }}', style),
     tail: template.slice(i + '{{ APP }}'.length)
@@ -24,18 +25,18 @@ const html = (() => {
 
 // setup the server renderer, depending on dev/prod environment
 let renderer
-if (process.env.NODE_ENV !== 'production') {
+if (isProd) {
+  // create server renderer from real fs
+  const bundlePath = resolve('./dist/server-bundle.js')
+  renderer = createBundleRenderer(fs.readFileSync(bundlePath, 'utf-8'))
+} else {
   require('./build/setup-dev-server')(app, bundle => {
     renderer = createBundleRenderer(bundle)
   })
-} else {
-  // create server renderer from real fs
-  const bundlePath = path.resolve(__dirname, './dist/server-bundle.js')
-  renderer = createBundleRenderer(fs.readFileSync(bundlePath, 'utf-8'))
 }
 
-app.use('/dist', express.static(path.resolve(__dirname, './dist')))
-app.use(favicon(path.resolve(__dirname, './src/assets/logo.png')))
+app.use('/dist', express.static(resolve('./dist')))
+app.use(favicon(resolve('./src/assets/logo.png')))
 
 app.get('*', (req, res) => {
   var s = Date.now()

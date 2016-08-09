@@ -4,17 +4,12 @@ import { watchTopIds, fetchTopIds, fetchItems } from './api'
 
 Vue.use(Vuex)
 
-const inBrowser = typeof window !== 'undefined'
-
-// if in browser, use pre-fetched state injected by SSR
-const state = (inBrowser && window.__INITIAL_STATE__) || {
-  storiesPerPage: 20,
-  topStoryIds: [],
-  items: {}
-}
-
 const store = new Vuex.Store({
-  state,
+  state: {
+    storiesPerPage: 20,
+    topStoryIds: [],
+    items: {}
+  },
 
   actions: {
     FETCH_TOP_IDS: ({ commit }) => {
@@ -50,7 +45,7 @@ const store = new Vuex.Store({
 })
 
 // watch for realtime top IDs updates on the client
-if (inBrowser) {
+if (typeof window !== 'undefined') {
   watchTopIds(ids => {
     store.commit('RECEIVE_TOP_IDS', { ids })
     store.dispatch('FETCH_NEWS')
