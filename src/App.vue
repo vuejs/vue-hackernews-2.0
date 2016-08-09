@@ -25,7 +25,7 @@ body
   width 30px
 
 .view
-  transition all .35s ease
+  transition all .2s ease
 
 .view-enter, .view-leave-active
   opacity 0

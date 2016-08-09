@@ -44,50 +44,46 @@ export default {
   data () {
     return {
       loading: false,
-      displayedPage: -1,
-      displayedItems: [],
-      transition: 'slide-left'
+      transition: 'slide-left',
+      displayedPage: Number(this.$store.state.route.params.page) || 1,
+      displayedItems: this.$store.getters.activeItems
     }
   },
 
   computed: {
-    activeItems () {
-      return this.$store.getters.activeItems
-    },
     page () {
       return Number(this.$store.state.route.params.page) || 1
     },
     maxPage () {
-      const { itemsPerPage, itemIdsByType } = this.$store.state
-      return Math.floor(itemIdsByType[this.type].length / itemsPerPage)
+      const { itemsPerPage, lists } = this.$store.state
+      return Math.ceil(lists[this.type].length / itemsPerPage)
     },
     hasMore () {
       return this.page < this.maxPage
     }
   },
 
-  created () {
-    this.displayedPage = this.page
-    this.displayedItems = this.activeItems
-  },
-
   mounted () {
-    if (this.page > this.maxPage || this.page < 1) {
-      this.$router.replace(`/${this.type}/1`)
-    } else {
-      fetchInitialData(this.type).then(() => {
-        this.displayedItems = this.activeItems
-      })
-    }
+    this.loadItems(this.page, -1)
   },
 
   watch: {
     page (to, from) {
+      this.loadItems(to, from)
+    }
+  },
+
+  methods: {
+    loadItems (to, from) {
       this.loading = true
-      this.$store.dispatch('FETCH_ACTIVE_ITEMS').then(() => {
+      fetchInitialData(this.type).then(() => {
+        if (this.page < 0 || this.page > this.maxPage) {
+          this.$router.replace(`/${this.type}/1`)
+          return
+        }
         this.transition = to > from ? 'slide-left' : 'slide-right'
         this.displayedPage = to
-        this.displayedItems = this.activeItems
+        this.displayedItems = this.$store.getters.activeItems
         this.loading = false
       })
     }

@@ -8,13 +8,11 @@ const store = new Vuex.Store({
   state: {
     activeType: null,
     itemsPerPage: 20,
-    // the current items being displayed
-    activeItemIds: [/* number */],
     // fetched items by id. This also serves as a cache to some extent
     items: {/* [id: number]: Item */},
     // the id lists for each type of stories
     // will be periodically updated in realtime
-    itemIdsByType: {
+    lists: {
       top: [],
       new: [],
       show: [],
@@ -42,7 +40,7 @@ const store = new Vuex.Store({
       state.activeType = type
     },
     SET_IDS: (state, { type, ids }) => {
-      state.itemIdsByType[type] = ids
+      state.lists[type] = ids
     },
     SET_ITEMS: (state, { items }) => {
       items.forEach(item => {
@@ -53,12 +51,12 @@ const store = new Vuex.Store({
 
   getters: {
     activeIds (state) {
-      const { activeType, itemsPerPage, itemIdsByType } = state
+      const { activeType, itemsPerPage, lists } = state
       const page = Number(state.route.params.page) || 1
       if (activeType) {
         const start = (page - 1) * itemsPerPage
         const end = page * itemsPerPage
-        return itemIdsByType[activeType].slice(start, end)
+        return lists[activeType].slice(start, end)
       } else {
         return []
       }
