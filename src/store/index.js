@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { fetchIdsByType, fetchItem, fetchItems } from './api'
+import { fetchItem, fetchItems, fetchIdsByType, fetchUser } from './api'
 
 Vue.use(Vuex)
 
@@ -8,12 +8,10 @@ const store = new Vuex.Store({
   state: {
     activeType: null,
     itemsPerPage: 20,
-    // fetched items by id. This also serves as a cache to some extent
     items: {/* [id: number]: Item */},
-    // the id lists for each type of stories
-    // will be periodically updated in realtime
+    users: {/* [id: string]: User */},
     lists: {
-      top: [],
+      top: [/* number */],
       new: [],
       show: [],
       ask: [],
@@ -45,6 +43,12 @@ const store = new Vuex.Store({
       } else {
         return Promise.resolve()
       }
+    },
+
+    FETCH_USER: ({ commit, state }, { id }) => {
+      return state.users[id]
+        ? Promise.resolve(state.users[id])
+        : fetchUser(id).then(user => commit('SET_USER', { user }))
     }
   },
 
@@ -63,6 +67,10 @@ const store = new Vuex.Store({
           Vue.set(state.items, item.id, item)
         }
       })
+    },
+
+    SET_USER: (state, { user }) => {
+      Vue.set(state.users, user.id, user)
     }
   },
 

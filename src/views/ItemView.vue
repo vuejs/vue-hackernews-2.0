@@ -6,6 +6,12 @@
 </template>
 
 <script>
+function fetchItem (store) {
+  return store.dispatch('FETCH_ITEMS', {
+    ids: [store.state.route.params.id]
+  })
+}
+
 export default {
   name: 'item-view',
   computed: {
@@ -13,10 +19,9 @@ export default {
       return this.$store.state.items[this.$route.params.id]
     }
   },
+  preFetch: fetchItem,
   beforeMount () {
-    this.$store.dispatch('FETCH_ITEMS', {
-      ids: [this.$route.params.id]
-    })
+    fetchItem(this.$store)
   }
 }
 </script>
