@@ -4,7 +4,9 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 import { createListView } from '../views/CreateListView'
-import About from '../views/About.vue'
+import ItemView from '../views/ItemView.vue'
+import UserView from '../views/UserView.vue'
+import AboutView from '../views/AboutView.vue'
 
 export default new Router({
   mode: 'history',
@@ -14,7 +16,9 @@ export default new Router({
     { path: '/show/:page(\\d+)?', component: createListView('show') },
     { path: '/ask/:page(\\d+)?', component: createListView('ask') },
     { path: '/job/:page(\\d+)?', component: createListView('job') },
-    { path: '/about', component: About },
+    { path: '/item/:id(\\d+)', component: ItemView },
+    { path: '/user/:id', component: UserView },
+    { path: '/about', component: AboutView },
     { path: '*', redirect: '/top/1' }
   ]
 })

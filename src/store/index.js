@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { fetchIdsByType, fetchItems } from './api'
+import { fetchIdsByType, fetchItem, fetchItems } from './api'
 
 Vue.use(Vuex)
 
@@ -23,17 +23,23 @@ const store = new Vuex.Store({
 
   actions: {
     // ensure data for rendering given list type
-    FETCH_DATA_FOR_TYPE: ({ commit, dispatch, state, getters }, { type }) => {
+    FETCH_LIST_DATA: ({ commit, dispatch, state, getters }, { type }) => {
       commit('SET_ACTIVE_TYPE', { type })
       return fetchIdsByType(type)
         .then(ids => commit('SET_LIST', { type, ids }))
-        .then(() => dispatch('FETCH_ACTIVE_ITEMS'))
+        .then(() => dispatch('ENSURE_ACTIVE_ITEMS'))
     },
 
     // ensure all active items are fetched
-    FETCH_ACTIVE_ITEMS: ({ commit, state, getters }) => {
+    ENSURE_ACTIVE_ITEMS: ({ dispatch, getters }) => {
+      return dispatch('FETCH_ITEMS', {
+        ids: getters.activeIds
+      })
+    },
+
+    FETCH_ITEMS: ({ commit, state }, { ids }) => {
       // only fetch items that we don't already have.
-      const ids = getters.activeIds.filter(id => !state.items[id])
+      ids = ids.filter(id => !state.items[id])
       if (ids.length) {
         return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
       } else {

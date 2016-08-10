@@ -16,8 +16,8 @@
     <transition :name="transition">
       <div class="news-list" :key="displayedPage">
         <transition-group tag="ul" name="item">
-          <news-item v-for="item in displayedItems" :key="item.id" :item="item">
-          </news-item>
+          <item v-for="item in displayedItems" :key="item.id" :item="item">
+          </item>
         </transition-group>
       </div>
     </transition>
@@ -26,15 +26,15 @@
 
 <script>
 import Spinner from './Spinner.vue'
-import NewsItem from './NewsItem.vue'
+import Item from './Item.vue'
 import { watchList } from '../store/api'
 
 export default {
-  name: 'NewsList',
+  name: 'item-list',
 
   components: {
     Spinner,
-    NewsItem
+    Item
   },
 
   props: {
@@ -68,20 +68,20 @@ export default {
     }
   },
 
-  mounted () {
+  beforeMount () {
     if (this.$root._isMounted) {
       this.loadItems(this.page)
     }
     // watch the current list for realtime updates
     this.unwatchList = watchList(this.type, ids => {
       this.$store.commit('SET_LIST', { type: this.type, ids })
-      this.$store.dispatch('FETCH_ACTIVE_ITEMS').then(() => {
+      this.$store.dispatch('ENSURE_ACTIVE_ITEMS').then(() => {
         this.displayedItems = this.$store.getters.activeItems
       })
     })
   },
 
-  destroyed () {
+  beforeDestroy () {
     this.unwatchList()
   },
 
@@ -94,7 +94,7 @@ export default {
   methods: {
     loadItems (to = this.page, from = -1) {
       this.loading = true
-      this.$store.dispatch('FETCH_DATA_FOR_TYPE', {
+      this.$store.dispatch('FETCH_LIST_DATA', {
         type: this.type
       }).then(() => {
         if (this.page < 0 || this.page > this.maxPage) {
