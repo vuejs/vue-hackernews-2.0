@@ -27,7 +27,7 @@
           <li>Client-side DOM re-hydration</li>
         </ul>
       </li>
-      <li>Powerful yet easy-to-use animation system</li>
+      <li>Powerful yet easy-to-use animation system (wait for the lists to update in realtime!)</li>
     </ul>
     <p><a href="https://github.com/vuejs/vue-hackernews-2.0" target="_blank">Source code on GitHub.</a></p>
   </div>
