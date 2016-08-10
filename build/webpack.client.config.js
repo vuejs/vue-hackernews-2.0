@@ -19,13 +19,11 @@ if (process.env.NODE_ENV === 'production') {
   // extract CSS into a single file so it's applied on initial render
   const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-  config.vue = {
-    loaders: {
-      stylus: ExtractTextPlugin.extract({
-        loader: "css-loader!stylus-loader",
-        fallbackLoader: "vue-style-loader"
-      })
-    }
+  config.vue.loaders = {
+    stylus: ExtractTextPlugin.extract({
+      loader: "css-loader!stylus-loader",
+      fallbackLoader: "vue-style-loader"
+    })
   }
 
   config.plugins.push(

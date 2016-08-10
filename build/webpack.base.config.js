@@ -33,5 +33,12 @@ module.exports = {
         }
       }
     ]
+  },
+  vue: {
+    postcss: [
+      require('autoprefixer')({
+        browsers: ['last 3 versions']
+      })
+    ]
   }
 }
