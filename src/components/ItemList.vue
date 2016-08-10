@@ -1,12 +1,12 @@
 <template>
   <div class="news">
+    <spinner :show="loading"></spinner>
     <div class="news-list-nav">
       <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">&lt; prev</router-link>
       <a v-else class="disabled">&lt; prev</a>
       <span>{{ page }}/{{ maxPage }}</span>
       <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">more &gt;</router-link>
       <a v-else class="disabled">more &gt;</a>
-      <spinner :show="loading"></spinner>
     </div>
     <transition :name="transition">
       <div class="news-list" :key="displayedPage" v-if="displayedPage > 0">
@@ -124,11 +124,6 @@ export default {
     margin 0 1em
   .disabled
     color #ccc
-  .spinner
-    position absolute
-    top 50%
-    left 50%
-    transform translate(-50%, -50%)
 
 .news-list
   position absolute

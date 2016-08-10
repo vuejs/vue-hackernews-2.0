@@ -4,7 +4,7 @@
     <span class="title">
       <template v-if="item.url">
         <a :href="item.url" target="_blank">{{ item.title }}</a>
-        <span>({{ item.url | host }})</span>
+        <span class="host">({{ item.url | host }})</span>
       </template>
       <template v-else>
         <router-link :to="'/item/' + item.id">{{ item.title }}</router-link>
@@ -22,6 +22,7 @@
         | <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
       </span>
     </span>
+    <span class="label" v-if="item.type !== 'story'">{{ item.type }}</span>
   </li>
 </template>
 
@@ -49,7 +50,7 @@ export default {
     width 80px
     text-align center
     margin-top -10px
-  .meta
+  .meta, .host
     font-size .85em
     color #999
     a

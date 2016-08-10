@@ -15,6 +15,9 @@ $offset = 126
 $duration = 1.4s
 
 .spinner
+  position fixed
+  right 15px
+  bottom 15px
   opacity 0
   transition opacity .15s ease
   animation rotator $duration linear infinite

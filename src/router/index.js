@@ -18,6 +18,6 @@ export default new Router({
     { path: '/job/:page(\\d+)?', component: createListView('job') },
     { path: '/item/:id(\\d+)', component: ItemView },
     { path: '/user/:id', component: UserView },
-    { path: '*', redirect: '/top/1' }
+    { path: '*', redirect: '/top' }
   ]
 })
