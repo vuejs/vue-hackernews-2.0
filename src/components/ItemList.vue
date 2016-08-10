@@ -1,20 +1,15 @@
 <template>
-  <div>
-    <ul class="news-list-nav">
-      <li>
-        <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">prev</router-link>
-        <a v-else class="disabled">prev</a>
-      </li>
-      <li>
-        <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">more...</router-link>
-        <a v-else class="disabled">more...</a>
-      </li>
-      <li>
-        <spinner :show="loading"></spinner>
-      </li>
-    </ul>
+  <div class="news">
+    <div class="news-list-nav">
+      <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">&lt; prev</router-link>
+      <a v-else class="disabled">&lt; prev</a>
+      <span>{{ page }}/{{ maxPage }}</span>
+      <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">more &gt;</router-link>
+      <a v-else class="disabled">more &gt;</a>
+      <spinner :show="loading"></spinner>
+    </div>
     <transition :name="transition">
-      <div class="news-list" :key="displayedPage">
+      <div class="news-list" :key="displayedPage" v-if="displayedPage > 0">
         <transition-group tag="ul" name="item">
           <item v-for="item in displayedItems" :key="item.id" :item="item">
           </item>
@@ -112,9 +107,38 @@ export default {
 </script>
 
 <style lang="stylus">
+.news-list-nav, .news-list
+  background-color #fff
+  border-radius 2px
+
+.news-list-nav
+  padding 15px 30px
+  position fixed
+  text-align center
+  top 55px
+  left 0
+  right 0
+  z-index 998
+  box-shadow 0 1px 2px rgba(0,0,0,.1)
+  a
+    margin 0 1em
+  .disabled
+    color #ccc
+  .spinner
+    position absolute
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+
 .news-list
   position absolute
+  margin 30px 0
+  width 100%
   transition all .5s cubic-bezier(.55,0,.1,1)
+  ul
+    list-style-type none
+    padding 0
+    margin 0
 
 .slide-left-enter, .slide-right-leave-active
   opacity 0
