@@ -156,6 +156,8 @@ export default {
   transform translate(30px, 0)
 
 @media (max-width 600px)
+  .news-list-nav
+    top 54px
   .news-list
     margin 10px 0
 </style>
