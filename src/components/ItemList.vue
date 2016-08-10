@@ -154,4 +154,8 @@ export default {
   position absolute
   opacity 0
   transform translate(30px, 0)
+
+@media (max-width 600px)
+  .news-list
+    margin 10px 0
 </style>

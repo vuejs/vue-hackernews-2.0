@@ -60,6 +60,8 @@ a
     &.router-link-active
       color #fff
       font-weight 400
+    &:nth-child(6)
+      margin-right 0
   .github
     color #fff
     font-size .9em
@@ -82,4 +84,19 @@ a
 
 .fade-enter, .fade-leave-active
   opacity 0
+
+@media (max-width 860px)
+  .header .inner
+    padding 15px 30px
+
+@media (max-width 600px)
+  body
+    font-size 14px
+  .header
+    .inner
+      padding 15px
+    a
+      margin-right 1em
+    .github
+      display none
 </style>

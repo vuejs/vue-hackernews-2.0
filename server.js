@@ -39,6 +39,10 @@ app.use('/dist', express.static(resolve('./dist')))
 app.use(favicon(resolve('./src/assets/logo.png')))
 
 app.get('*', (req, res) => {
+  if (!renderer) {
+    return res.end('waiting for compilation...')
+  }
+
   var s = Date.now()
   const context = { url: req.url }
   const renderStream = renderer.renderToStream(context)
