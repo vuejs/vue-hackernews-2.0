@@ -12,7 +12,7 @@
         | {{ item.descendants }} comments
       </p>
     </div>
-    <ul class="item-view-comments">
+    <ul v-if="item.kids" class="item-view-comments">
       <comment v-for="id in item.kids" :id="id"></comment>
     </ul>
   </div>
