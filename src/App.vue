@@ -11,8 +11,8 @@
       <router-link to="/job">Jobs</router-link>
       <router-link to="/about">About</router-link>
     </div>
-    <transition name="view" mode="out-in">
-      <router-view class="view"></router-view>
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
     </transition>
   </div>
 </template>
@@ -24,10 +24,10 @@ body
 .logo
   width 30px
 
-.view
+.fade-enter-active, .fade-leave-active
   transition all .2s ease
 
-.view-enter, .view-leave-active
+.fade-enter, .fade-leave-active
   opacity 0
 
 a

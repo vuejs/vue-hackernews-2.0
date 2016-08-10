@@ -7,7 +7,7 @@ const inBrowser = typeof window !== 'undefined'
 // context for each request. To allow caching across multiple requests, we need
 // to attach the cache to the process which is shared across all requests.
 const cache = inBrowser
-  ? createCache()
+  ? null
   : (process.__API_CACHE__ || (process.__API_CACHE__ = createCache()))
 
 function createCache () {
@@ -44,11 +44,17 @@ function createServerSideAPI () {
 }
 
 function fetch (child) {
-  return new Promise((resolve, reject) => {
-    api.child(child).once('value', snapshot => {
-      resolve(snapshot.val())
-    }, reject)
-  })
+  if (cache && cache.has(child)) {
+    return Promise.resolve(cache.get(child))
+  } else {
+    return new Promise((resolve, reject) => {
+      api.child(child).once('value', snapshot => {
+        const val = snapshot.val()
+        cache && cache.set(child, val)
+        resolve(val)
+      }, reject)
+    })
+  }
 }
 
 export function fetchIdsByType (type) {
@@ -57,15 +63,8 @@ export function fetchIdsByType (type) {
     : fetch(`${type}stories`)
 }
 
-export function fetchItem (id, forceRefresh) {
-  if (!forceRefresh && cache.get(id)) {
-    return Promise.resolve(cache.get(id))
-  } else {
-    return fetch(`item/${id}`).then(item => {
-      cache.set(id, item)
-      return item
-    })
-  }
+export function fetchItem (id) {
+  return fetch(`item/${id}`)
 }
 
 export function fetchItems (ids) {
