@@ -15,9 +15,11 @@
           {{ item.time | timeAgo }} ago
         </p>
       </div>
-      <div v-if="item.kids" class="item-view-comments">
-        <p class="item-view-comments-header">{{ item.descendants }} comments</p>
-        <ul class="comment-children">
+      <div class="item-view-comments">
+        <p class="item-view-comments-header">
+          {{ item.kids ? item.descendants + ' comments' : 'No comments yet.'}}
+        </p>
+        <ul v-if="item.kids" class="comment-children">
           <comment v-for="id in item.kids" :id="id"></comment>
         </ul>
       </div>
