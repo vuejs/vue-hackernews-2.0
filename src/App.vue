@@ -27,7 +27,7 @@ body
   font-size 15px
   background-color lighten(#eceef1, 30%)
   margin 0
-  padding-top 100px
+  padding-top 55px
   color #34495e
 
 a

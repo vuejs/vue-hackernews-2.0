@@ -1,5 +1,5 @@
 <template>
-  <div class="news">
+  <div class="news-view">
     <spinner :show="loading"></spinner>
     <div class="news-list-nav">
       <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">&lt; prev</router-link>
@@ -107,6 +107,9 @@ export default {
 </script>
 
 <style lang="stylus">
+.news-view
+  padding-top 45px
+
 .news-list-nav, .news-list
   background-color #fff
   border-radius 2px
@@ -156,8 +159,6 @@ export default {
   transform translate(30px, 0)
 
 @media (max-width 600px)
-  .news-list-nav
-    top 54px
   .news-list
     margin 10px 0
 </style>
