@@ -24,7 +24,7 @@ export default context => {
   })).then(() => {
     isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
     // After all preFetch hooks are resolved, our store is now
-    // filled with the needed state to render the app.
+    // filled with the state needed to render the app.
     // Expose the state on the render context, and let the request handler
     // inline the state in the HTML response. This allows the client-side
     // store to pick-up the server-side state without having to duplicate
