@@ -30,9 +30,8 @@
 export default {
   name: 'news-item',
   props: ['item'],
-  serverCacheKey: ({ item: { id, __lastUpdated } }) => {
-    console.log(__lastUpdated)
-    return `${id}::${__lastUpdated}`
+  serverCacheKey: props => {
+    return `${props.item.id}::${props.item.__lastUpdated}`
   }
 }
 </script>
