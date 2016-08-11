@@ -9,7 +9,7 @@ module.exports = Object.assign({}, base, {
     filename: 'server-bundle.js',
     libraryTarget: 'commonjs2'
   }),
-  externals: ['firebase', 'lru-cache', 'es6-promise'],
+  externals: Object.keys(require('../package.json').dependencies),//['firebase', 'lru-cache', 'es6-promise'],
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),

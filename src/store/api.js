@@ -50,6 +50,7 @@ function fetch (child) {
     return new Promise((resolve, reject) => {
       api.child(child).once('value', snapshot => {
         const val = snapshot.val()
+        val.__lastUpdated = Date.now()
         cache && cache.set(child, val)
         resolve(val)
       }, reject)

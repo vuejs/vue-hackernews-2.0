@@ -28,10 +28,19 @@ let renderer
 if (isProd) {
   // create server renderer from real fs
   const bundlePath = resolve('./dist/server-bundle.js')
-  renderer = createBundleRenderer(fs.readFileSync(bundlePath, 'utf-8'))
+  renderer = createRenderer(fs.readFileSync(bundlePath, 'utf-8'))
 } else {
   require('./build/setup-dev-server')(app, bundle => {
-    renderer = createBundleRenderer(bundle)
+    renderer = createRenderer(bundle)
+  })
+}
+
+function createRenderer (bundle) {
+  return createBundleRenderer(bundle, {
+    cache: require('lru-cache')({
+      max: 1000,
+      maxAge: 1000 * 60 * 15
+    })
   })
 }
 

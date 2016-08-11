@@ -28,8 +28,12 @@
 
 <script>
 export default {
-  name: 'NewsItem',
-  props: ['item']
+  name: 'news-item',
+  props: ['item'],
+  serverCacheKey: ({ item: { id, __lastUpdated } }) => {
+    console.log(__lastUpdated)
+    return `${id}::${__lastUpdated}`
+  }
 }
 </script>
 
