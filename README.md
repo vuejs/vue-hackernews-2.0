@@ -1,4 +1,4 @@
-# vue-hackernews-2.0 (WIP)
+# vue-hackernews-2.0
 
 HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side rendering.
 
@@ -18,6 +18,8 @@ HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side render
 - Real-time List Updates with FLIP Animation
 
 ## Build Setup
+
+**Requires Node.js 6+**
 
 ``` bash
 # install dependencies
