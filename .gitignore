@@ -2,3 +2,9 @@
 node_modules/
 dist/
 npm-debug.log
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
