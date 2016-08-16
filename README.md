@@ -10,6 +10,8 @@ HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side render
   </a>
 </p>
 
+> Note: the demo may need some spin up time if nobody has accessed it for a certain period.
+
 ## Features
 
 - Server Side Rendering

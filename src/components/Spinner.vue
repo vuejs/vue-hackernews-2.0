@@ -16,6 +16,7 @@ $duration = 1.4s
 
 .spinner
   position fixed
+  z-index 999
   right 15px
   bottom 15px
   opacity 0
