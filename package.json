@@ -21,7 +21,8 @@
     "vue-router": "^2.0.0-rc.3",
     "vue-server-renderer": "^2.0.0-rc.1",
     "vuex": "^2.0.0-rc.4",
-    "vuex-router-sync": "^3.0.0"
+    "vuex-router-sync": "^3.0.0",
+    "memory-fs": "~0.3.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
