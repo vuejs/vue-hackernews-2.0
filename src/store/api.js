@@ -1,8 +1,12 @@
-import Firebase from 'firebase'
+import firebase from 'firebase'
 import LRU from 'lru-cache'
 
 const inBrowser = typeof window !== 'undefined'
 
+// const Firebase = firebase.initializeApp({databaseURL:'https://hacker-news.firebaseio.com/'});
+const Firebase = inBrowser
+  ? firebase.initializeApp({databaseURL:'https://hacker-news.firebaseio.com/'})
+  : (process.__FIREBASE__ || (process.__FIREBASE__ = firebase.initializeApp({databaseURL:'https://hacker-news.firebaseio.com/'})));
 // When using bundleRenderer, the server-side application code runs in a new
 // context for each request. To allow caching across multiple requests, we need
 // to attach the cache to the process which is shared across all requests.
@@ -19,11 +23,11 @@ function createCache () {
 
 // create a single api instance for all server-side requests
 const api = inBrowser
-  ? new Firebase('https://hacker-news.firebaseio.com/v0')
+  ? Firebase.database().ref().child('/v0')
   : (process.__API__ || (process.__API__ = createServerSideAPI()))
 
 function createServerSideAPI () {
-  const api = new Firebase('https://hacker-news.firebaseio.com/v0')
+  const api = Firebase.database().ref().child('/v0');
 
   // cache the latest story ids
   api.__ids__ = {}
@@ -49,7 +53,7 @@ function fetch (child) {
   } else {
     return new Promise((resolve, reject) => {
       api.child(child).once('value', snapshot => {
-        const val = snapshot.val()
+        const val = snapshot.val() || {};
         // mark the timestamp when this item is cached
         val.__lastUpdated = Date.now()
         cache && cache.set(child, val)
