@@ -51,7 +51,7 @@ app.use(favicon(resolve('./src/assets/logo.png')))
 
 app.get('*', (req, res) => {
   if (!renderer) {
-    return res.end('waiting for compilation...')
+    return res.end('waiting for compilation... refresh in a moment.')
   }
 
   var s = Date.now()

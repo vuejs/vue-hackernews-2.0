@@ -1,4 +1,6 @@
 const path = require('path')
+const webpack = require('webpack')
+const vueConfig = require('./vue-loader.config')
 
 module.exports = {
   devtool: '#source-map',
@@ -10,9 +12,6 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/dist/',
     filename: 'client-bundle.js'
-  },
-  resolveLoader: {
-    root: path.join(__dirname, '../node_modules'),
   },
   module: {
     loaders: [
@@ -35,11 +34,9 @@ module.exports = {
       }
     ]
   },
-  vue: {
-    postcss: [
-      require('autoprefixer')({
-        browsers: ['last 3 versions']
-      })
-    ]
-  }
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      vue: vueConfig
+    })
+  ]
 }
