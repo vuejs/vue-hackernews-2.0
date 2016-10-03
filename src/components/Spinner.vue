@@ -39,7 +39,7 @@ $duration = 1.4s
   stroke-dasharray $offset
   stroke-dashoffset 0
   transform-origin center
-  animation dash 1.4s ease-in-out infinite
+  animation dash $duration ease-in-out infinite
 
 @keyframes dash
   0%
