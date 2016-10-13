@@ -36,8 +36,8 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.2",
     "url-loader": "^0.5.7",
-    "vue-loader": "^9.5.0",
-    "webpack": "^2.1.0-beta.20",
+    "vue-loader": "^9.7.0",
+    "webpack": "^2.1.0-beta.25",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.2"
   }

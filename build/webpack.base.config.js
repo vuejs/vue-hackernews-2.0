@@ -14,10 +14,11 @@ module.exports = {
     filename: 'client-bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.vue$/,
-        loader: 'vue'
+        loader: 'vue',
+        options: vueConfig
       },
       {
         test: /\.js$/,
@@ -27,16 +28,11 @@ module.exports = {
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'url',
-        query: {
+        options: {
           limit: 10000,
           name: '[name].[ext]?[hash]'
         }
       }
     ]
-  },
-  plugins: [
-    new webpack.LoaderOptionsPlugin({
-      vue: vueConfig
-    })
-  ]
+  }
 }
