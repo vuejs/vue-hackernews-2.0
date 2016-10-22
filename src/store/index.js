@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { fetchItem, fetchItems, fetchIdsByType, fetchUser } from './api'
+import { fetchItems, fetchIdsByType, fetchUser } from './api'
 
 Vue.use(Vuex)
 
