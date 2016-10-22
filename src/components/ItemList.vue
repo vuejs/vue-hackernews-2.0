@@ -1,7 +1,7 @@
 <template>
-  <div class="news-view">
+  <div>
     <spinner :show="loading"></spinner>
-    <newsListNav :page="page" :maxPage="maxPage" :type="type"></newsListNav>
+    <newsListNav :page="page" :maxPage="maxPage" :type="type" v-if="displayedPage > 0"></newsListNav>
     <transition :name="transition">
       <div class="news-list" :key="displayedPage" v-if="displayedPage > 0">
         <transition-group tag="ul" name="item">
@@ -10,6 +10,7 @@
         </transition-group>
       </div>
     </transition>
+    <newsListNav :page="page" :maxPage="maxPage" :type="type" v-if="displayedPage > 0"></newsListNav>
   </div>
 </template>
 
@@ -100,13 +101,10 @@ export default {
 </script>
 
 <style lang="stylus">
-.news-view
-  padding-top 45px
-
 .news-list
-  position absolute
-  margin 30px 0
   width 100%
+  max-width 800px
+  margin 30px auto
   transition all .5s cubic-bezier(.55,0,.1,1)
   ul
     list-style-type none
