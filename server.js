@@ -7,6 +7,7 @@ const resolve = file => path.resolve(__dirname, file)
 const express = require('express')
 const favicon = require('serve-favicon')
 const serialize = require('serialize-javascript')
+const compression = require('compression')
 
 // https://github.com/vuejs/vue/blob/next/packages/vue-server-renderer/README.md#why-use-bundlerenderer
 const createBundleRenderer = require('vue-server-renderer').createBundleRenderer
@@ -46,6 +47,7 @@ function createRenderer (bundle) {
   })
 }
 
+app.use(compression({threshold: 0}))
 app.use('/dist', express.static(resolve('./dist')))
 app.use(favicon(resolve('./src/assets/logo.png')))
 

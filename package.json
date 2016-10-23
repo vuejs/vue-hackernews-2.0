@@ -11,6 +11,7 @@
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
   },
   "dependencies": {
+    "compression": "^1.6.2",
     "es6-promise": "^3.2.1",
     "express": "^4.14.0",
     "firebase": "^2.4.2",
