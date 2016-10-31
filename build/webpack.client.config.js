@@ -26,8 +26,8 @@ if (process.env.NODE_ENV === 'production') {
   // so they are extracted.
   vueConfig.loaders = {
     stylus: ExtractTextPlugin.extract({
-      loader: "css-loader!stylus-loader",
-      fallbackLoader: "vue-style-loader" // <- this is a dep of vue-loader
+      loader: 'css-loader!stylus-loader',
+      fallbackLoader: 'vue-style-loader' // <- this is a dep of vue-loader
     })
   }
 
