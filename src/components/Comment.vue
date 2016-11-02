@@ -58,6 +58,7 @@ export default {
       color #999
       text-decoration underline
   .text
+    overflow-wrap break-word
     a:hover
       color #ff6600
 </style>
