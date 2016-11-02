@@ -30,11 +30,6 @@ export default {
       return this.$store.state.items[this.id]
     }
   },
-  beforeMount () {
-    this.$store.dispatch('FETCH_ITEMS', {
-      ids: [this.id]
-    })
-  },
   methods: {
     pluralize (n) {
       return n + (n === 1 ? ' reply' : ' replies')

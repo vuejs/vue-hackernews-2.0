@@ -1,6 +1,5 @@
 <template>
   <div class="item-view" v-if="item">
-    <spinner :show="!item"></spinner>
     <template v-if="item">
       <div class="item-view-header">
         <a :href="item.url" target="_blank">
@@ -18,8 +17,9 @@
       <div class="item-view-comments">
         <p class="item-view-comments-header">
           {{ item.kids ? item.descendants + ' comments' : 'No comments yet.'}}
+          <spinner :show="loading"></spinner>
         </p>
-        <ul v-if="item.kids" class="comment-children">
+        <ul v-if="!loading" class="comment-children">
           <comment v-for="id in item.kids" :id="id"></comment>
         </ul>
       </div>
@@ -37,22 +37,49 @@ function fetchItem (store) {
   })
 }
 
+// recursively fetch all descendent comments
+function fetchComments (store, item) {
+  if (item.kids) {
+    return store.dispatch('FETCH_ITEMS', {
+      ids: item.kids
+    }).then(() => Promise.all(item.kids.map(id => {
+      return fetchComments(store, store.state.items[id])
+    })))
+  }
+}
+
+function fetchItemAndComments (store) {
+  return fetchItem(store).then(() => {
+    const { items, route } = store.state
+    return fetchComments(store, items[route.params.id])
+  })
+}
+
 export default {
   name: 'item-view',
   components: { Spinner, Comment },
+  data () {
+    return {
+      loading: true
+    }
+  },
   computed: {
     item () {
       return this.$store.state.items[this.$route.params.id]
     }
   },
+  // on the server, only fetch the item itself
   preFetch: fetchItem,
+  // on the client, fetch everything
   beforeMount () {
-    fetchItem(this.$store)
+    fetchItemAndComments(this.$store).then(() => {
+      this.loading = false
+    })
   }
 }
 </script>
 
-<style lang="stylus">  
+<style lang="stylus">
 .item-view-header
   background-color #fff
   padding 1.8em 2em 1em
@@ -71,17 +98,23 @@ export default {
   background-color #fff
   margin-top 10px
   padding 0 2em
-  
+
 .item-view-comments-header
   margin 0
   font-size 1.1em
   padding 1em 0
+  position relative
+  .spinner
+    position absolute
+    top 0
+    right 0
+    bottom auto
 
 .comment-children
   list-style-type none
   padding 0
   margin 0
-  
+
 @media (max-width 600px)
   .item-view-header
     h1
