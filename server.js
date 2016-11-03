@@ -59,21 +59,22 @@ app.get('*', (req, res) => {
   var s = Date.now()
   const context = { url: req.url }
   const renderStream = renderer.renderToStream(context)
-  let firstChunk = true
-
-  renderStream.on('data', chunk => {
-    if (firstChunk) {
-      res.write(html.head)
-      // embed initial store state
-      if (context.initialState) {
-        res.write(
-          `<script>window.__INITIAL_STATE__=${
-            serialize(context.initialState, { isJSON: true })
-          }</script>`
-        )
-      }
-      firstChunk = false
+  
+  
+  // Write head once
+  renderStream.once('data', () => {
+    res.write(html.head)
+    // embed initial store state
+    if (context.initialState) {
+      res.write(
+        `<script>window.__INITIAL_STATE__=${
+          serialize(context.initialState, { isJSON: true })
+        }</script>`
+      )
     }
+  })
+  
+  renderStream.on('data', chunk => {
     res.write(chunk)
   })
 
