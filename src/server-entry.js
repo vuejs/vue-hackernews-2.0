@@ -1,4 +1,7 @@
+import Vue from 'vue'
 import { app, router, store } from './app'
+
+const _app = new Vue(app)
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -30,6 +33,6 @@ export default context => {
     // store to pick-up the server-side state without having to duplicate
     // the initial data fetching on the client.
     context.initialState = store.state
-    return app
+    return _app
   })
 }

@@ -1,12 +1,10 @@
-import Firebase from 'firebase'
-import LRU from 'lru-cache'
-
-const inBrowser = typeof window !== 'undefined'
+const Firebase = require('firebase')
+const LRU = process.BROWSER ? null : require('lru-cache')
 
 // When using bundleRenderer, the server-side application code runs in a new
 // context for each request. To allow caching across multiple requests, we need
 // to attach the cache to the process which is shared across all requests.
-const cache = inBrowser
+const cache = process.BROWSER
   ? null
   : (process.__API_CACHE__ || (process.__API_CACHE__ = createCache()))
 
@@ -18,7 +16,7 @@ function createCache () {
 }
 
 // create a single api instance for all server-side requests
-const api = inBrowser
+const api = process.BROWSER
   ? new Firebase('https://hacker-news.firebaseio.com/v0')
   : (process.__API__ || (process.__API__ = createServerSideAPI()))
 

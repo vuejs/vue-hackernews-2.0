@@ -3,9 +3,11 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-import { createListView } from '../views/CreateListView'
-import ItemView from '../views/ItemView.vue'
-import UserView from '../views/UserView.vue'
+const createListView = process.BROWSER ? (type) => {
+  return (resolve) => { System.import('../views/CreateListView').then((createListView) => resolve(createListView(type))) }
+} : require('../views/CreateListView')
+const ItemView = process.BROWSER  ? () => System.import('../views/ItemView.vue') : require('../views/ItemView.vue')
+const UserView = process.BROWSER  ? () => System.import('../views/UserView.vue') : require('../views/UserView.vue')
 
 export default new Router({
   mode: 'history',
