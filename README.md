@@ -1,9 +1,9 @@
 # vue-hackernews-2.0
 
-HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side rendering.
+HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side rendering and lazy-loading.
 
 <p align="center">
-  <a href="https://vue-hn.now.sh" target="_blank">
+  <a href="https://vue-hn-lazy.now.sh" target="_blank">
     <img src="https://cloud.githubusercontent.com/assets/499550/17546273/5aabc5fc-5eaf-11e6-8d6a-ad00937e8bd6.png" width="700px">
     <br>
     Live Demo
@@ -22,6 +22,7 @@ HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side render
   - Hot-reload in development
   - CSS extraction for production
 - Real-time List Updates with FLIP Animation
+- Lazy loading of the components
 
 ## Architecture Overview
 
