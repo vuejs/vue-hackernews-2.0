@@ -33,7 +33,7 @@ HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side render
 
 ``` bash
 # install dependencies
-npm install
+npm install # or yarn
 
 # serve in dev mode, with hot reload at localhost:8080
 npm run dev
