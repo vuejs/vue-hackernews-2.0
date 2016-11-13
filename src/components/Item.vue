@@ -27,12 +27,20 @@
 </template>
 
 <script>
+import { timeAgo } from '../filters'
+
 export default {
   name: 'news-item',
   props: ['item'],
   // https://github.com/vuejs/vue/blob/next/packages/vue-server-renderer/README.md#component-caching
   serverCacheKey: props => {
-    return `${props.item.id}::${props.item.__lastUpdated}`
+    return `${
+      props.item.id
+    }::${
+      props.item.__lastUpdated
+    }::${
+      timeAgo(props.item.time)
+    }`
   }
 }
 </script>
