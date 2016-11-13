@@ -1,49 +1,18 @@
-import Firebase from 'firebase'
-import LRU from 'lru-cache'
+// this is aliased in webpack config based on server/client build
+import api from 'create-api'
 
-const inBrowser = typeof window !== 'undefined'
-
-// When using bundleRenderer, the server-side application code runs in a new
-// context for each request. To allow caching across multiple requests, we need
-// to attach the cache to the process which is shared across all requests.
-const cache = inBrowser
-  ? null
-  : (process.__API_CACHE__ || (process.__API_CACHE__ = createCache()))
-
-function createCache () {
-  return LRU({
-    max: 1000,
-    maxAge: 1000 * 60 * 15 // 15 min cache
-  })
+// warm the front page cache every 15 min
+if (api.cachedIds) {
+  warmCache()
 }
 
-// create a single api instance for all server-side requests
-const api = inBrowser
-  ? new Firebase('https://hacker-news.firebaseio.com/v0')
-  : (process.__API__ || (process.__API__ = createServerSideAPI()))
-
-function createServerSideAPI () {
-  const api = new Firebase('https://hacker-news.firebaseio.com/v0')
-
-  // cache the latest story ids
-  api.__ids__ = {}
-  ;['top', 'new', 'show', 'ask', 'job'].forEach(type => {
-    api.child(`${type}stories`).on('value', snapshot => {
-      api.__ids__[type] = snapshot.val()
-    })
-  })
-
-  // warm the front page cache every 15 min
-  warmCache()
-  function warmCache () {
-    fetchItems((api.__ids__.top || []).slice(0, 30))
-    setTimeout(warmCache, 1000 * 60 * 15)
-  }
-
-  return api
+function warmCache () {
+  fetchItems((api.cachedIds.top || []).slice(0, 30))
+  setTimeout(warmCache, 1000 * 60 * 15)
 }
 
 function fetch (child) {
+  const cache = api.cachedItems
   if (cache && cache.has(child)) {
     return Promise.resolve(cache.get(child))
   } else {
@@ -60,8 +29,8 @@ function fetch (child) {
 }
 
 export function fetchIdsByType (type) {
-  return api.__ids__ && api.__ids__[type]
-    ? Promise.resolve(api.__ids__[type])
+  return api.cachedIds && api.cachedIds[type]
+    ? Promise.resolve(api.cachedIds[type])
     : fetch(`${type}stories`)
 }
 
