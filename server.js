@@ -59,11 +59,14 @@ app.get('*', (req, res) => {
   var s = Date.now()
   const context = { url: req.url }
   const renderStream = renderer.renderToStream(context)
-  
-  
-  // Write head once
-  renderStream.once('data', () => {
-    res.write(html.head)
+
+  res.write(html.head)
+
+  renderStream.on('data', chunk => {
+    res.write(chunk)
+  })
+
+  renderStream.on('end', () => {
     // embed initial store state
     if (context.initialState) {
       res.write(
@@ -72,13 +75,6 @@ app.get('*', (req, res) => {
         }</script>`
       )
     }
-  })
-  
-  renderStream.on('data', chunk => {
-    res.write(chunk)
-  })
-
-  renderStream.on('end', () => {
     res.end(html.tail)
     console.log(`whole request: ${Date.now() - s}ms`)
   })
