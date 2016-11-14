@@ -10,21 +10,24 @@ module.exports = {
     filename: 'client-bundle.js'
   },
   module: {
-    noParse: /(lru-cache|es6-promise)\.js$/,
+    noParse: /es6-promise\.js$/, // avoid webpack shimming process
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue',
+        loader: 'vue-loader',
         options: vueConfig
       },
       {
         test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
+        loader: 'buble-loader',
+        exclude: /node_modules/,
+        options: {
+          objectAssign: 'Object.assign'
+        }
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url',
+        loader: 'url-loader',
         options: {
           limit: 10000,
           name: '[name].[ext]?[hash]'
