@@ -54,7 +54,9 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new SWPrecachePlugin({
       cacheId: 'vue-hn',
-      filename: 'service-worker.js'
+      filename: 'service-worker.js',
+      dontCacheBustUrlsMatching: /./,
+      staticFileGlobsIgnorePatterns: [/index\.html$/, /\.map$/]
     })
   )
 }

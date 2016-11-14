@@ -4,7 +4,6 @@ const isProd = process.env.NODE_ENV === 'production'
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
-const favicon = require('serve-favicon')
 const compression = require('compression')
 const serialize = require('serialize-javascript')
 const resolve = file => path.resolve(__dirname, file)
@@ -50,8 +49,10 @@ function parseIndex (template) {
 }
 
 app.use(compression({ threshold: 0 }))
-app.use('/dist', express.static(resolve('./dist'), { maxAge: isProd ? 60 * 60 * 24 * 30 : 0 }))
-app.use(favicon(resolve('./src/assets/logo.png')))
+const cacheConfig = { maxAge: isProd ? 60 * 60 * 24 * 30 : 0 }
+app.use('/dist', express.static(resolve('./dist'), cacheConfig))
+app.use('/manifest.json', express.static(resolve('./manifest.json'), cacheConfig))
+app.use('/logo.png', express.static(resolve('./src/assets/logo.png'), cacheConfig))
 
 app.get('*', (req, res) => {
   if (!renderer) {

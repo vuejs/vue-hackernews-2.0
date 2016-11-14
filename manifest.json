@@ -1,0 +1,13 @@
+{
+  "name": "Vue Hackernews 2.0",
+  "short_name": "Vue HN",
+  "icons": [{
+      "src": "/logo.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }],
+  "start_url": "/",
+  "background_color": "#f2f3f5",
+  "display": "standalone",
+  "theme_color": "#f60"
+}
