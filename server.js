@@ -49,10 +49,11 @@ function parseIndex (template) {
 }
 
 app.use(compression({ threshold: 0 }))
+app.use('/service-worker.js', express.static(resolve('./dist/service-worker.js')))
+app.use('/manifest.json', express.static(resolve('./manifest.json')))
 const cacheConfig = { maxAge: isProd ? 60 * 60 * 24 * 30 : 0 }
-app.use('/dist', express.static(resolve('./dist'), cacheConfig))
-app.use('/manifest.json', express.static(resolve('./manifest.json'), cacheConfig))
 app.use('/logo.png', express.static(resolve('./src/assets/logo.png'), cacheConfig))
+app.use('/dist', express.static(resolve('./dist'), cacheConfig))
 
 app.get('*', (req, res) => {
   if (!renderer) {
