@@ -18,8 +18,7 @@ const config = Object.assign({}, base, {
     }),
     // extract vendor chunks for better caching
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: '[name].[chunkhash].js'
+      name: 'vendor'
     }),
     // generate output HTML
     new HTMLPlugin({

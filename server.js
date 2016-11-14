@@ -14,26 +14,21 @@ const createBundleRenderer = require('vue-server-renderer').createBundleRenderer
 
 const app = express()
 
-// parse index.html template
-const html = (() => {
-  const contentMarker = '<!-- APP -->'
-  const template = fs.readFileSync(resolve('./dist/index.html'), 'utf-8')
-  const i = template.indexOf(contentMarker)
-  return {
-    head: template.slice(0, i),
-    tail: template.slice(i + contentMarker.length)
-  }
-})()
-
 // setup the server renderer, depending on dev/prod environment
-let renderer
+let html, renderer
 if (isProd) {
-  // create server renderer from real fs
+  // create server renderer and index HTML from real fs
   const bundlePath = resolve('./dist/server-bundle.js')
   renderer = createRenderer(fs.readFileSync(bundlePath, 'utf-8'))
+  html = parseIndex(fs.readFileSync(resolve('./dist/index.html'), 'utf-8'))
 } else {
-  require('./build/setup-dev-server')(app, bundle => {
-    renderer = createRenderer(bundle)
+  require('./build/setup-dev-server')(app, {
+    bundleUpdated: bundle => {
+      renderer = createRenderer(bundle)
+    },
+    indexUpdated: index => {
+      html = parseIndex(index)
+    }
   })
 }
 
@@ -46,8 +41,17 @@ function createRenderer (bundle) {
   })
 }
 
+function parseIndex (template) {
+  const contentMarker = '<!-- APP -->'
+  const i = template.indexOf(contentMarker)
+  return {
+    head: template.slice(0, i),
+    tail: template.slice(i + contentMarker.length)
+  }
+}
+
 app.use(compression({ threshold: 0 }))
-app.use('/dist', express.static(resolve('./dist'), { maxAge: 60 * 60 * 24 * 30 }))
+app.use('/dist', express.static(resolve('./dist'), { maxAge: isProd ? 60 * 60 * 24 * 30 : 0 }))
 app.use(favicon(resolve('./src/assets/logo.png')))
 
 app.get('*', (req, res) => {
