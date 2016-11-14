@@ -2,11 +2,16 @@ import Firebase from 'firebase'
 import LRU from 'lru-cache'
 
 let api
+const config = {
+  databaseURL: 'https://hacker-news.firebaseio.com'
+}
+const version = '/v0'
 
 if (process.__API__) {
   api = process.__API__
 } else {
-  api = process.__API__ = new Firebase('https://hacker-news.firebaseio.com/v0')
+  Firebase.initializeApp(config)
+  api = process.__API__ = Firebase.database().ref(version)
 
   // fetched item cache
   api.cachedItems = LRU({
