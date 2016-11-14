@@ -3,11 +3,22 @@ const vueConfig = require('./vue-loader.config')
 
 module.exports = {
   devtool: '#source-map',
-  entry: './src/client-entry.js',
+  entry: {
+    app: './src/client-entry.js',
+    vendor: [
+      'es6-promise',
+      'firebase/app',
+      'firebase/database',
+      'vue',
+      'vue-router',
+      'vuex',
+      'vuex-router-sync'
+    ]
+  },
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/dist/',
-    filename: 'client-bundle.js'
+    filename: '[name].[chunkhash].js'
   },
   module: {
     noParse: /es6-promise\.js$/, // avoid webpack shimming process

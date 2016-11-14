@@ -3,11 +3,11 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const fs = require('fs')
 const path = require('path')
-const resolve = file => path.resolve(__dirname, file)
 const express = require('express')
 const favicon = require('serve-favicon')
-const serialize = require('serialize-javascript')
 const compression = require('compression')
+const serialize = require('serialize-javascript')
+const resolve = file => path.resolve(__dirname, file)
 
 // https://github.com/vuejs/vue/blob/next/packages/vue-server-renderer/README.md#why-use-bundlerenderer
 const createBundleRenderer = require('vue-server-renderer').createBundleRenderer
@@ -16,13 +16,12 @@ const app = express()
 
 // parse index.html template
 const html = (() => {
-  const template = fs.readFileSync(resolve('./index.html'), 'utf-8')
-  const i = template.indexOf('{{ APP }}')
-  // styles are injected dynamically via vue-style-loader in development
-  const style = isProd ? '<link rel="stylesheet" href="/dist/styles.css">' : ''
+  const contentMarker = '<!-- APP -->'
+  const template = fs.readFileSync(resolve('./dist/index.html'), 'utf-8')
+  const i = template.indexOf(contentMarker)
   return {
-    head: template.slice(0, i).replace('{{ STYLE }}', style),
-    tail: template.slice(i + '{{ APP }}'.length)
+    head: template.slice(0, i),
+    tail: template.slice(i + contentMarker.length)
   }
 })()
 
@@ -47,8 +46,8 @@ function createRenderer (bundle) {
   })
 }
 
-app.use(compression({threshold: 0}))
-app.use('/dist', express.static(resolve('./dist')))
+app.use(compression({ threshold: 0 }))
+app.use('/dist', express.static(resolve('./dist'), { maxAge: 60 * 60 * 24 * 30 }))
 app.use(favicon(resolve('./src/assets/logo.png')))
 
 app.get('*', (req, res) => {
@@ -61,7 +60,9 @@ app.get('*', (req, res) => {
   const context = { url: req.url }
   const renderStream = renderer.renderToStream(context)
 
-  res.write(html.head)
+  renderStream.once('data', () => {
+    res.write(html.head)
+  })
 
   renderStream.on('data', chunk => {
     res.write(chunk)
@@ -81,6 +82,10 @@ app.get('*', (req, res) => {
   })
 
   renderStream.on('error', err => {
+    if (err && err.code === '404') {
+      res.status(404).end('404 | Page Not Found')
+      return
+    }
     // Render Error Page or Redirect
     res.status(500).end('Internal Error 500')
     console.error(`error during render : ${req.url}`)
