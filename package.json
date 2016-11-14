@@ -31,17 +31,17 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
-    "cross-env": "^2.0.0",
-    "css-loader": "^0.25.0",
     "buble": "^0.14.2",
     "buble-loader": "^0.3.2",
+    "cross-env": "^2.0.0",
+    "css-loader": "^0.25.0",
     "extract-text-webpack-plugin": "^2.0.0-beta.3",
     "file-loader": "^0.9.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.2",
     "url-loader": "^0.5.7",
     "vue-loader": "^9.7.0",
-    "webpack": "^2.1.0-beta.25",
+    "webpack": "^2.1.0-beta.26",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.2"
   }
