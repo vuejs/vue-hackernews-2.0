@@ -10,9 +10,9 @@ module.exports = Object.assign({}, base, {
     libraryTarget: 'commonjs2'
   }),
   resolve: {
-    alias: {
+    alias: Object.assign({}, base.resolve.alias, {
       'create-api': './create-api-server.js'
-    }
+    })
   },
   externals: Object.keys(require('../package.json').dependencies),
   plugins: [

@@ -7,9 +7,9 @@ const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 
 const config = Object.assign({}, base, {
   resolve: {
-    alias: {
+    alias: Object.assign({}, base.resolve.alias, {
       'create-api': './create-api-client.js'
-    }
+    })
   },
   plugins: (base.plugins || []).concat([
     // strip comments in Vue code
