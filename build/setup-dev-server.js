@@ -24,8 +24,8 @@ module.exports = function setupDevServer (app, opts) {
   })
   app.use(devMiddleware)
   clientCompiler.plugin('done', () => {
-    const filename = devMiddleware.getFilenameFromUrl('/dist/index.html')
-    const index = devMiddleware.fileSystem.readFileSync(filename, 'utf-8')
+    const filePath = path.join(clientConfig.output.path, 'index.html')
+    const index = devMiddleware.fileSystem.readFileSync(filePath, 'utf-8')
     opts.indexUpdated(index)
   })
 
