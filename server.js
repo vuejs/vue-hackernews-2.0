@@ -4,6 +4,7 @@ const isProd = process.env.NODE_ENV === 'production'
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const favicon = require('serve-favicon')
 const compression = require('compression')
 const serialize = require('serialize-javascript')
 const resolve = file => path.resolve(__dirname, file)
@@ -48,12 +49,16 @@ function parseIndex (template) {
   }
 }
 
+const serve = (path, cache) => express.static(resolve(path), {
+  maxAge: cache && isProd ? 60 * 60 * 24 * 30 : 0
+})
+
 app.use(compression({ threshold: 0 }))
-app.use('/service-worker.js', express.static(resolve('./dist/service-worker.js')))
-app.use('/manifest.json', express.static(resolve('./manifest.json')))
-const cacheConfig = { maxAge: isProd ? 60 * 60 * 24 * 30 : 0 }
-app.use('/logo.png', express.static(resolve('./src/assets/logo.png'), cacheConfig))
-app.use('/dist', express.static(resolve('./dist'), cacheConfig))
+app.use(favicon('./src/assets/logo.png'))
+app.use('/service-worker.js', serve('./dist/service-worker.js'))
+app.use('/manifest.json', serve('./manifest.json'))
+app.use('/logo.png', serve('./src/assets/logo.png'))
+app.use('/dist', serve('./dist'))
 
 app.get('*', (req, res) => {
   if (!renderer) {
