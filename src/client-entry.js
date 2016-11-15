@@ -1,4 +1,4 @@
-require('es6-promise').polyfill()
+import 'es6-promise/auto'
 import { app, store } from './app'
 
 // prime the store with server-initialized state.

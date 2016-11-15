@@ -17,11 +17,10 @@ Object.keys(filters).forEach(key => {
 // create the app instance.
 // here we inject the router and store to all child components,
 // making them available everywhere as `this.$router` and `this.$store`.
-const app = new Vue({
+const app = new Vue(Vue.util.extend({
   router,
-  store,
-  ...App // Object spread copying everything from App.vue
-})
+  store
+}, App))
 
 // expose the app, the router and the store.
 // note we are not mounting the app here, since bootstrapping will be
