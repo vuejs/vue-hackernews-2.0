@@ -14,7 +14,8 @@ const config = Object.assign({}, base, {
   plugins: (base.plugins || []).concat([
     // strip comments in Vue code
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.VUE_ENV': '"client"'
     }),
     // extract vendor chunks for better caching
     new webpack.optimize.CommonsChunkPlugin({
