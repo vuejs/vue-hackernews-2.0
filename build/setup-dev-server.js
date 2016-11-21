@@ -24,9 +24,12 @@ module.exports = function setupDevServer (app, opts) {
   })
   app.use(devMiddleware)
   clientCompiler.plugin('done', () => {
+    const fs = devMiddleware.fileSystem
     const filePath = path.join(clientConfig.output.path, 'index.html')
-    const index = devMiddleware.fileSystem.readFileSync(filePath, 'utf-8')
-    opts.indexUpdated(index)
+    if (fs.existsSync(filePath)) {
+      const index = fs.readFileSync(filePath, 'utf-8')
+      opts.indexUpdated(index)
+    }
   })
 
   // hot middleware

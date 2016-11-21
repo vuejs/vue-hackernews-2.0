@@ -42,7 +42,8 @@
     "stylus-loader": "^2.1.2",
     "sw-precache-webpack-plugin": "^0.6.0",
     "url-loader": "^0.5.7",
-    "vue-loader": "^9.9.3",
+    "vue-loader": "^10.0.0",
+    "vue-template-compiler": "^2.0.0",
     "webpack": "^2.1.0-beta.26",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.2"
