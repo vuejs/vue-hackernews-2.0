@@ -1,7 +1,9 @@
 <template>
-  <svg class="spinner" :class="{ show: show }" width="44px" height="44px" viewBox="0 0 44 44">
-    <circle class="path" fill="none" stroke-width="4" stroke-linecap="round" cx="22" cy="22" r="20"></circle>
-  </svg>
+  <transition>
+    <svg class="spinner" :class="{ show: show }" v-show="show" width="44px" height="44px" viewBox="0 0 44 44">
+      <circle class="path" fill="none" stroke-width="4" stroke-linecap="round" cx="22" cy="22" r="20"></circle>
+    </svg>
+  </transition>
 </template>
 
 <script>
@@ -19,14 +21,15 @@ $duration = 1.4s
   z-index 999
   right 15px
   bottom 15px
-  opacity 0
   transition opacity .15s ease
   animation rotator $duration linear infinite
   animation-play-state paused
-
-.spinner.show
-  opacity 1
-  animation-play-state running
+  &.show
+    animation-play-state running
+  &.v-enter, &.v-leave-active
+    opacity 0
+  &.v-enter-active, &.v-leave
+    opacity 1
 
 @keyframes rotator
   0%
