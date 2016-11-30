@@ -40,7 +40,7 @@ export default {
     const isInitialRender = !this.$root._isMounted
     return {
       loading: false,
-      transition: 'slide-left',
+      transition: 'slide-up',
       // if this is the initial render, directly render with the store state
       // otherwise this is a page switch, start with blank and wait for data load.
       // we need these local state so that we can precisely control the timing
@@ -96,7 +96,9 @@ export default {
           this.$router.replace(`/${this.type}/1`)
           return
         }
-        this.transition = to > from ? 'slide-left' : 'slide-right'
+        this.transition = from === -1
+          ? null
+          : to > from ? 'slide-left' : 'slide-right'
         this.displayedPage = to
         this.displayedItems = this.$store.getters.activeItems
         this.loading = false
