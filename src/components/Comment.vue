@@ -58,6 +58,8 @@ export default {
     overflow-wrap break-word
     a:hover
       color #ff6600
+    pre
+      white-space pre-wrap
   .toggle
     background-color #fffbf2
     padding .3em .5em
