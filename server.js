@@ -1,3 +1,5 @@
+"use strict"
+
 process.env.VUE_ENV = 'server'
 const isProd = process.env.NODE_ENV === 'production'
 
