@@ -31,7 +31,7 @@ if (isProd) {
 }
 
 function createRenderer (bundle) {
-  // https://github.com/vuejs/vue/blob/next/packages/vue-server-renderer/README.md#why-use-bundlerenderer
+  // https://www.npmjs.com/package/vue-server-renderer#why-use-bundlerenderer
   return require('vue-server-renderer').createBundleRenderer(bundle, {
     cache: require('lru-cache')({
       max: 1000,
