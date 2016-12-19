@@ -36,8 +36,6 @@ const store = new Vuex.Store({
     },
 
     FETCH_ITEMS: ({ commit, state }, { ids }) => {
-      // only fetch items that we don't already have.
-      ids = ids.filter(id => !state.items[id])
       if (ids.length) {
         return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
       } else {
