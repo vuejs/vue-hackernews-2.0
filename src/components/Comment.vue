@@ -6,11 +6,10 @@
     </div>
     <div class="text" v-html="comment.text"></div>
     <div class="toggle" :class="{ open }" v-if="comment.kids && comment.kids.length">
-      <a @click="open = !open">{{
-        open
-            ? '[-]'
-            : '[+] ' + pluralize(comment.kids.length) + ' collapsed'
-      }}</a>
+      <a @click="open = !open">
+        <span v-if="open">[-]</span>
+        <span v-else>[+] {{ comment.kids.length | pluralize(' reply collapsed', ' replies collapsed') }}</span>
+      </a>
     </div>
     <ul class="comment-children" v-show="open">
       <comment v-for="id in comment.kids" :id="id"></comment>
@@ -31,9 +30,6 @@ export default {
     comment () {
       return this.$store.state.items[this.id]
     }
-  },
-  methods: {
-    pluralize: n => n + (n === 1 ? ' reply' : ' replies')
   }
 }
 </script>

@@ -16,9 +16,11 @@ export function timeAgo (time) {
   }
 }
 
-function pluralize (time, label) {
+export function pluralize (time, label, pluralLabel) {
   if (time === 1) {
     return time + label
+  } else if (pluralLabel) {
+    return time + pluralLabel;
   }
   return time + label + 's'
 }
