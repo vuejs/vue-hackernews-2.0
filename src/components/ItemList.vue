@@ -24,6 +24,8 @@ import Spinner from './Spinner.vue'
 import Item from './Item.vue'
 import { watchList } from '../store/api'
 
+let isInitialRender = true
+
 export default {
   name: 'item-list',
 
@@ -37,8 +39,7 @@ export default {
   },
 
   data () {
-    const isInitialRender = !this.$root._isMounted
-    return {
+    const data = {
       loading: false,
       transition: 'slide-up',
       // if this is the initial render, directly render with the store state
@@ -48,6 +49,8 @@ export default {
       displayedPage: isInitialRender ? Number(this.$store.state.route.params.page) || 1 : -1,
       displayedItems: isInitialRender ? this.$store.getters.activeItems : []
     }
+    isInitialRender = false
+    return data
   },
 
   computed: {
