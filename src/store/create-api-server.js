@@ -1,5 +1,6 @@
 import Firebase from 'firebase'
 import LRU from 'lru-cache'
+import { fetchItems } from './api'
 
 let api
 const config = {
@@ -12,6 +13,7 @@ if (process.__API__) {
 } else {
   Firebase.initializeApp(config)
   api = process.__API__ = Firebase.database().ref(version)
+  api.onServer = true
 
   // fetched item cache
   api.cachedItems = LRU({

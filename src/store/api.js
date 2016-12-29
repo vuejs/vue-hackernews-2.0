@@ -2,7 +2,9 @@
 import api from 'create-api'
 
 // warm the front page cache every 15 min
-if (api.cachedIds) {
+// make sure to do this only once across all requests
+if (api.onServer && !api.warmCacheStarted) {
+  api.warmCacheStarted = true
   warmCache()
 }
 
