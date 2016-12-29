@@ -97,7 +97,7 @@ export default {
 .item-view-comments
   background-color #fff
   margin-top 10px
-  padding 0 2em
+  padding 0 2em .5em
 
 .item-view-comments-header
   margin 0
