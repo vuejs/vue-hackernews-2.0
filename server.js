@@ -1,6 +1,3 @@
-process.env.VUE_ENV = 'server'
-const isProd = process.env.NODE_ENV === 'production'
-
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
@@ -8,6 +5,11 @@ const favicon = require('serve-favicon')
 const compression = require('compression')
 const serialize = require('serialize-javascript')
 const resolve = file => path.resolve(__dirname, file)
+
+const isProd = process.env.NODE_ENV === 'production'
+const serverInfo =
+  `express/${require('express/package.json').version} ` +
+  `vue-server-renderer/${require('vue-server-renderer/package.json').version}`
 
 const app = express()
 
@@ -65,7 +67,9 @@ app.get('*', (req, res) => {
     return res.end('waiting for compilation... refresh in a moment.')
   }
 
-  res.setHeader("Content-Type", "text/html");
+  res.setHeader("Content-Type", "text/html")
+  res.setHeader("Server", serverInfo)
+
   var s = Date.now()
   const context = { url: req.url }
   const renderStream = renderer.renderToStream(context)
