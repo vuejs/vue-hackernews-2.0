@@ -1,7 +1,7 @@
 <template>
   <div>
     <spinner :show="loading"></spinner>
-    <newsListNav :page="page" :maxPage="maxPage" :type="type" v-if="displayedPage > 0"></newsListNav>
+    <news-list-nav :page="page" :maxPage="maxPage" :type="type" v-if="displayedPage > 0"></news-list-nav>
     <transition :name="transition">
       <div class="news-list" :key="displayedPage" v-if="displayedPage > 0">
         <transition-group tag="ul" name="item">
@@ -10,7 +10,7 @@
         </transition-group>
       </div>
     </transition>
-    <newsListNav :page="page" :maxPage="maxPage" :type="type" v-if="displayedPage > 0"></newsListNav>
+    <news-list-nav :page="page" :maxPage="maxPage" :type="type" v-if="displayedPage > 0"></news-list-nav>
   </div>
 </template>
 
