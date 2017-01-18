@@ -16,7 +16,7 @@
       </div>
     </div>
     <transition name="fade" mode="out-in">
-      <router-view class="view"></router-view>
+      <router-view></router-view>
     </transition>
   </div>
 </template>
@@ -75,11 +75,6 @@ a
   margin-right 10px
   display inline-block
   vertical-align middle
-
-.view
-  max-width 800px
-  margin 0 auto
-  position relative
 
 .fade-enter-active, .fade-leave-active
   transition all .2s ease
