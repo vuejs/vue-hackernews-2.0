@@ -10,7 +10,7 @@ module.exports = function setupDevServer (app, opts) {
   clientConfig.output.filename = '[name].js'
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   )
 
   // dev middleware
