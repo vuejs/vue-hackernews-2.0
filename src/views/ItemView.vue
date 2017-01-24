@@ -20,7 +20,7 @@
           <spinner :show="loading"></spinner>
         </p>
         <ul v-if="!loading" class="comment-children">
-          <comment v-for="id in item.kids" :id="id"></comment>
+          <comment v-for="id in item.kids" :key="id" :id="id"></comment>
         </ul>
       </div>
     </template>

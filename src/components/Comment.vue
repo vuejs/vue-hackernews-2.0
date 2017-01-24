@@ -13,7 +13,7 @@
       }}</a>
     </div>
     <ul class="comment-children" v-show="open">
-      <comment v-for="id in comment.kids" :id="id"></comment>
+      <comment v-for="id in comment.kids" :key="id" :id="id"></comment>
     </ul>
   </li>
 </template>
