@@ -22,16 +22,8 @@ module.exports = function setupDevServer (app, opts) {
       chunks: false
     }
   })
-  app.use(devMiddleware)
-  clientCompiler.plugin('done', () => {
-    const fs = devMiddleware.fileSystem
-    const filePath = path.join(clientConfig.output.path, 'index.html')
-    if (fs.existsSync(filePath)) {
-      const index = fs.readFileSync(filePath, 'utf-8')
-      opts.indexUpdated(index)
-    }
-  })
 
+  app.use(devMiddleware)
   // hot middleware
   app.use(require('webpack-hot-middleware')(clientCompiler))
 
@@ -40,11 +32,37 @@ module.exports = function setupDevServer (app, opts) {
   const mfs = new MFS()
   const outputPath = path.join(serverConfig.output.path, serverConfig.output.filename)
   serverCompiler.outputFileSystem = mfs
-  serverCompiler.watch({}, (err, stats) => {
-    if (err) throw err
-    stats = stats.toJson()
-    stats.errors.forEach(err => console.error(err))
-    stats.warnings.forEach(err => console.warn(err))
-    opts.bundleUpdated(mfs.readFileSync(outputPath, 'utf-8'))
+
+  let indexHTMLPromise = new Promise((resolve) => {
+    let isIndexHTMLReady = false
+    clientCompiler.plugin('done', () => {
+      const fs = devMiddleware.fileSystem
+      const filePath = path.join(clientConfig.output.path, 'index.html')
+      if (fs.existsSync(filePath)) {
+        const index = fs.readFileSync(filePath, 'utf-8')
+        opts.indexUpdated(index)
+        if (!isIndexHTMLReady) {
+          isIndexHTMLReady = true
+          resolve()
+        }
+      }
+    })
   })
+
+  let serverBundlePromise = new Promise((resolve) => {
+    let isServerBundleReady = false
+    serverCompiler.watch({}, (err, stats) => {
+      if (err) throw err
+      stats = stats.toJson()
+      stats.errors.forEach(err => console.error(err))
+      stats.warnings.forEach(err => console.warn(err))
+      opts.bundleUpdated(mfs.readFileSync(outputPath, 'utf-8'))
+      if (!isServerBundleReady) {
+        isServerBundleReady = true
+        resolve()
+      }
+    })
+  })
+
+  return Promise.all([indexHTMLPromise, serverBundlePromise])
 }
