@@ -8,6 +8,13 @@
     <link rel="shortcut icon" sizes="48x48" href="/public/logo-48.png">
     <meta name="theme-color" content="#f60">
     <link rel="manifest" href="/manifest.json">
+    <% for (var chunk of webpack.chunks) { %>
+      <% for (var file of chunk.files) { %>
+        <% if (file.match(/\.(js|css)$/)) { %>
+          <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>">
+        <% } %>
+      <% } %>
+    <% } %>
   </head>
   <body>
     <!-- APP -->
