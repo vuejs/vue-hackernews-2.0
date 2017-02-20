@@ -1,4 +1,5 @@
 import 'es6-promise/auto'
+import 'object-assign-polyfill'
 import { app, store } from './app'
 
 // prime the store with server-initialized state.

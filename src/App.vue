@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <header class="header">
       <nav class="inner">
         <router-link to="/" exact>

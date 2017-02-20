@@ -7,6 +7,7 @@ module.exports = {
     app: './src/client-entry.js',
     vendor: [
       'es6-promise',
+      'object-assign-polyfill',
       'firebase/app',
       'firebase/database',
       'vue',
