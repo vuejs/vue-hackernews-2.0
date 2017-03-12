@@ -98,6 +98,9 @@ const store = new Vuex.Store({
     // this Array may not be fully fetched.
     activeItems (state, getters) {
       return getters.activeIds.map(id => state.items[id]).filter(_ => _)
+    },
+    menus (state) { 
+      return Object.keys(state.lists)
     }
   }
 })

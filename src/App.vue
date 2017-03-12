@@ -5,7 +5,7 @@
         <router-link to="/" exact>
           <img class="logo" src="~public/logo-48.png" alt="logo">
         </router-link>
-        <router-link v-for="item in Object.keys(this.$store.state.lists)" :to="'/'+item">{{ item }}</router-link>
+        <router-link v-for="item in this.$store.getters.menus" :to="'/'+item">{{ item }}</router-link>
         <a class="github" href="https://github.com/vuejs/vue-hackernews-2.0" target="_blank">
           Built with Vue.js
         </a>
