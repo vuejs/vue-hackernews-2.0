@@ -4,7 +4,7 @@
   "author": "Evan You <yyx990803@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "node server",
+    "dev": "cross-env NODE_ENV=development node server",
     "start": "cross-env NODE_ENV=production node server",
     "build": "rimraf dist && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
