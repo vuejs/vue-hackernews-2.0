@@ -26,6 +26,7 @@
     "vue": "^2.2.4",
     "vue-router": "^2.3.0",
     "vue-server-renderer": "^2.2.4",
+    "vue-style-loader": "^2.0.4",
     "vuex": "^2.2.1",
     "vuex-router-sync": "^4.1.2"
   },
