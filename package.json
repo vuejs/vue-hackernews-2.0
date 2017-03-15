@@ -11,8 +11,8 @@
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
   },
   "engines": {
-    "node": ">=6.0",
-    "npm": ">=3.0"
+    "node": ">=7.0",
+    "npm": ">=4.0"
   },
   "dependencies": {
     "compression": "^1.6.2",
