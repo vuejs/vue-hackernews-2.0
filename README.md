@@ -18,6 +18,7 @@ HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side render
   - Vue + vue-router + vuex working together
   - Server-side data pre-fetching
   - Client-side state & DOM hydration
+  - Automatically inlines CSS used by rendered components only
 - Single-file Vue Components
   - Hot-reload in development
   - CSS extraction for production
