@@ -28,7 +28,8 @@
     "vue-server-renderer": "^2.2.4",
     "vue-style-loader": "^2.0.4",
     "vuex": "^2.2.1",
-    "vuex-router-sync": "^4.1.2"
+    "vuex-router-sync": "^4.1.2",
+    "webpack-merge": "^4.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.7",
