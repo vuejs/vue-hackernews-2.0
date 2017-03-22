@@ -20,7 +20,7 @@ Object.keys(filters).forEach(key => {
 const app = new Vue({
   router,
   store,
-  ...App
+  render: h => h(App)
 })
 
 // expose the app, the router and the store.
