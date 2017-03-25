@@ -1,8 +1,13 @@
 const path = require('path')
 const vueConfig = require('./vue-loader.config')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  devtool: '#source-map',
+  devtool: isProd
+    ? false
+    : '#cheap-module-eval-source-map',
   entry: {
     app: './src/entry-client.js',
     vendor: [
@@ -52,6 +57,10 @@ module.exports = {
     ]
   },
   performance: {
-    hints: process.env.NODE_ENV === 'production' ? 'warning' : false
-  }
+    maxEntrypointSize: 300000,
+    hints: isProd ? 'warning' : false
+  },
+  plugins: isProd ? [] : [
+    new FriendlyErrorsPlugin()
+  ]
 }
