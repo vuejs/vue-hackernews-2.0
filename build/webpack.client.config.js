@@ -4,8 +4,10 @@ const base = require('./webpack.base.config')
 const vueConfig = require('./vue-loader.config')
 const HTMLPlugin = require('html-webpack-plugin')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
+const VueSSRPlugin = require('vue-ssr-webpack-plugin').client
 
 const config = merge(base, {
+  entry: './src/entry-client.js',
   resolve: {
     alias: {
       'create-api': './create-api-client.js'
@@ -19,23 +21,33 @@ const config = merge(base, {
     }),
     // extract vendor chunks for better caching
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
+      name: 'vendor',
+      minChunks: function (module) {
+       // this assumes your vendor imports exist in the node_modules directory
+       return module.context && module.context.indexOf('node_modules') !== -1;
+      }
+    }),
+    // extract webpack runtime & manifest to avoid vendor chunk hash changing
+    // on every build.
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest'
     }),
     // generate output HTML
     new HTMLPlugin({
       template: 'src/index.template.html'
-    })
+    }),
+    new VueSSRPlugin()
   ]
 })
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
     // minify JS
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false
+    //   }
+    // }),
     // auto generate service worker
     new SWPrecachePlugin({
       cacheId: 'vue-hn',

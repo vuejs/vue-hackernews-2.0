@@ -8,18 +8,6 @@ module.exports = {
   devtool: isProd
     ? false
     : '#cheap-module-eval-source-map',
-  entry: {
-    app: './src/entry-client.js',
-    vendor: [
-      'es6-promise/auto',
-      'firebase/app',
-      'firebase/database',
-      'vue',
-      'vue-router',
-      'vuex',
-      'vuex-router-sync'
-    ]
-  },
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/dist/',
