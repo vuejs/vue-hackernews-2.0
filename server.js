@@ -3,27 +3,7 @@ const path = require('path')
 const express = require('express')
 const favicon = require('serve-favicon')
 const compression = require('compression')
-const createFileMapper = require('./mapFiles')
 const resolve = file => path.resolve(__dirname, file)
-
-const serverStats = require('./dist/server-stats.json')
-const clientStats = require('./dist/client-stats.json')
-
-const clientInitialFiles = []
-const clientAsyncFiles = []
-clientStats.chunks.forEach(chunk => {
-  chunk.files.forEach(file => {
-    if (chunk.initial) {
-      clientInitialFiles.push(file)
-    } else {
-      clientAsyncFiles.push(file)
-    }
-  })
-})
-
-const clientInitialFileLinks = clientInitialFiles.map(file => {
-  return `<link rel="preload" href="/dist/${file}" as="${ /\.css$/.test(file) ? 'style' : 'script' }">`
-}).join('')
 
 const isProd = process.env.NODE_ENV === 'production'
 const serverInfo =
@@ -32,7 +12,7 @@ const serverInfo =
 
 const app = express()
 
-let renderer, mapFiles
+let renderer
 if (isProd) {
   // In production: create server renderer using server bundle and index HTML
   // template from real fs.
@@ -41,26 +21,29 @@ if (isProd) {
   // src/index.template.html is processed by html-webpack-plugin to inject
   // build assets and output as dist/index.html.
   const template = fs.readFileSync(resolve('./dist/index.html'), 'utf-8')
-  mapFiles = createFileMapper(serverStats, clientStats)
-  renderer = createRenderer(bundle, template)
+  renderer = createRenderer(bundle, {
+    template,
+    manifest: {
+      server: require('./dist/vue-ssr-manifest-server.json'),
+      client: require('./dist/vue-ssr-manifest-client.json')
+    }
+  })
 } else {
-  mapFiles = () => []
   // In development: setup the dev server with watch and hot-reload,
   // and create a new renderer on bundle / index template update.
-  require('./build/setup-dev-server')(app, (bundle, template) => {
-    renderer = createRenderer(bundle, template)
+  require('./build/setup-dev-server')(app, (bundle, options) => {
+    renderer = createRenderer(bundle, options)
   })
 }
 
-function createRenderer (bundle, template) {
+function createRenderer (bundle, options) {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
-  return require('vue-server-renderer').createBundleRenderer(bundle, {
-    template,
+  return require('vue-server-renderer').createBundleRenderer(bundle, Object.assign(options, {
     cache: require('lru-cache')({
       max: 1000,
       maxAge: 1000 * 60 * 15
     })
-  })
+  }))
 }
 
 const serve = (path, cache) => express.static(resolve(path), {
@@ -98,27 +81,6 @@ app.get('*', (req, res) => {
   const context = { url: req.url }
   renderer.renderToStream(context)
     .on('error', errorHandler)
-    .on('beforeStart', () => {
-      // load the needed async chunk
-      const usedFiles = Object.keys(context._evaluatedFiles)
-      const neededFiles = mapFiles(usedFiles)
-      context.asyncChunks = neededFiles.map(file => {
-        return `<script src="/dist/${file}"></script>`
-      }).join('')
-
-      // preload initial chunks
-      context.head = (context.head || '') + clientInitialFileLinks
-
-      // prefetch async chunks
-      const laterFiles = clientAsyncFiles.map(file => {
-        if (neededFiles.indexOf(file) < 0) {
-          return `<link rel="prefetch" href="/dist/${file}" as="script">`
-        } else {
-          return ''
-        }
-      }).join('')
-      context.head += laterFiles
-    })
     .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
     .pipe(res)
 })

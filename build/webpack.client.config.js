@@ -4,7 +4,7 @@ const base = require('./webpack.base.config')
 const vueConfig = require('./vue-loader.config')
 const HTMLPlugin = require('html-webpack-plugin')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
-const VueSSRPlugin = require('vue-ssr-webpack-plugin').client
+const VueSSRClientPlugin = require('vue-ssr-webpack-plugin').client
 
 const config = merge(base, {
   entry: './src/entry-client.js',
@@ -36,18 +36,18 @@ const config = merge(base, {
     new HTMLPlugin({
       template: 'src/index.template.html'
     }),
-    new VueSSRPlugin()
+    new VueSSRClientPlugin()
   ]
 })
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
     // minify JS
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
     // auto generate service worker
     new SWPrecachePlugin({
       cacheId: 'vue-hn',
