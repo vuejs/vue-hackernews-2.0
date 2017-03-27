@@ -4,6 +4,7 @@ const express = require('express')
 const favicon = require('serve-favicon')
 const compression = require('compression')
 const resolve = file => path.resolve(__dirname, file)
+const { createBundleRenderer } = require('vue-server-renderer')
 
 const isProd = process.env.NODE_ENV === 'production'
 const serverInfo =
@@ -12,7 +13,18 @@ const serverInfo =
 
 const app = express()
 
+function createRenderer (bundle, options) {
+  // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
+  return createBundleRenderer(bundle, Object.assign(options, {
+    cache: require('lru-cache')({
+      max: 1000,
+      maxAge: 1000 * 60 * 15
+    })
+  }))
+}
+
 let renderer
+
 if (isProd) {
   // In production: create server renderer using server bundle and index HTML
   // template from real fs.
@@ -23,6 +35,9 @@ if (isProd) {
   const template = fs.readFileSync(resolve('./dist/index.html'), 'utf-8')
   renderer = createRenderer(bundle, {
     template,
+    // server and client manifests are optional, but they allow the renderer
+    // to automatically add preload/prefetch links and directly add <script>
+    // tags for any async chunks used during render, avoiding waterfall requests.
     manifest: {
       server: require('./dist/vue-ssr-manifest-server.json'),
       client: require('./dist/vue-ssr-manifest-client.json')
@@ -34,16 +49,6 @@ if (isProd) {
   require('./build/setup-dev-server')(app, (bundle, options) => {
     renderer = createRenderer(bundle, options)
   })
-}
-
-function createRenderer (bundle, options) {
-  // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
-  return require('vue-server-renderer').createBundleRenderer(bundle, Object.assign(options, {
-    cache: require('lru-cache')({
-      max: 1000,
-      maxAge: 1000 * 60 * 15
-    })
-  }))
 }
 
 const serve = (path, cache) => express.static(resolve(path), {
