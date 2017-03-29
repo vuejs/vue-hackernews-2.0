@@ -45,3 +45,19 @@ npm run build
 # serve in production mode
 npm start
 ```
+
+## Build Setup with Docker Compose
+
+``` bash
+# install dependencies
+docker-compose build
+
+# serve in dev mode, with hot reload at localhost:8080
+docker-compose run --service-ports web npm run dev
+
+# build for production
+docker-compose run web npm run build
+
+# serve in production mode
+docker-compose up
+```
