@@ -38,13 +38,10 @@ if (isProd) {
   const template = fs.readFileSync(resolve('./dist/index.html'), 'utf-8')
   renderer = createRenderer(bundle, {
     template,
-    // server and client manifests are optional, but they allow the renderer
-    // to automatically add preload/prefetch links and directly add <script>
+    // The client manifests are optional, but it allows the renderer
+    // to automatically infer preload/prefetch links and directly add <script>
     // tags for any async chunks used during render, avoiding waterfall requests.
-    manifest: {
-      server: require('./dist/vue-ssr-manifest-server.json'),
-      client: require('./dist/vue-ssr-manifest-client.json')
-    }
+    clientManifest: require('./dist/vue-ssr-client-manifest.json')
   })
 } else {
   // In development: setup the dev server with watch and hot-reload,
