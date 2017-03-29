@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const base = require('./webpack.base.config')
 const vueConfig = require('./vue-loader.config')
-const HTMLPlugin = require('html-webpack-plugin')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const VueSSRClientPlugin = require('vue-ssr-webpack-plugin').client
 
@@ -31,10 +30,6 @@ const config = merge(base, {
     // on every build.
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest'
-    }),
-    // generate output HTML
-    new HTMLPlugin({
-      template: 'src/index.template.html'
     }),
     new VueSSRClientPlugin()
   ]
