@@ -44,7 +44,7 @@
     "sw-precache-webpack-plugin": "^0.9.1",
     "url-loader": "^0.5.8",
     "vue-loader": "^11.1.4",
-    "vue-ssr-webpack-plugin": "^1.0.2",
+    "vue-ssr-webpack-plugin": "^2.0.0",
     "vue-template-compiler": "^2.2.4",
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.10.1",

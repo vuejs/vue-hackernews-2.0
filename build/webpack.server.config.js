@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const base = require('./webpack.base.config')
-const VueSSRServerPlugin = require('vue-ssr-webpack-plugin').server
+const { VueSSRServerPlugin } = require('vue-ssr-webpack-plugin')
 
 module.exports = merge(base, {
   target: 'node',
