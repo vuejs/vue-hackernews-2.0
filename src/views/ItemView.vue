@@ -39,7 +39,7 @@ function fetchItem (store) {
 
 // recursively fetch all descendent comments
 function fetchComments (store, item) {
-  if (item.kids) {
+  if (item && item.kids) {
     return store.dispatch('FETCH_ITEMS', {
       ids: item.kids
     }).then(() => Promise.all(item.kids.map(id => {
