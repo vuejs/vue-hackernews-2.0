@@ -26,8 +26,7 @@ function createRenderer (bundle, options) {
       maxAge: 1000 * 60 * 15
     }),
     // this is only needed when vue-server-renderer is npm-linked
-    basedir: resolve('./dist'),
-    directMode: true
+    basedir: resolve('./dist')
   }))
 }
 
