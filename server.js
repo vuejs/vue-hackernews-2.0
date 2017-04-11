@@ -83,7 +83,7 @@ app.get('*', (req, res) => {
   res.setHeader("Content-Type", "text/html")
   res.setHeader("Server", serverInfo)
 
-  const errorHandler = err => {
+  const handleError = err => {
     if (err && err.code === 404) {
       res.status(404).end('404 | Page Not Found')
     } else {
@@ -98,31 +98,25 @@ app.get('*', (req, res) => {
   if (cacheable) {
     const hit = pageCache.get(req.url)
     if (hit) {
-      console.log(`cache hit!`)
+      if (!isProd) {
+        console.log(`cache hit!`)
+      }
       return res.end(hit)
     }
   }
 
-  const context = { url: req.url }
-  const stream = renderer.renderToStream(context)
-
-  if (cacheable) {
-    let content = ''
-    stream
-      .on('data', chunk => {
-        content += chunk.toString()
-      })
-      .on('end', () => {
-        pageCache.set(req.url, content)
-      })
-  }
-
-  stream
-    .on('error', errorHandler)
-    .on('end', () => {
+  renderer.renderToString({ url: req.url }, (err, html) => {
+    if (err) {
+      return handleError(err)
+    }
+    res.end(html)
+    if (cacheable) {
+      pageCache.set(req.url, html)
+    }
+    if (!isProd) {
       console.log(`whole request: ${Date.now() - s}ms`)
-    })
-    .pipe(res)
+    }
+  })
 })
 
 const port = process.env.PORT || 8080
