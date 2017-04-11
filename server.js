@@ -13,6 +13,8 @@ const serverInfo =
 const app = express()
 
 let renderer
+let responsePromise // wait for renderer and template both ready, then we can do the http response
+
 if (isProd) {
   // In production: create server renderer using server bundle and index HTML
   // template from real fs.
@@ -22,10 +24,11 @@ if (isProd) {
   // build assets and output as dist/index.html.
   const template = fs.readFileSync(resolve('./dist/index.html'), 'utf-8')
   renderer = createRenderer(bundle, template)
+  responsePromise = Promise.resolve() // set ready immediately
 } else {
   // In development: setup the dev server with watch and hot-reload,
   // and create a new renderer on bundle / index template update.
-  require('./build/setup-dev-server')(app, (bundle, template) => {
+  responsePromise = require('./build/setup-dev-server')(app, (bundle, template) => {
     renderer = createRenderer(bundle, template)
   })
 }
@@ -53,30 +56,30 @@ app.use('/manifest.json', serve('./manifest.json', true))
 app.use('/service-worker.js', serve('./dist/service-worker.js'))
 
 app.get('*', (req, res) => {
-  if (!renderer) {
-    return res.end('waiting for compilation... refresh in a moment.')
-  }
+  responsePromise.then(doResponse)
+  
+  function doResponse () {
+    const s = Date.now()
 
-  const s = Date.now()
+    res.setHeader("Content-Type", "text/html")
+    res.setHeader("Server", serverInfo)
 
-  res.setHeader("Content-Type", "text/html")
-  res.setHeader("Server", serverInfo)
-
-  const errorHandler = err => {
-    if (err && err.code === 404) {
-      res.status(404).end('404 | Page Not Found')
-    } else {
-      // Render Error Page or Redirect
-      res.status(500).end('500 | Internal Server Error')
-      console.error(`error during render : ${req.url}`)
-      console.error(err)
+    const errorHandler = err => {
+      if (err && err.code === 404) {
+        res.status(404).end('404 | Page Not Found')
+      } else {
+        // Render Error Page or Redirect
+        res.status(500).end('500 | Internal Server Error')
+        console.error(`error during render : ${req.url}`)
+        console.error(err)
+      }
     }
-  }
 
-  renderer.renderToStream({ url: req.url })
-    .on('error', errorHandler)
-    .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
-    .pipe(res)
+    renderer.renderToStream({ url: req.url })
+      .on('error', errorHandler)
+      .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
+      .pipe(res)
+  }
 })
 
 const port = process.env.PORT || 8080
