@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const LRU = require('lru-cache')
 const express = require('express')
 const favicon = require('serve-favicon')
 const compression = require('compression')
@@ -20,12 +21,13 @@ function createRenderer (bundle, options) {
   return createBundleRenderer(bundle, Object.assign(options, {
     template,
     // for component caching
-    cache: require('lru-cache')({
+    cache: LRU({
       max: 1000,
       maxAge: 1000 * 60 * 15
     }),
     // this is only needed when vue-server-renderer is npm-linked
     basedir: resolve('./dist'),
+    directMode: true
   }))
 }
 
@@ -61,6 +63,17 @@ app.use('/public', serve('./public', true))
 app.use('/manifest.json', serve('./manifest.json', true))
 app.use('/service-worker.js', serve('./dist/service-worker.js'))
 
+// 1-second microcache.
+const pageCache = LRU({
+  maxAge: 1000
+})
+
+// since this app has no user-specific content, every page is cacheable.
+// if your app involves user-specific content, you need to implement custom
+// logic to determine whether a request is cacheable based on its url and
+// headers.
+const isCacheable = req => true
+
 app.get('*', (req, res) => {
   if (!renderer) {
     return res.end('waiting for compilation... refresh in a moment.')
@@ -82,10 +95,34 @@ app.get('*', (req, res) => {
     }
   }
 
+  const cacheable = isCacheable(req)
+  if (cacheable) {
+    const hit = pageCache.get(req.url)
+    if (hit) {
+      console.log(`cache hit!`)
+      return res.end(hit)
+    }
+  }
+
   const context = { url: req.url }
-  renderer.renderToStream(context)
+  const stream = renderer.renderToStream(context)
+
+  if (cacheable) {
+    let content = ''
+    stream
+      .on('data', chunk => {
+        content += chunk.toString()
+      })
+      .on('end', () => {
+        pageCache.set(req.url, content)
+      })
+  }
+
+  stream
     .on('error', errorHandler)
-    .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
+    .on('end', () => {
+      console.log(`whole request: ${Date.now() - s}ms`)
+    })
     .pipe(res)
 })
 
