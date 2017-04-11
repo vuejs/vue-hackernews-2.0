@@ -65,6 +65,7 @@ app.use('/service-worker.js', serve('./dist/service-worker.js'))
 
 // 1-second microcache.
 const pageCache = LRU({
+  max: 100,
   maxAge: 1000
 })
 
@@ -99,31 +100,25 @@ app.get('*', (req, res) => {
   if (cacheable) {
     const hit = pageCache.get(req.url)
     if (hit) {
-      console.log(`cache hit!`)
+      if (!isProd) {
+        console.log(`cache hit!`)
+      }
       return res.end(hit)
     }
   }
 
-  const context = { url: req.url }
-  const stream = renderer.renderToStream(context)
-
-  if (cacheable) {
-    let content = ''
-    stream
-      .on('data', chunk => {
-        content += chunk.toString()
-      })
-      .on('end', () => {
-        pageCache.set(req.url, content)
-      })
-  }
-
-  stream
-    .on('error', errorHandler)
-    .on('end', () => {
+  renderer.renderToString({ url: req.url }, (err, html) => {
+    if (err) {
+      return handleError(err)
+    }
+    res.end(html)
+    if (cacheable) {
+      pageCache.set(req.url, html)
+    }
+    if (!isProd) {
       console.log(`whole request: ${Date.now() - s}ms`)
-    })
-    .pipe(res)
+    }
+  })
 })
 
 const port = process.env.PORT || 8080
