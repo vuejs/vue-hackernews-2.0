@@ -37,11 +37,12 @@ export default {
   },
 
   data () {
+    const isInitialRender = !this.$root._isMounted
     return {
       loading: false,
       transition: 'slide-up',
-      displayedPage: Number(this.$store.state.route.params.page) || 1,
-      displayedItems: this.$store.getters.activeItems
+      displayedPage: isInitialRender ? Number(this.$store.state.route.params.page) || 1 : -1,
+      displayedItems: isInitialRender ? this.$store.getters.activeItems : []
     }
   },
 
