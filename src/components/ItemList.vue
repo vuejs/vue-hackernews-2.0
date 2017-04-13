@@ -22,9 +22,7 @@
 <script>
 import Spinner from './Spinner.vue'
 import Item from './Item.vue'
-import { watchList } from '../store/api'
-
-let isInitialRender = true
+import { watchList } from '../api'
 
 export default {
   name: 'item-list',
@@ -39,18 +37,13 @@ export default {
   },
 
   data () {
-    const data = {
+    const isInitialRender = !this.$root._isMounted
+    return {
       loading: false,
       transition: 'slide-up',
-      // if this is the initial render, directly render with the store state
-      // otherwise this is a page switch, start with blank and wait for data load.
-      // we need these local state so that we can precisely control the timing
-      // of the transitions.
       displayedPage: isInitialRender ? Number(this.$store.state.route.params.page) || 1 : -1,
       displayedItems: isInitialRender ? this.$store.getters.activeItems : []
     }
-    isInitialRender = false
-    return data
   },
 
   computed: {

@@ -1,4 +1,4 @@
-import { app, router, store } from './app'
+import { createApp } from './app'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -9,6 +9,8 @@ const isDev = process.env.NODE_ENV !== 'production'
 // return a Promise that resolves to the app instance.
 export default context => {
   const s = isDev && Date.now()
+
+  const { app, router, store } = createApp()
 
   return new Promise((resolve, reject) => {
     // set router's location

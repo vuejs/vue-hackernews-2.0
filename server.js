@@ -8,6 +8,7 @@ const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
 
 const isProd = process.env.NODE_ENV === 'production'
+const useMicroCache = process.env.MICRO_CACHE !== 'false'
 const serverInfo =
   `express/${require('express/package.json').version} ` +
   `vue-server-renderer/${require('vue-server-renderer/package.json').version}`
@@ -26,7 +27,8 @@ function createRenderer (bundle, options) {
       maxAge: 1000 * 60 * 15
     }),
     // this is only needed when vue-server-renderer is npm-linked
-    basedir: resolve('./dist')
+    basedir: resolve('./dist'),
+    directMode: true
   }))
 }
 
@@ -62,9 +64,9 @@ app.use('/public', serve('./public', true))
 app.use('/manifest.json', serve('./manifest.json', true))
 app.use('/service-worker.js', serve('./dist/service-worker.js'))
 
-// 1-second micro-cache.
+// 1-second microcache.
 // https://www.nginx.com/blog/benefits-of-microcaching-nginx/
-const pageCache = LRU({
+const microCache = LRU({
   max: 100,
   maxAge: 1000
 })
@@ -73,7 +75,7 @@ const pageCache = LRU({
 // if your app involves user-specific content, you need to implement custom
 // logic to determine whether a request is cacheable based on its url and
 // headers.
-const isCacheable = req => true
+const isCacheable = req => useMicroCache
 
 app.get('*', (req, res) => {
   if (!renderer) {
@@ -98,7 +100,7 @@ app.get('*', (req, res) => {
 
   const cacheable = isCacheable(req)
   if (cacheable) {
-    const hit = pageCache.get(req.url)
+    const hit = microCache.get(req.url)
     if (hit) {
       if (!isProd) {
         console.log(`cache hit!`)
@@ -113,7 +115,7 @@ app.get('*', (req, res) => {
     }
     res.end(html)
     if (cacheable) {
-      pageCache.set(req.url, html)
+      microCache.set(req.url, html)
     }
     if (!isProd) {
       console.log(`whole request: ${Date.now() - s}ms`)
