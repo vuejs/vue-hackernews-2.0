@@ -3,9 +3,10 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-import createListView from '../views/CreateListView'
-import ItemView from '../views/ItemView.vue'
-import UserView from '../views/UserView.vue'
+// route-level code splitting
+const createListView = id => () => System.import('../views/CreateListView').then(m => m.default(id))
+const ItemView = () => System.import('../views/ItemView.vue')
+const UserView = () => System.import('../views/UserView.vue')
 
 export function createRouter () {
   return new Router({
