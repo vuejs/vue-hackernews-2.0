@@ -2,7 +2,7 @@ import {
   fetchUser,
   fetchItems,
   fetchIdsByType
-} from './api'
+} from '../api'
 
 export default {
   // ensure data for rendering given list type

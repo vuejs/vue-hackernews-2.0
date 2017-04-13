@@ -1,10 +1,16 @@
 // this is aliased in webpack config based on server/client build
-import api from 'create-api'
+import { createAPI } from 'create-api'
+
+const api = createAPI({
+  version: '/v0',
+  config: {
+    databaseURL: 'https://hacker-news.firebaseio.com'
+  }
+})
 
 // warm the front page cache every 15 min
 // make sure to do this only once across all requests
-if (api.onServer && !api.warmCacheStarted) {
-  api.warmCacheStarted = true
+if (api.onServer) {
   warmCache()
 }
 
