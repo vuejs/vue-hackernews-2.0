@@ -6,7 +6,9 @@ const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
 const config = merge(base, {
-  entry: './src/entry-client.js',
+  entry: {
+    app: './src/entry-client.js'
+  },
   resolve: {
     alias: {
       'create-api': './create-api-client.js'
