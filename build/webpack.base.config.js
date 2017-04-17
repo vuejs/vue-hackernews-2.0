@@ -7,7 +7,7 @@ const isProd = process.env.NODE_ENV === 'production'
 module.exports = {
   devtool: isProd
     ? false
-    : '#cheap-module-eval-source-map',
+    : '#cheap-module-source-map',
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/dist/',
