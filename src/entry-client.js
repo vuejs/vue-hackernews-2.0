@@ -1,5 +1,19 @@
+import Vue from 'vue'
 import 'es6-promise/auto'
 import { createApp } from './app'
+
+// a global mixin to invoke fetchData on the client
+Vue.mixin({
+  beforeMount () {
+    const { fetchData } = this.$options
+    if (fetchData) {
+      this.dataPromise = fetchData(
+        this.$store,
+        this.$route.params
+      )
+    }
+  }
+})
 
 const { app, router, store } = createApp()
 

@@ -23,12 +23,16 @@ export default context => {
       if (!matchedComponents.length) {
         reject({ code: 404 })
       }
-      // Call preFetch hooks on components matched by the route.
+      // Call fetchData hooks on components matched by the route.
       // A preFetch hook dispatches a store action and returns a Promise,
       // which is resolved when the action is complete and store state has been
       // updated.
       Promise.all(matchedComponents.map(component => {
-        return component.preFetch && component.preFetch(store)
+        return component.fetchData && component.fetchData(
+          store,
+          router.currentRoute.params,
+          context
+        )
       })).then(() => {
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // After all preFetch hooks are resolved, our store is now

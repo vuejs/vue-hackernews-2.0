@@ -21,11 +21,8 @@
 
 <script>
 import { watchList } from '../api'
-import { setTitle } from '../util/set-title'
 import Item from '../components/Item.vue'
 import Spinner from '../components/Spinner.vue'
-
-const camelize = str => str.charAt(0).toUpperCase() + str.slice(1)
 
 export default {
   name: 'item-list',
@@ -62,12 +59,7 @@ export default {
     }
   },
 
-  serverRendered (context) {
-    setTitle(camelize(this.type), context)
-  },
-
   beforeMount () {
-    setTitle(camelize(this.type))
     if (this.$root._isMounted) {
       this.loadItems(this.page)
     }

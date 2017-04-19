@@ -1,4 +1,4 @@
-export function setTitle (title, context) {
+export const setTitle = (title, context) => {
   title = `Vue HN 2.0 | ${title}`
   if (context) {
     // server

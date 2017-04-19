@@ -3,7 +3,7 @@ import App from './App.vue'
 import { createStore } from './store'
 import { createRouter } from './router'
 import { sync } from 'vuex-router-sync'
-import * as filters from './filters'
+import * as filters from './util/filters'
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {

@@ -1,4 +1,7 @@
 import ItemList from './ItemList.vue'
+import { setTitle } from '../util/title'
+
+const camelize = str => str.charAt(0).toUpperCase() + str.slice(1)
 
 // This is a factory function for dynamically creating root-level list views,
 // since they share most of the logic except for the type of items to display.
@@ -6,10 +9,13 @@ import ItemList from './ItemList.vue'
 export default function createListView (type) {
   return {
     name: `${type}-stories-view`,
-    // this will be called during SSR to pre-fetch data into the store!
-    preFetch (store) {
-      return store.dispatch('FETCH_LIST_DATA', { type })
+
+    fetchData (store, params, context) {
+      return store.dispatch('FETCH_LIST_DATA', { type }).then(() => {
+        setTitle(camelize(type), context)
+      })
     },
+
     render (h) {
       return h(ItemList, { props: { type }})
     }

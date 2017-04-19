@@ -28,14 +28,39 @@
 </template>
 
 <script>
-import { setTitle } from '../util/set-title'
+import { setTitle } from '../util/title'
 import Spinner from '../components/Spinner.vue'
 import Comment from '../components/Comment.vue'
 
-function fetchItem (store) {
-  return store.dispatch('FETCH_ITEMS', {
-    ids: [store.state.route.params.id]
-  })
+export default {
+  name: 'item-view',
+  components: { Spinner, Comment },
+
+  data: () => ({
+    loading: true
+  }),
+
+  computed: {
+    item () {
+      return this.$store.state.items[this.$route.params.id]
+    }
+  },
+
+  fetchData (store, params, context) {
+    return store.dispatch('FETCH_ITEMS', { ids: [params.id] }).then(() => {
+      const item = store.state.items[params.id]
+      setTitle(item.title, context)
+    })
+  },
+
+  // on the client, fetch all comments
+  beforeMount () {
+    this.dataPromise.then(() => {
+      fetchComments(this.$store, this.item).then(() => {
+        this.loading = false
+      })
+    })
+  }
 }
 
 // recursively fetch all descendent comments
@@ -46,35 +71,6 @@ function fetchComments (store, item) {
     }).then(() => Promise.all(item.kids.map(id => {
       return fetchComments(store, store.state.items[id])
     })))
-  }
-}
-
-export default {
-  name: 'item-view',
-  components: { Spinner, Comment },
-  data () {
-    return {
-      loading: true
-    }
-  },
-  computed: {
-    item () {
-      return this.$store.state.items[this.$route.params.id]
-    }
-  },
-  // on the server, only fetch the item itself
-  preFetch: fetchItem,
-  serverRendered (context) {
-    setTitle(this.item.title, context)
-  },
-  // on the client, fetch item + comments
-  beforeMount () {
-    fetchItem(this.$store).then(() => {
-      setTitle(this.item.title)
-      fetchComments(this.$store, this.item).then(() => {
-        this.loading = false
-      })
-    })
   }
 }
 </script>
