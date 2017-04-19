@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { setTitle } from '../util/set-title'
 import Spinner from '../components/Spinner.vue'
 import Comment from '../components/Comment.vue'
 
@@ -48,13 +49,6 @@ function fetchComments (store, item) {
   }
 }
 
-function fetchItemAndComments (store) {
-  return fetchItem(store).then(() => {
-    const { items, route } = store.state
-    return fetchComments(store, items[route.params.id])
-  })
-}
-
 export default {
   name: 'item-view',
   components: { Spinner, Comment },
@@ -70,10 +64,16 @@ export default {
   },
   // on the server, only fetch the item itself
   preFetch: fetchItem,
-  // on the client, fetch everything
+  serverRendered (context) {
+    setTitle(this.item.title, context)
+  },
+  // on the client, fetch item + comments
   beforeMount () {
-    fetchItemAndComments(this.$store).then(() => {
-      this.loading = false
+    fetchItem(this.$store).then(() => {
+      setTitle(this.item.title)
+      fetchComments(this.$store, this.item).then(() => {
+        this.loading = false
+      })
     })
   }
 }

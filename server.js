@@ -28,7 +28,8 @@ function createRenderer (bundle, options) {
     }),
     // this is only needed when vue-server-renderer is npm-linked
     basedir: resolve('./dist'),
-    directMode: true
+    // recommended for performance
+    runInNewContext: false
   }))
 }
 

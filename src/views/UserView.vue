@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { setTitle } from '../util/set-title'
 import Spinner from '../components/Spinner.vue'
 
 function fetchUser (store) {
@@ -34,8 +35,13 @@ export default {
     }
   },
   preFetch: fetchUser,
+  serverRendered (context) {
+    setTitle(this.user.id, context)
+  },
   beforeMount () {
-    fetchUser(this.$store)
+    fetchUser(this.$store).then(() => {
+      setTitle(this.user.id)
+    })
   }
 }
 </script>
