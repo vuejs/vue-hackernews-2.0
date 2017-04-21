@@ -8,11 +8,10 @@ const isDev = process.env.NODE_ENV !== 'production'
 // Since data fetching is async, this function is expected to
 // return a Promise that resolves to the app instance.
 export default context => {
-  const s = isDev && Date.now()
-
-  const { app, router, store } = createApp()
-
   return new Promise((resolve, reject) => {
+    const s = isDev && Date.now()
+    const { app, router, store } = createApp()
+
     // set router's location
     router.push(context.url)
 
@@ -30,7 +29,7 @@ export default context => {
       Promise.all(matchedComponents.map(component => {
         return component.fetchData && component.fetchData(
           store,
-          router.currentRoute.params,
+          router.currentRoute,
           context
         )
       })).then(() => {
@@ -44,6 +43,6 @@ export default context => {
         context.state = store.state
         resolve(app)
       }).catch(reject)
-    })
+    }, reject)
   })
 }

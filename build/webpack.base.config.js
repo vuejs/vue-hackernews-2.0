@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const vueConfig = require('./vue-loader.config')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
@@ -48,7 +49,7 @@ module.exports = {
     maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false
   },
-  plugins: isProd ? [] : [
-    new FriendlyErrorsPlugin()
-  ]
+  plugins: isProd
+    ? [new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false }})]
+    : [new FriendlyErrorsPlugin()]
 }

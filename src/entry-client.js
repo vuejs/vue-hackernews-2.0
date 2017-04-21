@@ -9,7 +9,7 @@ Vue.mixin({
     if (fetchData) {
       this.dataPromise = fetchData(
         this.$store,
-        this.$route.params
+        this.$route
       )
     }
   }
