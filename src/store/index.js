@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { fetchItems, fetchIdsByType, fetchUser } from './api'
-
+import lists from './lists'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -10,13 +10,7 @@ const store = new Vuex.Store({
     itemsPerPage: 20,
     items: {/* [id: number]: Item */},
     users: {/* [id: string]: User */},
-    lists: {
-      top: [/* number */],
-      new: [],
-      show: [],
-      ask: [],
-      job: []
-    }
+    lists 
   },
 
   actions: {
@@ -104,6 +98,9 @@ const store = new Vuex.Store({
     // this Array may not be fully fetched.
     activeItems (state, getters) {
       return getters.activeIds.map(id => state.items[id]).filter(_ => _)
+    },
+    menus (state) { 
+      return Object.keys(state.lists)
     }
   }
 })

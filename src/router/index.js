@@ -15,22 +15,21 @@ Vue.use(Router)
 // If using Babel, `import()` can be supported via
 // babel-plugin-syntax-dynamic-import.
 
-const createListView = name => () =>
-  System.import('../views/CreateListView').then(m => m.createListView(name))
+import lists from '../store/lists'
 const ItemView = () => System.import('../views/ItemView.vue')
 const UserView = () => System.import('../views/UserView.vue')
-
+const createListView = name => () =>
+  System.import('../views/CreateListView').then(m => m.createListView(name))
+const createListRoutes = ()=> 
+  Object.keys(lists).map( key => ({ path: `/${key}/:page(\\d+)?`, component: createListView(key) }))
+  
 export default new Router({
   mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
-  routes: [
-    { path: '/top/:page(\\d+)?', component: createListView('top') },
-    { path: '/new/:page(\\d+)?', component: createListView('new') },
-    { path: '/show/:page(\\d+)?', component: createListView('show') },
-    { path: '/ask/:page(\\d+)?', component: createListView('ask') },
-    { path: '/job/:page(\\d+)?', component: createListView('job') },
+  routes: [    
     { path: '/item/:id(\\d+)', component: ItemView },
     { path: '/user/:id', component: UserView },
-    { path: '/', redirect: '/top' }
+    { path: '/', redirect: '/top' },
+    ...createListRoutes()
   ]
 })
