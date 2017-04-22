@@ -27,7 +27,7 @@ export default context => {
       // which is resolved when the action is complete and store state has been
       // updated.
       Promise.all(matchedComponents.map(component => {
-        return component.fetchData && component.fetchData(
+        return component.asyncData && component.asyncData(
           store,
           router.currentRoute,
           context

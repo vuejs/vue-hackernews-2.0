@@ -46,7 +46,7 @@ export default {
     }
   },
 
-  fetchData (store, { params: { id }}, context) {
+  asyncData (store, { params: { id }}, context) {
     return store.dispatch('FETCH_ITEMS', { ids: [id] }).then(() => {
       const item = store.state.items[id]
       setTitle(item.title, context)

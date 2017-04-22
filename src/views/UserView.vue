@@ -30,7 +30,7 @@ export default {
     }
   },
 
-  fetchData (store, { params: { id }}, context) {
+  asyncData (store, { params: { id }}, context) {
     return store.dispatch('FETCH_USER', { id }).then(() => {
       const user = store.state.users[id]
       setTitle(user.id, context)

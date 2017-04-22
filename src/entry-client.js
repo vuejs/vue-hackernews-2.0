@@ -5,9 +5,9 @@ import { createApp } from './app'
 // a global mixin to invoke fetchData on the client
 Vue.mixin({
   beforeMount () {
-    const { fetchData } = this.$options
-    if (fetchData) {
-      this.dataPromise = fetchData(
+    const { asyncData } = this.$options
+    if (asyncData) {
+      this.dataPromise = asyncData(
         this.$store,
         this.$route
       )
