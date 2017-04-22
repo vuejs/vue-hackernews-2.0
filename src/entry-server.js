@@ -27,11 +27,11 @@ export default context => {
       // which is resolved when the action is complete and store state has been
       // updated.
       Promise.all(matchedComponents.map(component => {
-        return component.asyncData && component.asyncData(
+        return component.asyncData && component.asyncData({
           store,
-          router.currentRoute,
-          context
-        )
+          route: router.currentRoute,
+          ssrContext: context
+        })
       })).then(() => {
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // After all preFetch hooks are resolved, our store is now

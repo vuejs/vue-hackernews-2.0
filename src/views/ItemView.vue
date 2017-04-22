@@ -46,20 +46,33 @@ export default {
     }
   },
 
-  asyncData (store, { params: { id }}, context) {
+  // We only fetch the item itself before entering the view, because
+  // it might take a long time to load threads with hundreds of comments
+  // due to how the HN Firebase API works.
+  asyncData ({ store, route: { params: { id }}, ssrContext }) {
     return store.dispatch('FETCH_ITEMS', { ids: [id] }).then(() => {
       const item = store.state.items[id]
-      setTitle(item.title, context)
+      setTitle(item.title, ssrContext)
     })
   },
 
-  // on the client, fetch all comments
+  // Fetch comments when mounted on the client
   beforeMount () {
-    this.dataPromise.then(() => {
+    this.fetchComments()
+  },
+
+  // refetch comments if item changed
+  watch: {
+    item: 'fetchComments'
+  },
+
+  methods: {
+    fetchComments () {
+      this.loading = true
       fetchComments(this.$store, this.item).then(() => {
         this.loading = false
       })
-    })
+    }
   }
 }
 

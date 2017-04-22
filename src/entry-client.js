@@ -2,15 +2,17 @@ import Vue from 'vue'
 import 'es6-promise/auto'
 import { createApp } from './app'
 
-// a global mixin to invoke fetchData on the client
+// a global mixin that calls `asyncData` when a route component's params change
 Vue.mixin({
-  beforeMount () {
+  beforeRouteUpdate (to, from, next) {
     const { asyncData } = this.$options
     if (asyncData) {
-      this.dataPromise = asyncData(
-        this.$store,
-        this.$route
-      )
+      asyncData({
+        store: this.$store,
+        route: to
+      }).then(next)
+    } else {
+      next()
     }
   }
 })
@@ -26,6 +28,17 @@ if (window.__INITIAL_STATE__) {
 // wait until router has resolved all async before hooks
 // and async components...
 router.onReady(() => {
+  // add router hook for handling asyncData
+  // doing it after initial route is resolved so that we don't double-fetch
+  // the data that we already have.
+  router.beforeResolve((to, from, next) => {
+    Promise.all(router.getMatchedComponents(to).map(c => {
+      if (c.asyncData) {
+        return c.asyncData({ store, route: to })
+      }
+    })).then(next)
+  })
+
   // actually mount to DOM
   app.$mount('#app')
 })

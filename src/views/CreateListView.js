@@ -10,9 +10,9 @@ export default function createListView (type) {
   return {
     name: `${type}-stories-view`,
 
-    asyncData (store, route, context) {
+    asyncData ({ store, ssrContext }) {
       return store.dispatch('FETCH_LIST_DATA', { type }).then(() => {
-        setTitle(camelize(type), context)
+        setTitle(camelize(type), ssrContext)
       })
     },
 

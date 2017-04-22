@@ -1,6 +1,6 @@
 <template>
   <div class="user-view">
-    <spinner :show="!user"></spinner>
+    <spinner :show="!userLoaded"></spinner>
     <template v-if="user">
       <h1>User : {{ user.id }}</h1>
       <ul class="meta">
@@ -12,6 +12,9 @@
         <a :href="'https://news.ycombinator.com/submitted?id=' + user.id">submissions</a> |
         <a :href="'https://news.ycombinator.com/threads?id=' + user.id">comments</a>
       </p>
+    </template>
+    <template v-else-if="user === false">
+      <h1>User not found.</h1>
     </template>
   </div>
 </template>
@@ -27,13 +30,16 @@ export default {
   computed: {
     user () {
       return this.$store.state.users[this.$route.params.id]
+    },
+    userLoaded () {
+      return this.$route.params.id in this.$store.state.users
     }
   },
 
-  asyncData (store, { params: { id }}, context) {
+  asyncData ({ store, route: { params: { id }}, ssrContext }) {
     return store.dispatch('FETCH_USER', { id }).then(() => {
       const user = store.state.users[id]
-      setTitle(user.id, context)
+      setTitle(user ? user.id : 'User not found', ssrContext)
     })
   }
 }
