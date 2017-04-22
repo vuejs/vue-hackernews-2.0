@@ -1,6 +1,5 @@
 <template>
   <div class="user-view">
-    <spinner :show="!userLoaded"></spinner>
     <template v-if="user">
       <h1>User : {{ user.id }}</h1>
       <ul class="meta">
@@ -21,18 +20,13 @@
 
 <script>
 import { setTitle } from '../util/title'
-import Spinner from '../components/Spinner.vue'
 
 export default {
   name: 'user-view',
-  components: { Spinner },
 
   computed: {
     user () {
       return this.$store.state.users[this.$route.params.id]
-    },
-    userLoaded () {
-      return this.$route.params.id in this.$store.state.users
     }
   },
 

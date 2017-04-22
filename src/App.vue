@@ -92,8 +92,6 @@ a
     padding 15px 30px
 
 @media (max-width 600px)
-  body
-    font-size 14px
   .header
     .inner
       padding 15px
