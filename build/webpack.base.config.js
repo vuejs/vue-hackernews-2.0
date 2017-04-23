@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const vueConfig = require('./vue-loader.config')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -49,7 +50,9 @@ module.exports = {
     maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false
   },
-  plugins: isProd
+  plugins: [
+    new ExtractTextPlugin({ filename: 'common.[chunkhash].css' })
+  ].concat(isProd
     ? [new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false }})]
-    : [new FriendlyErrorsPlugin()]
+    : [new FriendlyErrorsPlugin()])
 }
