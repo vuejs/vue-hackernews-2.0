@@ -34,11 +34,10 @@ export default {
   },
 
   data () {
-    const isInitialRender = !this.$root._isMounted
     return {
-      transition: 'slide-up',
-      displayedPage: isInitialRender ? Number(this.$store.state.route.params.page) || 1 : -1,
-      displayedItems: isInitialRender ? this.$store.getters.activeItems : []
+      transition: 'slide-right',
+      displayedPage: Number(this.$store.state.route.params.page) || 1,
+      displayedItems: this.$store.getters.activeItems
     }
   },
 
@@ -132,11 +131,11 @@ export default {
     padding 0
     margin 0
 
-.slide-left-enter, .slide-right-leave-active
+.slide-left-enter, .slide-right-leave-to
   opacity 0
   transform translate(30px, 0)
 
-.slide-left-leave-active, .slide-right-enter
+.slide-left-leave-to, .slide-right-enter
   opacity 0
   transform translate(-30px, 0)
 
