@@ -50,9 +50,16 @@ module.exports = {
     maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false
   },
-  plugins: [
-    new ExtractTextPlugin({ filename: 'common.[chunkhash].css' })
-  ].concat(isProd
-    ? [new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false }})]
-    : [new FriendlyErrorsPlugin()])
+  plugins: isProd
+    ? [
+        new webpack.optimize.UglifyJsPlugin({
+          compress: { warnings: false }
+        }),
+        new ExtractTextPlugin({
+          filename: 'common.[chunkhash].css'
+        })
+      ]
+    : [
+        new FriendlyErrorsPlugin()
+      ]
 }
