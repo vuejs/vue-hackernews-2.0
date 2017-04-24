@@ -40,7 +40,10 @@ router.onReady(() => {
   router.beforeResolve((to, from, next) => {
     const matched = router.getMatchedComponents(to)
     const prevMatched = router.getMatchedComponents(from)
-    const activated = matched.filter(c => prevMatched.indexOf(c) < 0)
+    let diffed = false
+    const activated = matched.filter((c, i) => {
+      return diffed || (diffed = (prevMatched[i] !== c))
+    })
     if (!activated.length) {
       return next()
     }
