@@ -24,6 +24,11 @@ const config = merge(base, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module) {
+        // do not put CSS into the vendor chunk so that it can be extracted
+        // otherwise extract-text-webpack-plugin will be confused
+        if (/\.(css|styl(us)?|less|sass|scss)(\?[^.]+)?$/.test(module.userRequest)) {
+          return false
+        }
        // this assumes your vendor imports exist in the node_modules directory
        return module.context && module.context.indexOf('node_modules') !== -1;
       }

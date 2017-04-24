@@ -16,6 +16,8 @@ module.exports = merge(base, {
       'create-api': './create-api-server.js'
     }
   },
+  // note: if a dependency needs to be processed by webpack, e.g. it exports
+  // CSS or raw *.vue files, do not include it in externals!
   externals: Object.keys(require('../package.json').dependencies),
   plugins: [
     new webpack.DefinePlugin({
