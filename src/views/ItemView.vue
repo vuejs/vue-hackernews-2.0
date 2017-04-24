@@ -114,10 +114,8 @@ function fetchComments (store, item) {
   padding 1em 0
   position relative
   .spinner
-    position absolute
-    top 0
-    right 0
-    bottom auto
+    display inline-block
+    margin -15px 0
 
 .comment-children
   list-style-type none
