@@ -29,8 +29,8 @@ const config = merge(base, {
         if (/\.(css|styl(us)?|less|sass|scss)(\?[^.]+)?$/.test(module.userRequest)) {
           return false
         }
-       // this assumes your vendor imports exist in the node_modules directory
-       return module.context && module.context.indexOf('node_modules') !== -1;
+        // this assumes your vendor imports exist in the node_modules directory
+        return module.context && module.context.indexOf('node_modules') !== -1
       }
     }),
     // extract webpack runtime & manifest to avoid vendor chunk hash changing
