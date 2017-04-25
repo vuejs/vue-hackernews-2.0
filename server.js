@@ -106,7 +106,11 @@ function render (req, res) {
     }
   }
 
-  renderer.renderToString({ url: req.url }, (err, html) => {
+  const context = {
+    title: 'Vue HN 2.0', // default title
+    url: req.url
+  }
+  renderer.renderToString(context, (err, html) => {
     if (err) {
       return handleError(err)
     }

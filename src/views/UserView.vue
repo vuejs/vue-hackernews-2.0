@@ -30,11 +30,14 @@ export default {
     }
   },
 
-  asyncData ({ store, route: { params: { id }}, ssrContext }) {
-    return store.dispatch('FETCH_USER', { id }).then(() => {
-      const user = store.state.users[id]
-      setTitle(user ? user.id : 'User not found', ssrContext)
-    })
+  asyncData ({ store, route: { params: { id }}}) {
+    return store.dispatch('FETCH_USER', { id })
+  },
+
+  title () {
+    return this.user
+      ? this.user.id
+      : 'User not found'
   }
 }
 </script>
