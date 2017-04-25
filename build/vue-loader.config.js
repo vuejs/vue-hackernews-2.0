@@ -1,14 +1,5 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
-const isProd = process.env.NODE_ENV === 'production'
-
 module.exports = {
-  loaders: isProd ? {
-    stylus: ExtractTextPlugin.extract({
-      use: 'css-loader?minimize!stylus-loader',
-      fallback: 'vue-style-loader'
-    })
-  } : {},
+  extractCSS: process.env.NODE_ENV === 'production',
   preserveWhitespace: false,
   postcss: [
     require('autoprefixer')({
