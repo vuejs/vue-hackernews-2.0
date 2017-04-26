@@ -58,9 +58,9 @@ export default {
     margin-top -10px
   .meta, .host
     font-size .85em
-    color #999
+    color #828282
     a
-      color #999
+      color #828282
       text-decoration underline
       &:hover
         color #ff6600

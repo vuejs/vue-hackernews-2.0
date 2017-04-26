@@ -100,7 +100,7 @@ function fetchComments (store, item) {
     margin 0
     margin-right .5em
   .host, .meta, .meta a
-    color #999
+    color #828282
   .meta a
     text-decoration underline
 
