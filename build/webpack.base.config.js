@@ -43,6 +43,15 @@ module.exports = {
           limit: 10000,
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.css$/,
+        use: isProd
+          ? ExtractTextPlugin.extract({
+              use: 'css-loader?minimize',
+              fallback: 'vue-style-loader'
+            })
+          : ['vue-style-loader', 'css-loader']
       }
     ]
   },
