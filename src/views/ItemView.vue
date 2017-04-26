@@ -28,13 +28,53 @@
 </template>
 
 <script>
+import { setTitle } from '../util/title'
 import Spinner from '../components/Spinner.vue'
 import Comment from '../components/Comment.vue'
 
-function fetchItem (store) {
-  return store.dispatch('FETCH_ITEMS', {
-    ids: [store.state.route.params.id]
-  })
+export default {
+  name: 'item-view',
+  components: { Spinner, Comment },
+
+  data: () => ({
+    loading: true
+  }),
+
+  computed: {
+    item () {
+      return this.$store.state.items[this.$route.params.id]
+    }
+  },
+
+  // We only fetch the item itself before entering the view, because
+  // it might take a long time to load threads with hundreds of comments
+  // due to how the HN Firebase API works.
+  asyncData ({ store, route: { params: { id }}}) {
+    return store.dispatch('FETCH_ITEMS', { ids: [id] })
+  },
+
+  title () {
+    return this.item.title
+  },
+
+  // Fetch comments when mounted on the client
+  beforeMount () {
+    this.fetchComments()
+  },
+
+  // refetch comments if item changed
+  watch: {
+    item: 'fetchComments'
+  },
+
+  methods: {
+    fetchComments () {
+      this.loading = true
+      fetchComments(this.$store, this.item).then(() => {
+        this.loading = false
+      })
+    }
+  }
 }
 
 // recursively fetch all descendent comments
@@ -45,36 +85,6 @@ function fetchComments (store, item) {
     }).then(() => Promise.all(item.kids.map(id => {
       return fetchComments(store, store.state.items[id])
     })))
-  }
-}
-
-function fetchItemAndComments (store) {
-  return fetchItem(store).then(() => {
-    const { items, route } = store.state
-    return fetchComments(store, items[route.params.id])
-  })
-}
-
-export default {
-  name: 'item-view',
-  components: { Spinner, Comment },
-  data () {
-    return {
-      loading: true
-    }
-  },
-  computed: {
-    item () {
-      return this.$store.state.items[this.$route.params.id]
-    }
-  },
-  // on the server, only fetch the item itself
-  preFetch: fetchItem,
-  // on the client, fetch everything
-  beforeMount () {
-    fetchItemAndComments(this.$store).then(() => {
-      this.loading = false
-    })
   }
 }
 </script>
@@ -105,10 +115,8 @@ export default {
   padding 1em 0
   position relative
   .spinner
-    position absolute
-    top 0
-    right 0
-    bottom auto
+    display inline-block
+    margin -15px 0
 
 .comment-children
   list-style-type none

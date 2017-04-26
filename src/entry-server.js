@@ -1,4 +1,4 @@
-import { app, router, store } from './app'
+import { createApp } from './app'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -8,9 +8,10 @@ const isDev = process.env.NODE_ENV !== 'production'
 // Since data fetching is async, this function is expected to
 // return a Promise that resolves to the app instance.
 export default context => {
-  const s = isDev && Date.now()
-
   return new Promise((resolve, reject) => {
+    const s = isDev && Date.now()
+    const { app, router, store } = createApp(context)
+
     // set router's location
     router.push(context.url)
 
@@ -21,12 +22,15 @@ export default context => {
       if (!matchedComponents.length) {
         reject({ code: 404 })
       }
-      // Call preFetch hooks on components matched by the route.
+      // Call fetchData hooks on components matched by the route.
       // A preFetch hook dispatches a store action and returns a Promise,
       // which is resolved when the action is complete and store state has been
       // updated.
       Promise.all(matchedComponents.map(component => {
-        return component.preFetch && component.preFetch(store)
+        return component.asyncData && component.asyncData({
+          store,
+          route: router.currentRoute
+        })
       })).then(() => {
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // After all preFetch hooks are resolved, our store is now
@@ -38,6 +42,6 @@ export default context => {
         context.state = store.state
         resolve(app)
       }).catch(reject)
-    })
+    }, reject)
   })
 }

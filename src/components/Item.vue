@@ -3,7 +3,7 @@
     <span class="score">{{ item.score }}</span>
     <span class="title">
       <template v-if="item.url">
-        <a :href="item.url" target="_blank">{{ item.title }}</a>
+        <a :href="item.url" target="_blank" rel="noopener">{{ item.title }}</a>
         <span class="host"> ({{ item.url | host }})</span>
       </template>
       <template v-else>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { timeAgo } from '../filters'
+import { timeAgo } from '../util/filters'
 
 export default {
   name: 'news-item',

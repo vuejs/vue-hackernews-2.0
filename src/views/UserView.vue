@@ -1,6 +1,5 @@
 <template>
   <div class="user-view">
-    <spinner :show="!user"></spinner>
     <template v-if="user">
       <h1>User : {{ user.id }}</h1>
       <ul class="meta">
@@ -13,29 +12,32 @@
         <a :href="'https://news.ycombinator.com/threads?id=' + user.id">comments</a>
       </p>
     </template>
+    <template v-else-if="user === false">
+      <h1>User not found.</h1>
+    </template>
   </div>
 </template>
 
 <script>
-import Spinner from '../components/Spinner.vue'
-
-function fetchUser (store) {
-  return store.dispatch('FETCH_USER', {
-    id: store.state.route.params.id
-  })
-}
+import { setTitle } from '../util/title'
 
 export default {
   name: 'user-view',
-  components: { Spinner },
+
   computed: {
     user () {
       return this.$store.state.users[this.$route.params.id]
     }
   },
-  preFetch: fetchUser,
-  beforeMount () {
-    fetchUser(this.$store)
+
+  asyncData ({ store, route: { params: { id }}}) {
+    return store.dispatch('FETCH_USER', { id })
+  },
+
+  title () {
+    return this.user
+      ? this.user.id
+      : 'User not found'
   }
 }
 </script>
