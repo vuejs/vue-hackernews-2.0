@@ -30,7 +30,7 @@ HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side render
 
 ## Build Setup
 
-**Requires Node.js 6+**
+**Requires Node.js 7+**
 
 ``` bash
 # install dependencies
