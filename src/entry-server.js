@@ -10,7 +10,7 @@ const isDev = process.env.NODE_ENV !== 'production'
 export default context => {
   return new Promise((resolve, reject) => {
     const s = isDev && Date.now()
-    const { app, router, store } = createApp(context)
+    const { app, router, store } = createApp()
 
     // set router's location
     router.push(context.url)

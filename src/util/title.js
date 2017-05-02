@@ -11,7 +11,7 @@ const serverTitleMixin = {
   created () {
     const title = getTitle(this)
     if (title) {
-      this.$root.$options.ssrContext.title = `Vue HN 2.0 | ${title}`
+      this.$ssrContext.title = `Vue HN 2.0 | ${title}`
     }
   }
 }
