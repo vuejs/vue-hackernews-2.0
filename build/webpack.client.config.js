@@ -54,7 +54,7 @@ if (process.env.NODE_ENV === 'production') {
         '/top': [
           ...glob.sync('./dist/*.js')
         ]
-      },
+      }
     })
   )
 }
