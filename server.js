@@ -4,6 +4,7 @@ const LRU = require('lru-cache')
 const express = require('express')
 const favicon = require('serve-favicon')
 const compression = require('compression')
+const minifyHTML = require('html-minifier').minify
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
 
@@ -114,6 +115,18 @@ function render (req, res) {
     if (err) {
       return handleError(err)
     }
+
+    if (isProd) {
+      html = minifyHTML(html, {
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes: true,
+        collapseInlineTagWhitespace: true,
+        minifyJS: true,
+        minifyCSS: true
+      })
+    }
+
     res.end(html)
     if (cacheable) {
       microCache.set(req.url, html)
