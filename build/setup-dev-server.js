@@ -7,10 +7,9 @@ const serverConfig = require('./webpack.server.config')
 module.exports = function setupDevServer (app, cb) {
   let bundle, clientManifest
   let resolve
-  let resolved = false
   const readyPromise = new Promise(r => { resolve = r })
   const ready = (...args) => {
-    if (!resolved) resolve()
+    resolve()
     cb(...args)
   }
 
