@@ -49,11 +49,25 @@ if (process.env.NODE_ENV === 'production') {
       cacheId: 'vue-hn',
       filename: 'service-worker.js',
       dontCacheBustUrlsMatching: /./,
-      staticFileGlobsIgnorePatterns: [/index\.html$/, /\.map$/],
-      dynamicUrlToDependencies: {
-        '/': glob.sync('./dist/*.js'),
-        '/top': glob.sync('./dist/*.js')
-      }
+      staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
+      runtimeCaching: [
+        {
+          urlPattern: '/',
+          handler: 'networkFirst'
+        },
+        {
+          urlPattern: /\/(top|new|show|ask|jobs)/,
+          handler: 'networkFirst'
+        },
+        {
+          urlPattern: '/item/:id',
+          handler: 'networkFirst'
+        },
+        {
+          urlPattern: '/user/:id',
+          handler: 'networkFirst'
+        }
+      ]
     })
   )
 }
