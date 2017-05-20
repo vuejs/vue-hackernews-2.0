@@ -43,16 +43,18 @@ if (isProd) {
   // to automatically infer preload/prefetch links and directly add <script>
   // tags for any async chunks used during render, avoiding waterfall requests.
   const clientManifest = require('./dist/vue-ssr-client-manifest.json')
-  renderer = createRenderer(bundle, {
-    clientManifest
-  })
+  readyPromise = Promise.resolve([bundle, clientManifest])
 } else {
   // In development: setup the dev server with watch and hot-reload,
   // and create a new renderer on bundle / index template update.
-  readyPromise = require('./build/setup-dev-server')(app, (bundle, options) => {
-    renderer = createRenderer(bundle, options)
-  })
+  readyPromise = require('./build/setup-dev-server')(app)
 }
+
+readyPromise = readyPromise.then(([bundle, clientManifest]) => {
+  renderer = createRenderer(bundle, {
+    clientManifest
+  })
+})
 
 const serve = (path, cache) => express.static(resolve(path), {
   maxAge: cache && isProd ? 60 * 60 * 24 * 30 : 0
@@ -124,7 +126,7 @@ function render (req, res) {
   })
 }
 
-app.get('*', isProd ? render : (req, res) => {
+app.get('*', (req, res) => {
   readyPromise.then(() => render(req, res))
 })
 
