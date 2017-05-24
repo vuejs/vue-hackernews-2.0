@@ -41,6 +41,10 @@ export default {
     }
   },
 
+  HIDE_ITEMS: ({ commit, state }, { id }) => {
+    commit('SET_HIDDEN_ITEMS', id)
+  },
+
   FETCH_USER: ({ commit, state }, { id }) => {
     return state.users[id]
       ? Promise.resolve(state.users[id])

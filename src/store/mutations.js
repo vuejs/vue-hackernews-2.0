@@ -17,6 +17,10 @@ export default {
     })
   },
 
+  SET_HIDDEN_ITEMS: (state, id) => {
+    state.items[id] = {}
+  },
+
   SET_USER: (state, { id, user }) => {
     Vue.set(state.users, id, user || false) /* false means user not found */
   }

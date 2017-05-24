@@ -20,7 +20,9 @@
       </span>
       <span v-if="item.type !== 'job'" class="comments-link">
         | <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
-      </span>
+      </span> &nbsp|
+      <a v-on:click="hideItem"> hide
+      </a>
     </span>
     <span class="label" v-if="item.type !== 'story'">{{ item.type }}</span>
   </li>
@@ -32,6 +34,12 @@ import { timeAgo } from '../util/filters'
 export default {
   name: 'news-item',
   props: ['item'],
+  methods: {
+    hideItem: function(id){
+      this.$store.dispatch('HIDE_ITEMS', {id: this.item.id});
+      this.$emit('hideItem');
+    }
+  },
   // https://github.com/vuejs/vue/tree/dev/packages/vue-server-renderer#component-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`
@@ -62,6 +70,7 @@ export default {
     a
       color #828282
       text-decoration underline
+      cursor pointer
       &:hover
         color #ff6600
 </style>
