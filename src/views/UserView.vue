@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { setTitle } from '../util/title'
 
 export default {
   name: 'user-view',

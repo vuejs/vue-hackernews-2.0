@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { setTitle } from '../util/title'
 import Spinner from '../components/Spinner.vue'
 import Comment from '../components/Comment.vue'
 
