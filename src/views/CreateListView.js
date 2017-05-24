@@ -1,5 +1,4 @@
 import ItemList from './ItemList.vue'
-import { setTitle } from '../util/title'
 
 const camelize = str => str.charAt(0).toUpperCase() + str.slice(1)
 
