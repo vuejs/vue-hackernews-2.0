@@ -3,7 +3,7 @@
     <span class="score">{{ item.score }}</span>
     <span class="title">
       <template v-if="item.url">
-        <a :href="item.url" target="_blank">{{ item.title }}</a>
+        <a :href="item.url" target="_blank" rel="noopener">{{ item.title }}</a>
         <span class="host"> ({{ item.url | host }})</span>
       </template>
       <template v-else>
@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import { timeAgo } from '../filters'
+import { timeAgo } from '../util/filters'
 
 export default {
   name: 'news-item',
   props: ['item'],
-  // https://github.com/vuejs/vue/blob/master/packages/vue-server-renderer/README.md#component-caching
+  // http://ssr.vuejs.org/en/caching.html#component-level-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`
   }
@@ -58,9 +58,9 @@ export default {
     margin-top -10px
   .meta, .host
     font-size .85em
-    color #999
+    color #828282
     a
-      color #999
+      color #828282
       text-decoration underline
       &:hover
         color #ff6600

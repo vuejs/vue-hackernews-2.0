@@ -50,9 +50,9 @@ export default {
     font-size .9em
     margin 1em 0
   .by
-    color #999
+    color #828282
     a
-      color #999
+      color #828282
       text-decoration underline
   .text
     overflow-wrap break-word
@@ -65,7 +65,7 @@ export default {
     padding .3em .5em
     border-radius 4px
     a
-      color #999
+      color #828282
       cursor pointer
     &.open
       padding 0
