@@ -11,8 +11,13 @@
     <link rel="shortcut icon" sizes="48x48" href="/public/logo-48.png">
     <meta name="theme-color" content="#f60">
     <link rel="manifest" href="/manifest.json">
+    <style>
+      #skip a {  position:absolute;  left:-10000px;  top:auto;  width:1px;  height:1px;  overflow:hidden;  }
+      #skip a:focus {  position:static;  width:auto;  height:auto;  }
+    </style>
   </head>
   <body>
-    <!--vue-ssr-outlet-->
+  <div id="skip"><a href="#app">skip to content</a></div>
+  <!--vue-ssr-outlet-->
   </body>
 </html>
