@@ -12,8 +12,15 @@ export default context => {
     const s = isDev && Date.now()
     const { app, router, store } = createApp()
 
+    const { url } = context
+    const fullPath = router.resolve(url).route.fullPath
+
+    if (fullPath !== url) {
+      reject({ url: fullPath })
+    }
+
     // set router's location
-    router.push(context.url)
+    router.push(url)
 
     // wait until router has resolved possible async hooks
     router.onReady(() => {
@@ -26,12 +33,10 @@ export default context => {
       // A preFetch hook dispatches a store action and returns a Promise,
       // which is resolved when the action is complete and store state has been
       // updated.
-      Promise.all(matchedComponents.map(component => {
-        return component.asyncData && component.asyncData({
-          store,
-          route: router.currentRoute
-        })
-      })).then(() => {
+      Promise.all(matchedComponents.map(({ asyncData }) => asyncData && asyncData({
+        store,
+        route: router.currentRoute
+      }))).then(() => {
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // After all preFetch hooks are resolved, our store is now
         // filled with the state needed to render the app.

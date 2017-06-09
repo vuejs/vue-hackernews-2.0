@@ -85,7 +85,9 @@ function render (req, res) {
   res.setHeader("Server", serverInfo)
 
   const handleError = err => {
-    if (err && err.code === 404) {
+    if (err.url) {
+      res.redirect(err.url)
+    } else if(err.code === 404) {
       res.status(404).end('404 | Page Not Found')
     } else {
       // Render Error Page or Redirect

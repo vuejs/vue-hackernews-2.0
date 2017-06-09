@@ -52,7 +52,7 @@ module.exports = function setupDevServer (app, cb) {
   })
 
   // hot middleware
-  app.use(require('webpack-hot-middleware')(clientCompiler))
+  app.use(require('webpack-hot-middleware')(clientCompiler, { heartbeat: 5000 }))
 
   // watch and update server renderer
   const serverCompiler = webpack(serverConfig)
