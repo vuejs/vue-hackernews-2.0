@@ -44,18 +44,18 @@ router.onReady(() => {
     const activated = matched.filter((c, i) => {
       return diffed || (diffed = (prevMatched[i] !== c))
     })
-    if (!activated.length) {
+    const asyncDataHooks = activated.map(c => c.asyncData).filter(_ => _)
+    if (!asyncDataHooks.length) {
       return next()
     }
+
     bar.start()
-    Promise.all(activated.map(c => {
-      if (c.asyncData) {
-        return c.asyncData({ store, route: to })
-      }
-    })).then(() => {
-      bar.finish()
-      next()
-    }).catch(next)
+    Promise.all(asyncDataHooks.map(hook => hook({ store, route: to })))
+      .then(() => {
+        bar.finish()
+        next()
+      })
+      .catch(next)
   })
 
   // actually mount to DOM
