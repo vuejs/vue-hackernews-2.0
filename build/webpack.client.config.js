@@ -44,6 +44,10 @@ const config = merge(base, {
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
+		// ModuleConcatenationPlugin webpack 3.0
+		new webpack.optimize.ModuleConcatenationPlugin()
+	)
+	config.plugins.push(
     // auto generate service worker
     new SWPrecachePlugin({
       cacheId: 'vue-hn',
