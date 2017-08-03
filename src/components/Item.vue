@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { timeAgo } from '../util/filters'
 
 export default {
   name: 'news-item',
