@@ -68,6 +68,10 @@ export default {
 
   methods: {
     fetchComments () {
+      if (!this.item || !this.item.kids) {
+        return
+      }
+
       this.loading = true
       fetchComments(this.$store, this.item).then(() => {
         this.loading = false
