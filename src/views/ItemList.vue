@@ -36,14 +36,14 @@ export default {
   data () {
     return {
       transition: 'slide-right',
-      displayedPage: Number(this.$store.state.route.params.page) || 1,
+      displayedPage: Number(this.$route.params.page) || 1,
       displayedItems: this.$store.getters.activeItems
     }
   },
 
   computed: {
     page () {
-      return Number(this.$store.state.route.params.page) || 1
+      return Number(this.$route.params.page) || 1
     },
     maxPage () {
       const { itemsPerPage, lists } = this.$store.state
