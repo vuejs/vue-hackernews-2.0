@@ -28,7 +28,7 @@
     "vue-router": "^2.7.0",
     "vue-server-renderer": "^2.4.4",
     "vuex": "^2.4.0",
-    "vuex-router-sync": "^4.3.1"
+    "vuex-router-sync": "^4.3.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.4",
@@ -44,7 +44,7 @@
     "stylus-loader": "^3.0.1",
     "sw-precache-webpack-plugin": "^0.11.4",
     "url-loader": "^0.5.9",
-    "vue-loader": "^13.0.4",
+    "vue-loader": "^13.0.5",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
