@@ -11,6 +11,7 @@ const UserView = () => import('../views/UserView.vue')
 export function createRouter () {
   return new Router({
     mode: 'history',
+    fallback: false,
     scrollBehavior: () => ({ y: 0 }),
     routes: [
       { path: '/top/:page(\\d+)?', component: createListView('top') },
