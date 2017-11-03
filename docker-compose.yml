@@ -1,0 +1,16 @@
+version: "3"
+services:
+  web:
+    # replace username/repo:tag with your name and image details
+    image: node:9.0-alpine
+    user: "node"
+    working_dir: /home/node/app
+   # environment:
+    #  - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    command: "npm run dev"
