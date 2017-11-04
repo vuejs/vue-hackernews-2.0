@@ -6,6 +6,9 @@ import { sync } from 'vuex-router-sync'
 import titleMixin from './util/title'
 import * as filters from './util/filters'
 
+// explicitly enable Vue dev-tools
+Vue.config.devtools = true
+
 // mixin for handling title
 Vue.mixin(titleMixin)
 
