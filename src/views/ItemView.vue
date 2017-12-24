@@ -63,7 +63,9 @@ export default {
 
   // refetch comments if item changed
   watch: {
-    item: 'fetchComments'
+    item: function () {
+      !this.loading && this.fetchComments();
+    }
   },
 
   methods: {
