@@ -39,11 +39,11 @@ const config = merge(base, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest'
     }),
+    new VueSSRClientPlugin(),
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),
       to: 'static/test/for/plugin/bug/'
     }]),
-    new VueSSRClientPlugin()
   ]
 })
 
