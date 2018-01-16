@@ -3,6 +3,8 @@ const merge = require('webpack-merge')
 const base = require('./webpack.base.config')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require('path')
 
 const config = merge(base, {
   entry: {
@@ -37,7 +39,11 @@ const config = merge(base, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest'
     }),
-    new VueSSRClientPlugin()
+    new VueSSRClientPlugin(),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static'),
+      to: 'static/test/for/plugin/bug/'
+    }]),
   ]
 })
 

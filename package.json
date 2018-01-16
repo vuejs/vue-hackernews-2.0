@@ -52,6 +52,7 @@
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.20.0",
     "webpack-merge": "^4.1.1",
-    "webpack-node-externals": "^1.6.0"
+    "webpack-node-externals": "^1.6.0",
+    "copy-webpack-plugin": "latest"
   }
 }
