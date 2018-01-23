@@ -20,7 +20,7 @@ describe('HackerNews', () => {
     cy.contains('.news-list-nav a', '< prev')
       .should('have.class', 'disabled')
   })
-  it.only('goes to comments and back', () => {
+  it('goes to comments and back', () => {
     // see comments for the first story
     cy.get('.news-item')
       .first().find('.meta .comments-link')
