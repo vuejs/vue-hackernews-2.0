@@ -5,7 +5,7 @@ import Vue from 'vue'
 const mountVue = require('cypress-vue-unit-test')
 /* eslint-env mocha */
 /* global cy */
-describe('Item', () => {
+describe.skip('Item', () => {
   const template = `<news-item item="item"></news-item>`
   const components = {
     'news-item': Item,
