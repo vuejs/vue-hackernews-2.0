@@ -28,11 +28,12 @@ describe('Without ServiceWorker', () => {
   beforeEach(clearCaches)
 
   beforeEach(() => {
+    const clearSW = win => {
+      neverRegisterSW(win)
+      return unregisterWorkers(win)
+    }
     cy.visit('/', {
-      onBeforeLoad: win => {
-        neverRegisterSW(win)
-        return unregisterWorkers(win)
-      }
+      onBeforeLoad: clearSW
     })
   })
 
