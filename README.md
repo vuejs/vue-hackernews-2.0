@@ -1,5 +1,7 @@
 # vue-hackernews-2.0
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bahmutov/vue-hackernews-2.0.svg)](https://greenkeeper.io/)
+
 HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side rendering.
 
 <p align="center">
