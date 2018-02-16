@@ -1,4 +1,4 @@
 {
-  "baseUrl": "https://vue-hn.now.sh",
+  "baseUrl": "http://localhost:8080",
   "projectId": "b1sfu5"
 }

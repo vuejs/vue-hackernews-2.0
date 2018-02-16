@@ -6,4 +6,4 @@ cache:
     - ~/.npm
     - node_modules
 script:
-  - $(npm bin)/cypress run --record
+  - npm run ci:record
