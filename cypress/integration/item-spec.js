@@ -2,8 +2,10 @@ import VueRouter from 'vue-router'
 import router from '../../src/router'
 import Item from '../../src/components/Item.vue'
 import { timeAgo, host } from '../../src/util/filters'
+import { createRouter } from '../../src/router'
+import VueRouter from 'vue-router'
+import mountVue from 'cypress-vue-unit-test'
 
-const mountVue = require('cypress-vue-unit-test')
 /* eslint-env mocha */
 /* global cy, Cypress */
 describe('Item', () => {
@@ -22,6 +24,7 @@ describe('Item', () => {
       descendants: 42
     }
   }
+
   const extensions = {
     plugins: [VueRouter],
     filters: { timeAgo, host }
@@ -30,6 +33,8 @@ describe('Item', () => {
   const options = {
     extensions
   }
+
+  const router = createRouter()
 
   beforeEach(() => {
     cy.viewport(400, 200)
@@ -41,6 +46,6 @@ describe('Item', () => {
   })
 
   it('has link to comments', () => {
-    cy.contains('router-link', '42 comments')
+    cy.contains('.comments-link > a', '42 comments')
   })
 })

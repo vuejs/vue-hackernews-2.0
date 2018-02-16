@@ -4,6 +4,8 @@
   "author": "Evan You <yyx990803@gmail.com>",
   "private": true,
   "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "dev": "node server",
     "start": "cross-env NODE_ENV=production node server",
     "build": "rimraf dist && npm run build:client && npm run build:server",
