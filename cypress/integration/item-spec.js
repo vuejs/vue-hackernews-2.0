@@ -3,7 +3,6 @@ import router from '../../src/router'
 import Item from '../../src/components/Item.vue'
 import { timeAgo, host } from '../../src/util/filters'
 import { createRouter } from '../../src/router'
-import VueRouter from 'vue-router'
 import mountVue from 'cypress-vue-unit-test'
 
 /* eslint-env mocha */
