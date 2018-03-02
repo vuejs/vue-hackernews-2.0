@@ -27,10 +27,6 @@ describe('HackerNews', () => {
           .click()
         // loader disappears, and comments are there
         cy.get('.item-view-comments-header .spinner').should('not.be.visible')
-        // note: there might be zero comments
-        cy.get('.comment')
-          .should('have.length.gte', 0)
-          .and('be.visible')
         // go to the top news
         cy.get('nav').contains('Top').click()
         cy.url().should('contain', '/top')
