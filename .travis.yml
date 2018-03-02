@@ -7,3 +7,4 @@ cache:
     - node_modules
 script:
   - $(npm bin)/cypress run --record
+os: osx
