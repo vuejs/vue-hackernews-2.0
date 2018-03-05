@@ -3,10 +3,11 @@ const webpack = require('webpack')
 const vueConfig = require('./vue-loader.config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 
-module.exports = {
+const config = {
   devtool: isProd
     ? false
     : '#cheap-module-source-map',
@@ -56,17 +57,32 @@ module.exports = {
     maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false
   },
+  mode: process.env.NODE_ENV || 'production',
   plugins: isProd
     ? [
-        new webpack.optimize.UglifyJsPlugin({
-          compress: { warnings: false }
-        }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new ExtractTextPlugin({
-          filename: 'common.[chunkhash].css'
+          filename: 'common.[chunkhash].css',
+          allChunks: true
         })
       ]
     : [
         new FriendlyErrorsPlugin()
       ]
 }
+
+if(isProd) config.optimization = {
+    ...config.optimization,
+    minimizer: [
+    new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+            compress: {
+                inline: false,
+            },
+        },
+    }),
+],
+}
+
+module.exports = config
