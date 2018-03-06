@@ -56,14 +56,13 @@ module.exports = {
     maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false
   },
+  mode: process.env.NODE_ENV || 'development',
   plugins: isProd
     ? [
-        new webpack.optimize.UglifyJsPlugin({
-          compress: { warnings: false }
-        }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new ExtractTextPlugin({
-          filename: 'common.[chunkhash].css'
+          filename: 'common.[chunkhash].css',
+          allChunks: true
         })
       ]
     : [
