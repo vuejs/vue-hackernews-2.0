@@ -56,7 +56,7 @@ module.exports = {
     maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false
   },
-  mode: process.env.NODE_ENV || 'production',
+  mode: process.env.NODE_ENV || 'development',
   plugins: isProd
     ? [
         new webpack.optimize.ModuleConcatenationPlugin(),
