@@ -1,8 +1,8 @@
 const path = require('path')
 const webpack = require('webpack')
-const vueConfig = require('./vue-loader.config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -26,7 +26,11 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueConfig
+        options: {
+          compilerOptions: {
+            preserveWhitespace: false
+          }
+        }
       },
       {
         test: /\.js$/,
@@ -45,11 +49,31 @@ module.exports = {
         test: /\.css$/,
         use: isProd
           ? ExtractTextPlugin.extract({
-              use: 'css-loader?minimize',
+              use: [
+                {
+                  loader: 'css-loader',
+                  options: { minimize: true }
+                }
+              ],
               fallback: 'vue-style-loader'
             })
           : ['vue-style-loader', 'css-loader']
-      }
+      },
+      {
+        test: /\.styl(us)?$/,
+        use: isProd
+          ? ExtractTextPlugin.extract({
+              use: [
+                {
+                  loader: 'css-loader',
+                  options: { minimize: true }
+                },
+                'stylus-loader'
+              ],
+              fallback: 'vue-style-loader'
+            })
+          : ['vue-style-loader', 'css-loader', 'stylus-loader']
+      },
     ]
   },
   performance: {
@@ -58,6 +82,7 @@ module.exports = {
   },
   plugins: isProd
     ? [
+        new VueLoaderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
           compress: { warnings: false }
         }),
@@ -67,6 +92,7 @@ module.exports = {
         })
       ]
     : [
+        new VueLoaderPlugin(),
         new FriendlyErrorsPlugin()
       ]
 }
