@@ -3,6 +3,14 @@
     ["env", { "modules": false }]
   ],
   "plugins": [
-    "syntax-dynamic-import"
-  ]
+      "syntax-dynamic-import",
+      "transform-runtime"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", { "targets": { "node": "current" }}]
+      ]
+    }
+  }
 }
