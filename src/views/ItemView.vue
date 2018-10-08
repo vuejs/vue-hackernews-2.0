@@ -69,7 +69,7 @@ export default {
   methods: {
     fetchComments () {
       if (!this.item || !this.item.kids) {
-        return
+        return this.loading = false
       }
 
       this.loading = true
