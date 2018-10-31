@@ -8,7 +8,8 @@
     "start": "cross-env NODE_ENV=production node server",
     "build": "rimraf dist && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
-    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules",
+    "test": "NODE_ENV=test jest -c jest.config.js"
   },
   "engines": {
     "node": ">=7.0",
@@ -31,20 +32,26 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@vue/test-utils": "^1.0.0-beta.24",
     "autoprefixer": "^7.1.6",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "chokidar": "^1.7.0",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.5",
     "friendly-errors-webpack-plugin": "^1.6.1",
+    "jest": "^23.5.0",
+    "jest-serializer-vue": "^2.0.2",
     "rimraf": "^2.6.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "sw-precache-webpack-plugin": "^0.11.4",
     "url-loader": "^0.6.2",
+    "vue-jest": "^2.6.0",
     "vue-loader": "^15.0.0-beta.1",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^3.8.1",
