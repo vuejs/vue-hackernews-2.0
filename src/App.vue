@@ -7,6 +7,7 @@
         </router-link>
         <router-link to="/top">Top</router-link>
         <router-link to="/new">New</router-link>
+        <router-link to="/best">Best</router-link>
         <router-link to="/show">Show</router-link>
         <router-link to="/ask">Ask</router-link>
         <router-link to="/job">Jobs</router-link>
@@ -62,7 +63,7 @@ a
     &.router-link-active
       color #fff
       font-weight 400
-    &:nth-child(6)
+    &:nth-child(7)
       margin-right 0
   .github
     color #fff
