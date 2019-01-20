@@ -63,8 +63,7 @@ module.exports = {
     ]
   },
   performance: {
-    maxEntrypointSize: 300000,
-    hints: isProd ? 'warning' : false
+    hints: false
   },
   plugins: isProd
     ? [
