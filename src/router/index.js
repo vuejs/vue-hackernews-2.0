@@ -19,6 +19,7 @@ export function createRouter () {
       { path: '/show/:page(\\d+)?', component: createListView('show') },
       { path: '/ask/:page(\\d+)?', component: createListView('ask') },
       { path: '/job/:page(\\d+)?', component: createListView('job') },
+      { path: '/best/:page(\\d+)?', component: createListView('best') },
       { path: '/item/:id(\\d+)', component: ItemView },
       { path: '/user/:id', component: UserView },
       { path: '/', redirect: '/top' }
