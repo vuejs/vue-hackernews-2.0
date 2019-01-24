@@ -67,6 +67,10 @@ export default {
     })
   },
 
+  mounted() {
+    console.timeStamp('listLinksSpa');
+  },
+
   beforeDestroy () {
     this.unwatchList()
   },
