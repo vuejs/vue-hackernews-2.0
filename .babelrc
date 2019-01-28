@@ -4,5 +4,12 @@
   ],
   "plugins": [
     "syntax-dynamic-import"
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", { "targets": { "node": "current" }}]
+      ]
+    }
+  }
 }

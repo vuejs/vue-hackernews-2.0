@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: circleci/11.8-browsers
+    steps:
+    - checkout # special step to check out source code to working directory
+    - restore_cache: # special step to restore the dependency cache
+        key: dependency-cache-{{ checksum "package.json" }}
+    - run:
+        name: install npm dependencies
+        command: npm install
+    - save_cache: # special step to save the dependency cache
+        key: dependency-cache-{{ checksum "package.json" }}
+        paths:
+        - ./node_modules
+    - run:
+        name: starting a development server
+        command: npm run dev
+        background: true
+    - run:
+        command:
+          - >-
+            while ! nc -z localhost 8080; do
+              sleep 0.1 # wait for 1/10 of the second before check again
+            done
+    - run:
+        name: running unit tests
+        command: npm run test:unit
+    - run:
+        name: running end to end tests
+        command: npm run test:e2e
