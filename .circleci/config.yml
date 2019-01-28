@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-    - image: circleci/11.8-browsers
+    - image: circleci/node:11.8-browsers
     steps:
     - checkout # special step to check out source code to working directory
     - restore_cache: # special step to restore the dependency cache
