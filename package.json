@@ -11,7 +11,7 @@
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules",
     "postinstall": "npm run build",
     "test:unit": "NODE_ENV=test jest --config jest.config.js",
-    "test:e2e": "testcafe 'chrome' tests/e2e/**/*.e2e.js"
+    "test:e2e": "testcafe 'chrome:headless' tests/e2e/**/*.e2e.js"
   },
   "engines": {
     "node": ">=7.0",
