@@ -11,8 +11,7 @@ describe('snapshot - Item.vue', () => {
                     id: 1,
                     score: 22,
                     url: 'https://www.google.com/',
-                    type: 'job',
-                    time: 1548753174935, // Tue Jan 29 2019 10:12:54 GMT+0100
+                    type: 'job'
                 }
             }
         });
