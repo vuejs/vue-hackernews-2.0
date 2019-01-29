@@ -19,7 +19,7 @@ jobs:
         command: npm run dev
         background: true
     - run:
-        name: waiting for server
+        name: waiting for server to be responsive (for e2e)
         command: |
             while ! nc -z localhost 8080; do
               sleep 0.1 # wait for 1/10 of the second before check again
