@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot - Spinner.vue renders correctly 1`] = `
+<div
+  class="progress"
+  style="width: 0%; height: 2px; background-color: rgb(255, 202, 43); opacity: 0;"
+/>
+`;

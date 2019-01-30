@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot - Item.vue renders correctly 1`] = `
+<li
+  class="news-item"
+>
+  <span
+    class="score"
+  >
+    22
+  </span>
+   
+  <span
+    class="title"
+  >
+    <a
+      href="https://www.google.com/"
+      rel="noopener"
+      target="_blank"
+    >
+      
+    </a>
+     
+    <span
+      class="host"
+    >
+       (google.com)
+    </span>
+  </span>
+   
+  <br />
+   
+  <span
+    class="meta"
+  >
+    <!---->
+     
+    <span
+      class="time"
+    >
+      
+      0 days ago
+    
+    </span>
+     
+    <!---->
+  </span>
+   
+  <span
+    class="label"
+  >
+    job
+  </span>
+</li>
+`;

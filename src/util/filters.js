@@ -5,15 +5,15 @@ export function host (url) {
   return parts.join('.')
 }
 
-export function timeAgo (time) {
-  const between = Date.now() / 1000 - Number(time)
-  if (between < 3600) {
-    return pluralize(~~(between / 60), ' minute')
-  } else if (between < 86400) {
-    return pluralize(~~(between / 3600), ' hour')
-  } else {
-    return pluralize(~~(between / 86400), ' day')
-  }
+export function timeAgo (time, fromTime = null) {
+    const between = (fromTime || Date.now()) / 1000 - Number(time)
+    if (between < 3600) {
+        return pluralize(Math.floor(between / 60) || 0, ' minute')
+    } else if (between < 86400) {
+        return pluralize(Math.floor(between / 3600) || 0, ' hour')
+    } else {
+        return pluralize(Math.floor(between / 86400) || 0, ' day')
+    }
 }
 
 function pluralize (time, label) {
