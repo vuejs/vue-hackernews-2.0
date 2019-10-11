@@ -10,16 +10,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
-
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 10.x
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 10.x
     - name: Install npm dependencies and build for deployment
       run: |
         npm install
@@ -27,12 +23,14 @@ jobs:
       env:
         NODE_ENV: production
     - name: Deploy to Server
-      uses: AEnterprise/rsync-deploy@v1.0
+      uses: ./.github/actions/rsync
       env:
-        DEPLOY_KEY: ${{ secrets.SERVER_SSH_KEY }}
+        HOST_NAME: ${{ secrets.HOST_NAME }}
+        HOST_IP: ${{ secrets.HOST_IP }}
+        HOST_FINGERPRINT: ${{ secrets.HOST_FINGERPRINT }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
+        HOST_USERNMAE: wmyoutrack
+        HOST_DESTINATION: "/home/wmyoutrack/nodeapp/"
+        FOLDER: "./"
         ARGS: "-avzr --delete"
-        SERVER_PORT: ${{ secrets.SERVER_PORT }}
-        FOLDER: "nodeapp"
-        SERVER_IP: ${{ secrets.SERVER_IP }}
-        USERNAME: ${{ secrets.USERNAME }}
-        SERVER_DESTINATION: ${{ secrets.SERVER_DESTINATION }}
