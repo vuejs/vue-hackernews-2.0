@@ -37,7 +37,7 @@ HOST_DEPLOY_STRING="$HOST_USERNAME@$HOST_NAME:$HOST_DESTINATION"
 # "args" from main.workflow get append to below call
 # these include source, user, $HOST and target
 printf -- 'Uploading assets... '
-sh -c "rsync --progress --verbose --recursive --delete-after --quiet -e 'ssh -o StrictHostKeyChecking=no' $GITHUB_WORKSPACE/$FOLDER $HOST_DEPLOY_STRING"
+sh -c "rsync $ARGS -e 'ssh -o StrictHostKeyChecking=no' $GITHUB_WORKSPACE/$FOLDER $HOST_DEPLOY_STRING"
 
 printf -- '\033[32m Deployment successful! \033[0m\n'
 printf -- '\n'
