@@ -2,7 +2,7 @@
   <div class="item-view" v-if="item">
     <template v-if="item">
       <div class="item-view-header">
-        <a :href="item.url" target="_blank">
+        <a :href="item.url" target="_blank" rel="noopener noreferrer">
           <h1>{{ item.title }}</h1>
         </a>
         <span v-if="item.url" class="host">
