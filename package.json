@@ -24,6 +24,7 @@
     "express": "^4.16.2",
     "firebase": "7.6.2",
     "lru-cache": "^5.1.1",
+    "mini-css-extract-plugin": "^0.9.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "route-cache": "0.4.4",
@@ -32,7 +33,8 @@
     "vue-router": "^3.0.1",
     "vue-server-renderer": "^2.5.22",
     "vuex": "^3.0.1",
-    "vuex-router-sync": "^5.0.0"
+    "vuex-router-sync": "^5.0.0",
+    "webpack": "^4.41.5"
   },
   "devDependencies": {
     "autoprefixer": "^9.7.3",
