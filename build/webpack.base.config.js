@@ -6,7 +6,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 
 const isProd = process.env.NODE_ENV === 'production'
 const mode = process.env.NODE_ENV || 'development';
-
+// https://www.namecheap.com/blog/production-ready-vue-ssr-in-5-simple-steps/
 module.exports = {
   devtool: isProd
     ? false
@@ -26,9 +26,6 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        manifest: {
-          test: /manifest/
-        },
         vendors: {
           name: "vendors"
         }
@@ -58,6 +55,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
+          esModule: false,
           name: '[name].[ext]?[hash]'
         }
       },
