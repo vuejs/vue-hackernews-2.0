@@ -1,11 +1,12 @@
 const path = require('path')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
 const isProd = process.env.NODE_ENV === 'production'
-
+const mode = process.env.NODE_ENV || 'development';
+// https://www.namecheap.com/blog/production-ready-vue-ssr-in-5-simple-steps/
 module.exports = {
   devtool: isProd
     ? false
@@ -15,10 +16,22 @@ module.exports = {
     publicPath: '/dist/',
     filename: '[name].[chunkhash].js'
   },
+  mode,
   resolve: {
     alias: {
       'public': path.resolve(__dirname, '../public')
     }
+  },
+  //https://stackoverflow.com/questions/49017682/webpack-4-migration-commonschunkplugin
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          name: "vendors"
+        }
+      }
+    },
+    // mimimize default in production
   },
   module: {
     noParse: /es6-promise\.js$/, // avoid webpack shimming process
@@ -42,24 +55,32 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
+          esModule: false,
           name: '[name].[ext]?[hash]'
         }
       },
       {
-        test: /\.styl(us)?$/,
-        use: isProd
-          ? ExtractTextPlugin.extract({
-              use: [
-                {
-                  loader: 'css-loader',
-                  options: { minimize: true }
-                },
-                'stylus-loader'
-              ],
-              fallback: 'vue-style-loader'
-            })
-          : ['vue-style-loader', 'css-loader', 'stylus-loader']
+        test: /\.(styl(us))?$/,
+        use: ['vue-style-loader', 'css-loader', 'stylus-loader']
       },
+      {
+        test: /\.css$/,
+        //exclude: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader',
+          {
+            loader: "postcss-loader",
+            options: {
+              ident: "postcss",
+              plugins: [
+                require("postcss-import"),
+                //require("tailwindcss"),
+                require("autoprefixer")
+              ]
+            }
+          } 
+        ],
+      }
+
     ]
   },
   performance: {
@@ -68,16 +89,13 @@ module.exports = {
   plugins: isProd
     ? [
         new VueLoaderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-          compress: { warnings: false }
-        }),
-        new webpack.optimize.ModuleConcatenationPlugin(),
-        new ExtractTextPlugin({
+        new MiniCssExtractPlugin({
           filename: 'common.[chunkhash].css'
         })
       ]
     : [
         new VueLoaderPlugin(),
+        new MiniCssExtractPlugin({}),
         new FriendlyErrorsPlugin()
       ]
 }
