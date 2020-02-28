@@ -1,5 +1,6 @@
 import Firebase from 'firebase'
 import LRU from 'lru-cache'
+import fetch from 'node-fetch';
 
 export function createAPI ({ config, version }) {
   let api
@@ -28,4 +29,8 @@ export function createAPI ({ config, version }) {
     })
   }
   return api
+}
+
+export function fetchData(...params) {
+  return fetch(...params);
 }

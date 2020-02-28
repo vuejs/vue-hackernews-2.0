@@ -1,7 +1,8 @@
 import {
   fetchUser,
   fetchItems,
-  fetchIdsByType
+  fetchIdsByType,
+  fetchSimilarStories
 } from '../api'
 
 export default {
@@ -35,7 +36,18 @@ export default {
       return false
     })
     if (ids.length) {
-      return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
+      return fetchItems(ids)
+        .then(items => {
+          if (items.every(item => item.type === 'story')) {
+            return Promise.all(items.map(i => fetchSimilarStories(i)))
+              .then(similar => items.map((item, idx) => {
+                item.similar = similar[idx];
+                return item;
+              }))
+          }
+          return items;
+        })
+        .then(items => commit('SET_ITEMS', { items }))
     } else {
       return Promise.resolve()
     }

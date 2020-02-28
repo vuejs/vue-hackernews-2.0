@@ -1,5 +1,5 @@
 // this is aliased in webpack config based on server/client build
-import { createAPI } from 'create-api'
+import { createAPI, fetchData } from 'create-api'
 
 const logRequests = !!process.env.DEBUG_API
 
@@ -73,4 +73,17 @@ export function watchList (type, cb) {
   return () => {
     ref.off('value', handler)
   }
+}
+
+export function fetchSimilarStories(story) {
+  return fetchData('https://textsimilarity.research.peltarion.com/query', {
+    method: 'POST',
+    body: JSON.stringify({
+      query: story.title,
+      dataset: 'hn-sbert',
+      top_n: 5
+    })
+  })
+    .then(resp => resp.json())
+    .then(json => json.entries);
 }

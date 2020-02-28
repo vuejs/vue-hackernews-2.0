@@ -13,6 +13,7 @@
           | by <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
           {{ item.time | timeAgo }} ago
         </p>
+        <similar v-if="item.type === 'story'" :story="item"></similar>
       </div>
       <div class="item-view-comments">
         <p class="item-view-comments-header">
@@ -30,10 +31,11 @@
 <script>
 import Spinner from '../components/Spinner.vue'
 import Comment from '../components/Comment.vue'
+import Similar from '../components/Similar.vue'
 
 export default {
   name: 'item-view',
-  components: { Spinner, Comment },
+  components: { Spinner, Similar, Comment },
 
   data: () => ({
     loading: true

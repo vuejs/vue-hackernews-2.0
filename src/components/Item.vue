@@ -22,15 +22,19 @@
         | <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
       </span>
     </span>
+    <br>
+    <similar v-if="item.type === 'story'" :story="item"></similar>
     <span class="label" v-if="item.type !== 'story'">{{ item.type }}</span>
   </li>
 </template>
 
 <script>
 import { timeAgo } from '../util/filters'
+import Similar from './Similar.vue'
 
 export default {
   name: 'news-item',
+  components: { Similar },
   props: ['item'],
   // http://ssr.vuejs.org/en/caching.html#component-level-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {

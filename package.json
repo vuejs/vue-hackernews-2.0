@@ -23,6 +23,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "firebase": "4.6.2",
     "lru-cache": "^4.1.1",
+    "node-fetch": "^2.6.0",
     "route-cache": "0.4.3",
     "serve-favicon": "^2.4.5",
     "vue": "^2.5.22",
