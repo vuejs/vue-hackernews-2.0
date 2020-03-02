@@ -2,7 +2,7 @@ import {
   fetchUser,
   fetchItems,
   fetchIdsByType,
-  fetchSimilarStories
+  fetchSimilar
 } from '../api'
 
 export default {
@@ -39,7 +39,8 @@ export default {
       return fetchItems(ids)
         .then(items => {
           if (items.every(item => item.type === 'story')) {
-            return Promise.all(items.map(i => fetchSimilarStories(i)))
+
+            return fetchSimilar(items.map(item => item.title))
               .then(similar => items.map((item, idx) => {
                 item.similar = similar[idx];
                 return item;

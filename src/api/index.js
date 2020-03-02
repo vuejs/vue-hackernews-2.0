@@ -75,15 +75,15 @@ export function watchList (type, cb) {
   }
 }
 
-export function fetchSimilarStories(story) {
-  return fetchData('https://textsimilarity.research.peltarion.com/query', {
+export function fetchSimilar(queries) {
+  return fetchData('https://textsimilarity.research.peltarion.com/query/batch', {
     method: 'POST',
     body: JSON.stringify({
-      query: story.title,
+      queries,
       dataset: 'hn-sbert',
       top_n: 5
     })
   })
     .then(resp => resp.json())
-    .then(json => json.entries);
+    .then(json => json.rankings.map(i => i.entries));
 }
