@@ -4,7 +4,7 @@
     <span class="title">Similar: </span>
     <ul class="list" v-if="story.similar && story.similar.length !== 0">
       <li  v-for="sim in story.similar" :key="sim.id">
-        <span class="title">{{ sim.text }}</span>
+        <router-link :to="'/item/' + sim.id">{{ sim.text }}</router-link>
       </li>
     </ul>
     <div v-else class="no-posts">
@@ -29,11 +29,14 @@ export default {
     .title
       font-size .85em
     ul.list, .no-posts
-      background-color #f1f1f1
+      background-color #f3f3f3
       font-size .85em
       margin 4px 0
       padding 8px 12px
       border-radius 4px
       list-style circle inside
+    a
+      color: #828282;
+      text-decoration: underline;
 
 </style>
