@@ -45,6 +45,20 @@ export default {
                 item.similar = similar[idx];
                 return item;
               }))
+              // Start fetching similar posts (potential performance issue...)
+              .then((items) => {
+                return fetchItems(items.map(i => i.similar).flat().map(sim => sim.id))
+                  .then(similarItems => {
+                    items.forEach(item => {
+                      item.similar = item.similar.map(sim => {
+                        const simItem = similarItems.find(si => si.id === sim.id);
+                        return Object.assign({ similarity_score: sim.score }, simItem);
+                      });
+                    });
+                    return items;
+                  });
+              });
+              // Stop fetching similar posts (potential performance issue...)
           }
           return items;
         })

@@ -4,8 +4,8 @@
     <span class="title">Similar: </span>
     <ul class="list" v-if="story.similar && story.similar.length !== 0">
       <li  v-for="sim in story.similar" :key="sim.id">
-        <span class="box" v-bind:style="{ background: getColor(sim.score)}" v-bind:title="sim.score"></span>
-        <router-link :to="'/item/' + sim.id">{{ sim.text }}</router-link>
+        <span class="box" v-bind:style="{ background: getColor(sim.similarity_score)}" v-bind:title="sim.similarity_score"></span>
+        <router-link :to="'/item/' + sim.id">{{ sim.title }} | <b>{{ new Date(sim.time * 1000).getFullYear() }}</b> | {{ sim.descendants }} comments</router-link>
       </li>
     </ul>
     <div v-else class="no-posts">
