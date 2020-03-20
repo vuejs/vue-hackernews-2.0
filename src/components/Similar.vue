@@ -4,7 +4,7 @@
     <span class="title">Similar: </span>
     <ul class="list" v-if="story.similar && story.similar.length !== 0">
       <li  v-for="sim in story.similar" :key="sim.id">
-        <span class="box" v-bind:style="{ background: `rgba(255, 165, 0, ${sim.score})`}" v-bind:title="sim.score"></span>
+        <span class="box" v-bind:style="{ background: getColor(sim.score)}" v-bind:title="sim.score"></span>
         <router-link :to="'/item/' + sim.id">{{ sim.text }}</router-link>
       </li>
     </ul>
@@ -19,7 +19,22 @@
 
 export default {
   name: 'similar-posts',
-  props: ['story']
+  props: ['story'],
+  data: () => {
+    return {
+      colorStops: [
+        { start: 0, stop: 0.7, color: 'rgba(250, 157, 18, 0.5)' },
+        { start: 0.7, stop: 0.8, color: 'rgba(250, 157, 18, 0.75)' },
+        { start: 0.8, stop: 2, color: 'rgba(250, 157, 18, 1)' }
+      ]
+    };
+  },
+  methods: {
+    getColor: function(score) {
+      const found = this.colorStops.find(cs => score.toFixed(2) >= cs.start && score.toFixed(2) < cs.stop);
+      return found.color;
+    }
+  }
 }
 </script>
 
