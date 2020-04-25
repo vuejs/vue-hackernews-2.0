@@ -31,7 +31,7 @@
             href="https://github.com/vuejs/vue-hackernews-2.0"
             target="_blank"
             rel="noopener"
-          >Vue.js</a> and
+          >Vue.js</a>
           <a
             class="github"
             href="https://github.com/nmslib/hnswlib"
@@ -61,7 +61,7 @@ footer {
   width: 100%;
   background-color: #fff;
   height: 40x;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   text-align: center;
 
   .github {
