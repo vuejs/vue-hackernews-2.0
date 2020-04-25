@@ -31,7 +31,7 @@
             href="https://github.com/vuejs/vue-hackernews-2.0"
             target="_blank"
             rel="noopener"
-          >Vue.js</a>
+          >Vue.js</a> and
           <a
             class="github"
             href="https://github.com/nmslib/hnswlib"
