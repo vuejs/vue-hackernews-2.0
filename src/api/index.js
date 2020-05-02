@@ -81,7 +81,7 @@ export function fetchSimilar(queries) {
     body: JSON.stringify({
       queries,
       dataset: 'hn-sbert',
-      top_n: 5
+      top_n: 3
     })
   })
     .then(resp => resp.json())

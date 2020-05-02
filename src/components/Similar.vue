@@ -1,7 +1,7 @@
 
 <template>
   <div class="similar-posts">
-    <span class="title">Similar:</span>
+    <span class="similar-title">Similar stories:</span>
     <ul class="list" v-if="story.similar && story.similar.length !== 0">
       <li v-for="sim in story.similar" :key="sim.id">
         <span
@@ -12,10 +12,10 @@
         <router-link :to="'/item/' + sim.id">
           {{ sim.title }} |
           <b>{{ new Date(sim.time * 1000).getFullYear() }}</b>
-          | {{ sim.descendants }} comments |
+          | {{ sim.descendants }} comments 
         </router-link>
         <client-only>
-          <div>
+          <div class="stars">
             <star-rating
               v-bind:star-size="15"
               active-color="#000000"
@@ -70,6 +70,11 @@ export default {
 </script>
 
 <style lang="stylus">
+.stars {
+  position: absolute;
+  right: 40px;
+}
+
 .similar-posts {
   line-height: 1.2;
 
@@ -80,12 +85,16 @@ export default {
     margin-right: 8px;
   }
 
-  .title {
-    font-size: 0.85em;
+  .similar-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
   }
 
   ul.list, .no-posts {
-    background-color: #f3f3f3;
+    background-color: #fff;
     font-size: 0.85em;
     margin: 4px 0;
     padding: 8px 12px;
@@ -93,6 +102,7 @@ export default {
 
     li {
       padding: 4px;
+      padding-right: 80px;
       display: flex;
       align-items: center;
     }

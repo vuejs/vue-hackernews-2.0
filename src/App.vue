@@ -47,8 +47,12 @@
 <style lang="stylus">
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
   font-size: 15px;
-  background-color: lighten(#eceef1, 30%);
+  background-color: #fff;
   margin: 0;
   padding-top: 55px;
   color: #34495e;
@@ -75,7 +79,7 @@ a {
 }
 
 .header {
-  background-color: #ff6600;
+  background-color: #F7955B;
   position: fixed;
   z-index: 999;
   height: 55px;

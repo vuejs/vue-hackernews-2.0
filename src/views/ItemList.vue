@@ -104,8 +104,13 @@ export default {
   padding-top: 45px;
 }
 
-.news-list-nav, .news-list {
+.news-list-nav {
   background-color: #fff;
+  border-radius: 2px;
+}
+
+.news-list {
+  background: #fff;
   border-radius: 2px;
 }
 
