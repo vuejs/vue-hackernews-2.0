@@ -28,6 +28,7 @@
     "serve-favicon": "^2.4.5",
     "vue": "^2.5.22",
     "vue-client-only": "^2.0.0",
+    "vue-collapsible": "^2.0.0",
     "vue-router": "^3.0.1",
     "vue-server-renderer": "^2.5.22",
     "vue-star-rating": "^1.6.1",

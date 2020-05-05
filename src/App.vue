@@ -49,7 +49,6 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
   line-height: 22px;
   font-size: 15px;
   background-color: #fff;
@@ -95,7 +94,7 @@ a {
   }
 
   a {
-    color: rgba(255, 255, 255, 0.8);
+    color: #111F27;
     line-height: 24px;
     transition: color 0.15s ease;
     display: inline-block;
@@ -110,7 +109,6 @@ a {
 
     &.router-link-active {
       color: #fff;
-      font-weight: 400;
     }
 
     &:nth-child(6) {

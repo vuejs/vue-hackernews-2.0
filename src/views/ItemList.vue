@@ -7,6 +7,17 @@
       <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">more &gt;</router-link>
       <a v-else class="disabled">more &gt;</a>
     </div>
+    <div>
+      <accordion title="Nostalgia HN">
+        <p
+          class="pb-5"
+        >Lorem ipsum dolor sit amet, ut alii voluptaria est, ad illum inimicus deterruisset eam. His eu bonorum adipisci definiebas, no vis nostrud conclusionemque. Ad his virtute accusata, pro habemus singulis temporibus ut, ne bonorum dolores euripidis quo. No nam amet erant intellegebat. Rationibus instructior id pri, vis case abhorreant ea, id sea meis feugiat.</p>
+
+        <p
+          class="pb-5"
+        >Ut vel percipit facilisi, sea partem veritus mandamus eu, at debet deleniti eos. Iudico suscipit mel ut. Per ad habeo sadipscing concludaturque. Pri lorem fastidii in, accusam honestatis signiferumque est ut, ea eos omnium senserit reprehendunt. Eu est nibh invenire.</p>
+      </accordion>
+    </div>
     <transition :name="transition">
       <div class="news-list" :key="displayedPage" v-if="displayedPage > 0">
         <transition-group tag="ul" name="item">
@@ -20,12 +31,14 @@
 <script>
 import { watchList } from "../api";
 import Item from "../components/Item.vue";
+import Accordion from "../components/Accordion.vue";
 
 export default {
   name: "item-list",
 
   components: {
-    Item
+    Item,
+    Accordion
   },
 
   props: {
