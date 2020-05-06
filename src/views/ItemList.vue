@@ -1,23 +1,76 @@
 <template>
   <div class="news-view">
-    <div class="news-list-nav">
-      <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">&lt; prev</router-link>
-      <a v-else class="disabled">&lt; prev</a>
-      <span>{{ page }}/{{ maxPage }}</span>
-      <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">more &gt;</router-link>
-      <a v-else class="disabled">more &gt;</a>
-    </div>
     <div>
-      <accordion title="Nostalgia HN">
-        <p
-          class="pb-5"
-        >Lorem ipsum dolor sit amet, ut alii voluptaria est, ad illum inimicus deterruisset eam. His eu bonorum adipisci definiebas, no vis nostrud conclusionemque. Ad his virtute accusata, pro habemus singulis temporibus ut, ne bonorum dolores euripidis quo. No nam amet erant intellegebat. Rationibus instructior id pri, vis case abhorreant ea, id sea meis feugiat.</p>
+      <accordion class="page-accordion" title="Nostalgia HN">
+        <p>Nostalgia HN is yet another HackerNews clone, but with a slight twist.</p>
+        <p>
+          Each story on the current HackerNews frontpage is presented with the
+          top 3 most similar stories based on their titles between 2006 and
+          2015. More specifically the titles are encoded into semantically
+          meaningful vectors and then ranked using cosine similarity.
+          If you want to learn more check out our
+          <a
+            class="external-link"
+            href="https://twitter.com/phileisn"
+          >blog post</a>.
+        </p>
 
-        <p
-          class="pb-5"
-        >Ut vel percipit facilisi, sea partem veritus mandamus eu, at debet deleniti eos. Iudico suscipit mel ut. Per ad habeo sadipscing concludaturque. Pri lorem fastidii in, accusam honestatis signiferumque est ut, ea eos omnium senserit reprehendunt. Eu est nibh invenire.</p>
+        <p>
+          You will probably notice that your milage may vary.
+          Part of that could be attributed to there just not being a similar
+          story in the past. But, likely, also part of the reason is that the
+          model that encodes the sentences was trained on a different domain.
+          So, you can help to (maybe) improve the results in the
+          making use of the star ranking.
+        </p>
+
+        <p>
+          For feedback and suggestions please reach out to
+          <a
+            class="external-link"
+            href="https://twitter.com/phileisn"
+          >@phileisn</a>.
+        </p>
       </accordion>
+      <p class="credits">
+        Built at
+        <a
+          class="external-link"
+          href="https://peltarion.com/"
+          target="_blank"
+          rel="noopener"
+        >Peltarion</a>
+        using
+        <a
+          class="external-link"
+          href="https://github.com/UKPLab/sentence-transformers"
+          target="_blank"
+          rel="noopener"
+        >sentence-transformers</a>,
+        <a
+          class="external-link"
+          href="https://github.com/vuejs/vue-hackernews-2.0"
+          target="_blank"
+          rel="noopener"
+        >Vue.js</a> and
+        <a
+          class="external-link"
+          href="https://github.com/nmslib/hnswlib"
+          target="_blank"
+          rel="noopener"
+        >hnswlib</a>.
+      </p>
     </div>
+    <div class="footer">
+      <div class="news-list-nav">
+        <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">&lt; prev</router-link>
+        <a v-else class="disabled">&lt; prev</a>
+        <span>{{ page }}/{{ maxPage }}</span>
+        <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">more &gt;</router-link>
+        <a v-else class="disabled">more &gt;</a>
+      </div>
+    </div>
+
     <transition :name="transition">
       <div class="news-list" :key="displayedPage" v-if="displayedPage > 0">
         <transition-group tag="ul" name="item">
@@ -114,12 +167,12 @@ export default {
 
 <style lang="stylus">
 .news-view {
-  padding-top: 45px;
+  padding-top: 15px;
 }
 
-.news-list-nav {
-  background-color: #fff;
-  border-radius: 2px;
+.page-accordion {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .news-list {
@@ -127,15 +180,20 @@ export default {
   border-radius: 2px;
 }
 
-.news-list-nav {
-  padding: 15px 30px;
+.footer {
+  background: #fff;
+  padding: 10px 30px;
   position: fixed;
   text-align: center;
-  top: 55px;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 998;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.news-list-nav {
+  border-radius: 2px;
 
   a {
     margin: 0 1em;
@@ -144,6 +202,16 @@ export default {
   .disabled {
     color: #ccc;
   }
+}
+
+.credits {
+  font-family: 'Courier New', Courier, monospace;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .news-list {

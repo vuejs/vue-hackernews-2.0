@@ -1,18 +1,12 @@
 
 <template>
   <div class="similar-posts">
-    <span class="similar-title">Similar stories:</span>
     <ul class="list" v-if="story.similar && story.similar.length !== 0">
       <li v-for="sim in story.similar" :key="sim.id">
-        <span
-          class="box"
-          v-bind:style="{ background: getColor(sim.similarity_score)}"
-          v-bind:title="sim.similarity_score"
-        ></span>
         <router-link :to="'/item/' + sim.id">
-          {{ sim.title }} |
           <b>{{ new Date(sim.time * 1000).getFullYear() }}</b>
-          | {{ sim.descendants }} comments 
+          | {{ sim.title }}
+          | {{ sim.descendants }} comments
         </router-link>
         <client-only>
           <div class="stars">
@@ -28,7 +22,7 @@
       </li>
     </ul>
     <div v-else class="no-posts">
-      <span class="title">No similar posts found.</span>
+      <span class="title">Something went wrong retrieving similar stories 😕.</span>
     </div>
   </div>
 </template>
@@ -45,15 +39,7 @@ export default {
     StarRating,
     ClientOnly
   },
-  data: () => {
-    return {
-      colorStops: [
-        { start: 0, stop: 0.7, color: "rgba(250, 157, 18, 0.5)" },
-        { start: 0.7, stop: 0.8, color: "rgba(250, 157, 18, 0.75)" },
-        { start: 0.8, stop: 2, color: "rgba(250, 157, 18, 1)" }
-      ]
-    };
-  },
+
   methods: {
     getColor: function(score) {
       const found = this.colorStops.find(
@@ -83,6 +69,17 @@ export default {
     height: 0.85em;
     display: inline-block;
     margin-right: 8px;
+  }
+
+  .rank-cta {
+    font-family: 'Courier New', Courier, monospace;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    position: absolute;
+    right: 40px;
+    width: 75px;
   }
 
   .similar-title {

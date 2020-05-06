@@ -2,9 +2,9 @@
   <div id="app">
     <header class="header">
       <nav class="inner">
-        <router-link to="/" exact>
+        <a href="https://peltarion.com">
           <img class="logo" src="~public/logo-48.png" alt="logo" />
-        </router-link>
+        </a>
         <router-link to="/top">Top</router-link>
         <router-link to="/new">New</router-link>
         <router-link to="/show">Show</router-link>
@@ -15,32 +15,6 @@
     <transition name="fade" mode="out-in">
       <router-view class="view"></router-view>
     </transition>
-
-    <footer class="footer">
-      <div class="container">
-        <p>
-          Built with ❤️ using
-          <a
-            class="github"
-            href="https://github.com/UKPLab/sentence-transformers"
-            target="_blank"
-            rel="noopener"
-          >sentence-transformers</a>,
-          <a
-            class="github"
-            href="https://github.com/vuejs/vue-hackernews-2.0"
-            target="_blank"
-            rel="noopener"
-          >Vue.js</a> and
-          <a
-            class="github"
-            href="https://github.com/nmslib/hnswlib"
-            target="_blank"
-            rel="noopener"
-          >hnswlib</a>
-        </p>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -66,10 +40,10 @@ footer {
   height: 40x;
   box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   text-align: center;
+}
 
-  .github {
-    text-decoration: underline;
-  }
+.external-link {
+  text-decoration: underline;
 }
 
 a {
@@ -152,10 +126,6 @@ a {
 
     a {
       margin-right: 1em;
-    }
-
-    .github {
-      display: none;
     }
   }
 }

@@ -1,14 +1,10 @@
 <template>
   <div class>
     <div class="tab__header">
-      <a
-        href="#"
-        class="tab__link p-4 block bg-blue-dark hover:bg-blue-darker no-underline text-white border-b-2 border-white flex justify-between"
-        @click.prevent="active = !active"
-      >
-        <strong>{{title}}</strong>
-        <span class="down-Arrow" v-show="!active">&#9660;</span>
-        <span class="up-Arrow" v-show="active">&#9650;</span>
+      <a href="#" @click.prevent="active = !active">
+        <span class="accordion-title">{{title}}</span>
+        <span class="expand-cta cta" v-show="!active">(click to learn more)</span>
+        <span class="collapse-cta cta" v-show="active">(click for more space)</span>
       </a>
     </div>
     <div class="tab__content p-2" v-show="active">
@@ -17,6 +13,19 @@
   </div>
 </template>>
 
+
+<style lang="stylus">
+.accordion-title {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 50px;
+}
+
+.cta {
+  padding-left: 20px;
+}
+</style>
 
 
 <script>
