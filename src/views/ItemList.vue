@@ -8,10 +8,10 @@
           top 3 most similar stories based on their titles between 2006 and
           2015. More specifically the titles are encoded into semantically
           meaningful vectors and then ranked using cosine similarity.
-          If you want to learn more check out our
+          If you want to learn more this, check out our
           <a
             class="external-link"
-            href="https://twitter.com/phileisn"
+            href
           >blog post</a>.
         </p>
 
