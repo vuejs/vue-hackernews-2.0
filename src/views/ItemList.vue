@@ -11,7 +11,7 @@
           If you want to learn more this, check out our
           <a
             class="external-link"
-            href
+            href="https://docs.google.com/document/d/1UV4GBtMiJEgb19ucLhUGpv1frdDNZI6-qTW-1w0zNdM"
           >blog post</a>.
         </p>
 
