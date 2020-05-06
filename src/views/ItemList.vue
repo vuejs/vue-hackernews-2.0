@@ -33,7 +33,20 @@
         </p>
       </accordion>
       <p class="credits">
-        Built at
+        Built by
+        <a
+          class="external-link"
+          href="https://twitter.com/phileisn"
+          target="_blank"
+          rel="noopener"
+        >@phileisn</a> and
+        <a
+          class="external-link"
+          href="https://twitter.com/nilpath"
+          target="_blank"
+          rel="noopener"
+        >@nilpath</a>
+        at
         <a
           class="external-link"
           href="https://peltarion.com/"
@@ -208,8 +221,8 @@ export default {
   font-family: 'Courier New', Courier, monospace;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 13px;
+  line-height: 13px;
   padding-left: 10px;
   padding-right: 10px;
 }
