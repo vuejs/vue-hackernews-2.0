@@ -13,7 +13,7 @@
     <span class="meta">
       <span v-if="item.type !== 'job'" class="by">
         by
-        <router-link :to="'/user/' + item.by">{{ item.by }} </router-link>
+        <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
       </span>
       <span class="time">{{ item.time | timeAgo }} ago</span>
       <span v-if="item.type !== 'job'" class="comments-link">
@@ -21,12 +21,11 @@
         <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
       </span>
 
-      <span> | {{item.score}} points</span>
+      <span>| {{item.score}} points</span>
     </span>
     <br />
     <br />
     <similar v-if="item.type === 'story'" :story="item"></similar>
-    <span class="label" v-if="item.type !== 'story'">{{ item.type }}</span>
   </li>
 </template>
 
