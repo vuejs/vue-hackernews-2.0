@@ -3,8 +3,8 @@
     <div class="tab__header">
       <a href="#" @click.prevent="active = !active">
         <span class="accordion-title">{{title}}</span>
-        <span class="expand-cta cta" v-show="!active">(click to learn more)</span>
-        <span class="collapse-cta cta" v-show="active">(click for more space)</span>
+        <span class="expand-cta cta" v-show="!active">(click to learn more ▼)</span>
+        <span class="collapse-cta cta" v-show="active">(click for more space ▲)</span>
       </a>
     </div>
     <div class="tab__content p-2" v-show="active">
