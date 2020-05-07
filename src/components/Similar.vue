@@ -3,11 +3,27 @@
   <div class="similar-posts">
     <ul class="list" v-if="story.similar && story.similar.length !== 0">
       <li v-for="sim in story.similar" :key="sim.id">
-        <router-link :to="'/item/' + sim.id">
-          <b>{{ new Date(sim.time * 1000).getFullYear() }}</b>
-          | {{ sim.title }}
-          | {{ sim.descendants }} comments
-        </router-link>
+        <span class="year">{{ new Date(sim.time * 1000).getFullYear() }}</span>
+
+        <template v-if="sim.url">
+          <span>
+            <a
+              :href="sim.url"
+              target="_blank"
+              rel="noopener"
+            >{{ sim.title }} ({{ sim.url | host }})&nbsp;</a>
+
+            <router-link class="comments" :to="'/item/' + sim.id">{{ sim.descendants }} comments</router-link>
+          </span>
+
+          <!-- <span class="host">({{ sim.url | host }})</span> -->
+        </template>
+        <template v-else>
+          <span>
+            <router-link :to="'/item/' + sim.id">{{ sim.title }}&nbsp;</router-link>
+            <router-link class="comments" :to="'/item/' + sim.id">{{ sim.descendants }} comments</router-link>
+          </span>
+        </template>
         <client-only>
           <div class="stars">
             <star-rating
@@ -22,7 +38,7 @@
       </li>
     </ul>
     <div v-else class="no-posts">
-      <span class="title">Something went wrong retrieving similar stories 😕.</span>
+      <span class="similar-posts">Something went wrong retrieving similar stories 😕.</span>
     </div>
   </div>
 </template>
@@ -41,13 +57,6 @@ export default {
   },
 
   methods: {
-    getColor: function(score) {
-      const found = this.colorStops.find(
-        cs => score.toFixed(2) >= cs.start && score.toFixed(2) < cs.stop
-      );
-      return found.color;
-    },
-
     setRating: function(rating, similar, story) {
       sendFeedBack(story, similar, rating);
     }
@@ -61,8 +70,16 @@ export default {
   right: 40px;
 }
 
+.comments {
+  text-decoration: underline;
+}
+
 .similar-posts {
   line-height: 1.2;
+
+  .year {
+    padding-right: 8px;
+  }
 
   .box {
     width: 12px;
@@ -71,19 +88,7 @@ export default {
     margin-right: 8px;
   }
 
-  .rank-cta {
-    font-family: 'Courier New', Courier, monospace;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 22px;
-    position: absolute;
-    right: 40px;
-    width: 75px;
-  }
-
-  .similar-title {
-    font-family: 'Courier New', Courier, monospace;
+  .similar-posts {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -96,6 +101,8 @@ export default {
     margin: 4px 0;
     padding: 8px 12px;
     border-radius: 4px;
+    width = 716px;
+    font-family: 'Courier New', Courier, monospace;
 
     li {
       padding: 4px;

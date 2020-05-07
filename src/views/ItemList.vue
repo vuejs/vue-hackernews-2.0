@@ -1,8 +1,8 @@
 <template>
   <div class="news-view">
     <div>
-      <accordion class="page-accordion" title="Nostalgia HN">
-        <p>Nostalgia HN is yet another HackerNews clone, but with a slight twist.</p>
+      <accordion class="page-accordion" title="HN Time-Machine">
+        <p>HN Time-Machine is yet another HackerNews clone, but with a slight twist.</p>
         <p>
           Each story on the current HackerNews frontpage is presented with the
           top 3 most similar stories based on their titles between 2006 and

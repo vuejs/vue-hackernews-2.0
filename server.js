@@ -98,7 +98,7 @@ function render(req, res) {
   }
 
   const context = {
-    title: 'Nostalgia HN', // default title
+    title: 'HN Time-Machine', // default title
     url: req.url
   }
   renderer.renderToString(context, (err, html) => {

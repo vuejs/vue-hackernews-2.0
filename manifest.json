@@ -1,6 +1,6 @@
 {
-  "name": "Nostalgia HN",
-  "short_name": "N7a HN",
+  "name": "HN Time-Machine",
+  "short_name": "HN ⏳",
   "icons": [{
     "src": "/public/logo-120.png",
     "sizes": "120x120",
