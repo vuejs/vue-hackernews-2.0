@@ -32,6 +32,7 @@
           >@phileisn</a>.
         </p>
       </accordion>
+      <p class="subtitle">Today's stories along with the most similar ones between 2006 and 2015.</p>
       <p class="credits">
         Built by
         <a
@@ -215,6 +216,11 @@ export default {
   .disabled {
     color: #ccc;
   }
+}
+
+.subtitle {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .credits {
