@@ -23,7 +23,7 @@
 }
 
 .cta {
-  padding-left: 20px;
+  display: table;
 }
 </style>
 
