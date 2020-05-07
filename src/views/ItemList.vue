@@ -219,6 +219,8 @@ export default {
 }
 
 .subtitle {
+  font-size: 18px;
+  line-height: 18px;
   padding-left: 10px;
   padding-right: 10px;
 }
