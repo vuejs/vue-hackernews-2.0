@@ -17,7 +17,7 @@
       <div class="item-view-comments">
         <p class="item-view-comments-header">
           {{ item.kids ? item.descendants + ' comments' : 'No comments yet.' }}
-          <spinner :show="loading"></spinner>
+          <spinner v-if="loading" :show="loading"></spinner>
         </p>
         <ul v-if="!loading" class="comment-children">
           <comment v-for="id in item.kids" :key="id" :id="id"></comment>
