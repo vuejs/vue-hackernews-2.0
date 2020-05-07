@@ -1,4 +1,4 @@
-function getTitle (vm) {
+function getTitle(vm) {
   const { title } = vm.$options
   if (title) {
     return typeof title === 'function'
@@ -8,19 +8,19 @@ function getTitle (vm) {
 }
 
 const serverTitleMixin = {
-  created () {
+  created() {
     const title = getTitle(this)
     if (title) {
-      this.$ssrContext.title = `Vue HN 2.0 | ${title}`
+      this.$ssrContext.title = `HN Time-Machine | ${title}`
     }
   }
 }
 
 const clientTitleMixin = {
-  mounted () {
+  mounted() {
     const title = getTitle(this)
     if (title) {
-      document.title = `Vue HN 2.0 | ${title}`
+      document.title = `HN Time-Machine | ${title}`
     }
   }
 }

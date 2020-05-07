@@ -1,7 +1,8 @@
 import {
   fetchUser,
   fetchItems,
-  fetchIdsByType
+  fetchIdsByType,
+  fetchSimilar
 } from '../api'
 
 export default {
@@ -35,7 +36,33 @@ export default {
       return false
     })
     if (ids.length) {
-      return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
+      return fetchItems(ids)
+        .then(items => {
+          if (items.every(item => item.type === 'story')) {
+
+            return fetchSimilar(items.map(item => item.title))
+              .then(similar => items.map((item, idx) => {
+                item.similar = similar[idx];
+                return item;
+              }))
+              // Start fetching similar posts (potential performance issue...)
+              .then((items) => {
+                return fetchItems(items.map(i => i.similar).flat().map(sim => sim.id))
+                  .then(similarItems => {
+                    items.forEach(item => {
+                      item.similar = item.similar.map(sim => {
+                        const simItem = similarItems.find(si => si.id === sim.id);
+                        return Object.assign({ similarity_score: sim.score }, simItem);
+                      });
+                    });
+                    return items;
+                  });
+              });
+              // Stop fetching similar posts (potential performance issue...)
+          }
+          return items;
+        })
+        .then(items => commit('SET_ITEMS', { items }))
     } else {
       return Promise.resolve()
     }
