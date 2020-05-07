@@ -19,7 +19,7 @@
   font-style: normal;
   font-weight: bold;
   font-size: 32px;
-  line-height: 50px;
+  line-height: 20px;
 }
 
 .cta {

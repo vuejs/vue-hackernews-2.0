@@ -181,7 +181,7 @@ export default {
 
 <style lang="stylus">
 .news-view {
-  padding-top: 15px;
+  padding-top: 23px;
 }
 
 .page-accordion {
