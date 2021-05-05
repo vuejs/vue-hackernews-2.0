@@ -3,9 +3,12 @@ import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
 
-export function createStore () {
+export function createStore (router) {
   return _createStore({
     state: {
+      get route() {
+        return router.currentRoute.value
+      },
       activeType: null,
       itemsPerPage: 20,
       items: {/* [id: number]: Item */},

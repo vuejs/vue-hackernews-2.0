@@ -1,22 +1,21 @@
-import { createApp } from 'vue'
+import { createApp, configureCompat } from 'vue'
 import { createStore } from './store'
 import { createRouter } from './router'
-import { sync } from 'vuex-router-sync'
 import titleMixin from './util/title'
 import App from './App.vue'
 import ProgressBar from './components/ProgressBar.vue'
 
-const store = createStore()
-const router = createRouter()
-
-sync(store, router)
-
-const app = createApp({
-  router,
-  ...App
+configureCompat({
+  MODE: 3
 })
 
+const router = createRouter()
+const store = createStore(router)
+
+const app = createApp(App)
+
 app.use(store)
+app.use(router)
 
 // global progress bar
 const bar = createApp(ProgressBar).mount('#progress-container')
@@ -43,10 +42,14 @@ app.mixin({
   }
 })
 
+function getMatchedComponents(route) {
+  return route.matched.flatMap(record => Object.values(record.components))
+}
+
 // Add router hook for handling asyncData.
 router.beforeResolve((to, from, next) => {
-  const matched = router.getMatchedComponents(to)
-  const prevMatched = router.getMatchedComponents(from)
+  const matched = getMatchedComponents(to)
+  const prevMatched = getMatchedComponents(from)
   let diffed = false
   const activated = matched.filter((c, i) => {
     return diffed || (diffed = prevMatched[i] !== c)
