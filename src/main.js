@@ -13,9 +13,10 @@ sync(store, router)
 
 const app = createApp({
   router,
-  store,
   ...App
 })
+
+app.use(store)
 
 // global progress bar
 const bar = createApp(ProgressBar).mount('#progress-container')
