@@ -15,9 +15,11 @@
         </a>
       </nav>
     </header>
-    <transition name="fade" mode="out-in">
-      <router-view class="view"></router-view>
-    </transition>
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" class="view"/>
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -84,7 +86,7 @@ a
 .fade-enter-active, .fade-leave-active
   transition all .2s ease
 
-.fade-enter, .fade-leave-active
+.fade-enter-from, .fade-leave-active
   opacity 0
 
 @media (max-width 860px)

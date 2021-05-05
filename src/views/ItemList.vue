@@ -65,7 +65,7 @@ export default {
     })
   },
 
-  beforeMount () {
+  beforeUnmount () {
     this.unwatchList()
   },
 
@@ -129,18 +129,18 @@ export default {
     padding 0
     margin 0
 
-.slide-left-enter, .slide-right-leave-to
+.slide-left-enter-from, .slide-right-leave-to
   opacity 0
   transform translate(30px, 0)
 
-.slide-left-leave-to, .slide-right-enter
+.slide-left-leave-to, .slide-right-enter-from
   opacity 0
   transform translate(-30px, 0)
 
 .item-move, .item-enter-active, .item-leave-active
   transition all .5s cubic-bezier(.55,0,.1,1)
 
-.item-enter
+.item-enter-from
   opacity 0
   transform translate(30px, 0)
 
