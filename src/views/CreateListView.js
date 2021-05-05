@@ -1,3 +1,4 @@
+import { h } from 'vue'
 import ItemList from './ItemList.vue'
 
 const camelize = str => str.charAt(0).toUpperCase() + str.slice(1)
@@ -7,6 +8,10 @@ const camelize = str => str.charAt(0).toUpperCase() + str.slice(1)
 // They are essentially higher order components wrapping ItemList.vue.
 export default function createListView (type) {
   return {
+    compatConfig: {
+      MODE: 3
+    },
+
     name: `${type}-stories-view`,
 
     asyncData ({ store }) {
@@ -15,8 +20,8 @@ export default function createListView (type) {
 
     title: camelize(type),
 
-    render (h) {
-      return h(ItemList, { props: { type }})
+    render () {
+      return h(ItemList, { type })
     }
   }
 }
