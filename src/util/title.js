@@ -25,6 +25,6 @@ const clientTitleMixin = {
   }
 }
 
-export default process.env.VUE_ENV === 'server'
+export default import.meta.env.SSR
   ? serverTitleMixin
   : clientTitleMixin

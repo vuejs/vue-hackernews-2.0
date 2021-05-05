@@ -55,9 +55,7 @@ export default {
   },
 
   beforeMount () {
-    if (this.$root._isMounted) {
-      this.loadItems(this.page)
-    }
+    this.loadItems(this.page)
     // watch the current list for realtime updates
     this.unwatchList = watchList(this.type, ids => {
       this.$store.commit('SET_LIST', { type: this.type, ids })

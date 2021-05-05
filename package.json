@@ -4,54 +4,20 @@
   "author": "Evan You <yyx990803@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "node server",
-    "start": "cross-env NODE_ENV=production node server",
-    "build": "rimraf dist && npm run build:client && npm run build:server",
-    "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
-    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules",
-    "postinstall": "npm run build"
-  },
-  "engines": {
-    "node": ">=7.0",
-    "npm": ">=4.0"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "compression": "^1.7.1",
-    "cross-env": "^5.1.1",
-    "es6-promise": "^4.1.1",
-    "express": "^4.16.2",
-    "extract-text-webpack-plugin": "^3.0.2",
     "firebase": "4.6.2",
-    "lru-cache": "^4.1.1",
-    "route-cache": "0.4.3",
-    "serve-favicon": "^2.4.5",
-    "vue": "^2.5.22",
-    "vue-router": "^3.0.1",
-    "vue-server-renderer": "^2.5.22",
-    "vuex": "^3.0.1",
+    "vue": "^2.6.12",
+    "vue-router": "^3.0.0",
+    "vuex": "^3.0.0",
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^7.1.6",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-preset-env": "^1.6.1",
-    "chokidar": "^1.7.0",
-    "css-loader": "^0.28.7",
-    "file-loader": "^1.1.5",
-    "friendly-errors-webpack-plugin": "^1.6.1",
-    "rimraf": "^2.6.2",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1",
-    "sw-precache-webpack-plugin": "^0.11.4",
-    "url-loader": "^0.6.2",
-    "vue-loader": "^15.3.0",
-    "vue-template-compiler": "^2.5.22",
-    "webpack": "^3.8.1",
-    "webpack-dev-middleware": "^1.12.0",
-    "webpack-hot-middleware": "^2.20.0",
-    "webpack-merge": "^4.2.1",
-    "webpack-node-externals": "^1.7.2"
+    "vite-plugin-vue2": "^1.4.4",
+    "stylus": "^0.54.8",
+    "vite": "^2.2.3"
   }
 }

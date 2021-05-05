@@ -1,14 +1,13 @@
-// this is aliased in webpack config based on server/client build
-import { createAPI } from 'create-api'
+import Firebase from 'firebase/app'
+import 'firebase/database'
 
-const logRequests = !!process.env.DEBUG_API
+const logRequests = !!import.meta.env.VITE_DEBUG_API
 
-const api = createAPI({
-  version: '/v0',
-  config: {
-    databaseURL: 'https://hacker-news.firebaseio.com'
-  }
+Firebase.initializeApp({
+  databaseURL: 'https://hacker-news.firebaseio.com'
 })
+
+const api = Firebase.database().ref('/v0')
 
 // warm the front page cache every 15 min
 // make sure to do this only once across all requests
