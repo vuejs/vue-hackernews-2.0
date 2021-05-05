@@ -4,7 +4,7 @@
     <span class="title">
       <template v-if="item.url">
         <a :href="item.url" target="_blank" rel="noopener">{{ item.title }}</a>
-        <span class="host"> ({{ item.url | host }})</span>
+        <span class="host"> ({{ host(item.url) }})</span>
       </template>
       <template v-else>
         <router-link :to="'/item/' + item.id">{{ item.title }}</router-link>
@@ -16,7 +16,7 @@
         by <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
       </span>
       <span class="time">
-        {{ item.time | timeAgo }} ago
+        {{ timeAgo(item.time) }} ago
       </span>
       <span v-if="item.type !== 'job'" class="comments-link">
         | <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
@@ -27,10 +27,14 @@
 </template>
 
 <script>
-import { timeAgo } from '../util/filters'
+import { timeAgo, host } from '../util/filters'
 
 export default {
   name: 'news-item',
+  methods: {
+    timeAgo,
+    host
+  },
   props: ['item'],
   // http://ssr.vuejs.org/en/caching.html#component-level-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {
