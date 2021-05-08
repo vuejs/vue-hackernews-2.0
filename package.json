@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "firebase": "4.6.2",
-    "vue": "^3.1.0",
+    "vue": "^3.1.0-0",
     "vue-router": "^4.0.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.2",
-    "@vue/compiler-sfc": "^3.1.0",
+    "@vue/compiler-sfc": "^3.1.0-0",
     "stylus": "^0.54.8",
     "vite": "^2.2.3"
   }
