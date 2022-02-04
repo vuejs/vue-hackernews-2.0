@@ -4,7 +4,8 @@
   "icons": [{
       "src": "/public/logo-120.png",
       "sizes": "120x120",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }, {
       "src": "/public/logo-144.png",
       "sizes": "144x144",
