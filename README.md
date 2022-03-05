@@ -65,6 +65,7 @@ npm run build
 # serve in production mode
 npm start
 ```
+**Version bug fix:** If you encounter an error, run `npm update` first. Then run the `npm install` command.
 
 ## License
 
